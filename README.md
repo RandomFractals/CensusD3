@@ -7,3 +7,5 @@ There will be lots of these kind of intensity maps, but highly interactive broke
 
 ![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/Choropleth.png?raw=true 
  "USA Census Choropleth teaser") 
+
+Think http://datamapper.geo.census.gov/map.html but less rigid, more interactive, and user-friendly. Census Data Mapper 2.0 UX D3 proj.? :)
