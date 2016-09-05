@@ -1,0 +1,105 @@
+body {
+	background-color: #fff;
+	color: #000000;	
+	font-family: 'Istok Web', Helvetica, Arial, FreeSans, sans-serif;
+	font-size: 0.9em;
+	margin: 0px;
+}
+
+.title {
+  color: #fff;
+  font-size: 14pt;
+  padding: 5px;
+}
+
+span {
+	font-size: 0.9em;	
+}
+
+/* div magic styles */
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+	right: 0;
+	width: 180px;
+}
+
+.clear {
+	clear: both;
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: block;
+}
+
+/* toolbar styles */
+#toolbar {
+	background: #06f;	
+	margin: 0px;
+	padding: 0px;		
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	height: 32px;
+}
+
+#content {
+	margin-top: 42px;
+  margin-left: 10px;
+	padding: 0px;
+	width: 100%;
+	overflow: hidden;	
+}
+
+/* data vis container styles */
+.container {
+ padding: 0px;
+ margin: 0px;
+ width: 100%;
+}
+
+.map, .data, .graph {
+	background-color: #eee;
+	border: solid 1px #AACFE4;
+	border-radius: 0px;
+	box-shadow: 0px 0px 10px #ccc;	
+	margin: 0px;	
+  overflow: hidden;
+}
+
+.data {
+	background-color: #fff;	
+	overflow-y: scroll;
+}
+
+/* app text elements + link styles */
+.footer, .label {
+	font-size: .8em;	
+	color: #333;
+	margin: 5px;
+}
+
+.date {
+	font-size: 0.9em;	
+	padding-left: 5px;
+}
+
+.link {
+	font-size: 0.9em;
+	color: #06f;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0px;
+	height: 24px;
+	float: right;
+	right: 10px;
+}

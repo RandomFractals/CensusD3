@@ -4,13 +4,34 @@
     <base href="/" />
     <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-     <title>Census D3</title>
+     <title>census d3</title>
+     <link rel="stylesheet" href="styles/app.css">         
      <link rel="stylesheet" href="styles/d3.map.css">    
      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js"></script>
   </head>
   <body>      
-    <div id="map"></div>
+    <!-- toolbar -->
+	<div id="toolbar">
+      <div class="title">census d3</div>
+	</div>
+    <!-- content -->
+    <div id="content">
+      <div id="map"></div>
+      <div id="data"></div>
+    </div>
+    <!-- footer -->
+    <div id="footer" class="footer left">
+	  <span>topology:</span>
+      <a href="https://github.com/mbostock/topojson/wiki" target="_blank"
+        title="https://github.com/mbostock/topojson/wiki">TopoJSON</a>
+      |
+      <span>code:</span>
+      <a href="https://github.com/RandomFractals/CensusD3" target="_blank"
+        title="census d3 prject github">census d3</a>
+      <span>&copy;Random Fractals | 2016</span>        
+    </div>  
   </body>
+  <!-- us map data viz -->
   <script src="scripts/us.map.js"></script>  
 </html>
