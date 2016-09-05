@@ -85,13 +85,16 @@ USMap.prototype.redraw = function (topoData){
     this.topology = topoData;
   }
 
+  console.log(topoData);
   this.g.selectAll('path')
         .data( topojson.feature(this.topology, this.topology.objects.states).features )
         .enter().append('path')
         .attr('d', this.geoPath)
         .attr('class', 'feature')
+        .attr('id', function(d) {
+          return 'state' + d.id
+        })
         .on('click', function(d) {
-          console.log('clicked');
           if (_map.active.node() === this) {
             return _map.reset();
           }
@@ -133,6 +136,9 @@ USMap.prototype.onClick = function (d, region) {
   this.svg.transition()
       .duration(750)
       .call(this.zoom.translate(translate).scale(scale).event);
+
+  // get region id
+  console.log(region);
 }
 
 
