@@ -86,13 +86,15 @@ USMap.prototype.redraw = function (topoData){
   }
 
   console.log(topoData);
+
+  // creates states
   this.g.selectAll('path')
         .data( topojson.feature(this.topology, this.topology.objects.states).features )
         .enter().append('path')
         .attr('d', this.geoPath)
         .attr('class', 'feature')
         .attr('id', function(d) {
-          return 'state' + d.id
+          return 'state-' + d.id
         })
         .on('click', function(d) {
           if (_map.active.node() === this) {
@@ -101,11 +103,21 @@ USMap.prototype.redraw = function (topoData){
           _map.onClick(d, this); // selected region
         });
 
+  // create state borders
   this.g.append('path')
         .datum( topojson.mesh(this.topology, 
           this.topology.objects.states, function(a, b) { return a !== b; }) )
         .attr('class', 'mesh')
         .attr('d', this.geoPath);
+
+  // create state labels
+  this.g.selectAll(".state-label")
+        .data( topojson.feature(this.topology, this.topology.objects.states).features )
+        .enter().append("text")
+        .attr("class", function(d) { return "state-label " + d.id; })
+        .attr("transform", function(d) { return "translate(" + _map.geoPath.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .text(function(d) { return d.id; });
 }
 
 
