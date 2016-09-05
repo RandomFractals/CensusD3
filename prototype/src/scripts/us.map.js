@@ -1,4 +1,5 @@
 
+ 
 var width = 720,
     height = 480,
     active = d3.select(null);
@@ -22,7 +23,7 @@ var svg = d3.select("body").append("svg")
     .on("click", stopped, true);
 
 svg.append("rect")
-    .attr("class", "map-background")
+    .attr("class", "background")
     .attr("width", width)
     .attr("height", height)
     .on("click", reset);
