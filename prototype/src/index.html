@@ -3,12 +3,14 @@
   <head>
     <base href="/" />
     <meta charset="utf-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-     <title>census d3</title>
-     <link rel="stylesheet" href="styles/app.css">         
-     <link rel="stylesheet" href="styles/d3.map.css">    
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>census d3</title>
+    <link rel="stylesheet" href="styles/app.css">         
+    <link rel="stylesheet" href="styles/d3.map.css">    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js"></script>
+    <script src="scripts/us.map.js"></script>
+    <script src="scripts/census.d3.js"></script>         
   </head>
   <body>      
     <!-- toolbar -->
@@ -32,6 +34,9 @@
       <span>&copy;Random Fractals | 2016</span>        
     </div>  
   </body>
-  <!-- us map data viz -->
-  <script src="scripts/us.map.js"></script>  
+  <!-- census d3 data viz -->
+  <script>
+      var censusD3 = new CensusD3();
+      censusD3.load();
+  </script>  
 </html>

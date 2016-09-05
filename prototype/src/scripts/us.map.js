@@ -1,74 +1,105 @@
+/**
+ * US map d3
+ **/ 
 
- 
-var width = 720,
-    height = 480,
-    active = d3.select(null);
+var _this;
+function USMap(width, height) {
 
-var projection = d3.geo.albersUsa()
-    .scale(1000)
-    .translate([width / 2, height / 2]);
+  this.width = width;
+  this.height = height;
+  this.scale = 1000;
+  this.active = active = d3.select(null);
 
-var zoom = d3.behavior.zoom()
-    .translate([0, 0])
-    .scale(1)
-    .scaleExtent([1, 8])
-    .on("zoom", zoomed);
+  // use Albers USA projection
+  this.projection = d3.geo.albersUsa()
+    .scale(this.scale)
+    .translate([this.width / 2, this.height / 2]);
 
-var path = d3.geo.path()
-    .projection(projection);
+  this.zoom = d3.behavior.zoom()
+      .translate([0, 0])
+      .scale(1)
+      .scaleExtent([1, 8])
+      .on("zoom", this.onZoom);
 
-var svg = d3.select("#map").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .on("click", stopped, true);
+  this.path = d3.geo.path()
+      .projection(this.projection);
 
-svg.append("rect")
-    .attr("class", "background")
-    .attr("width", width)
-    .attr("height", height)
-    .on("click", reset);
+  this.svg = d3.select("#map").append("svg")
+      .attr("width", this.width)
+      .attr("height", this.height)
+      .on("click", this.onStop, true);
 
-var g = svg.append("g");
+  // create map bg rect 
+  this.svg.append("rect")
+      .attr("class", "background")
+      .attr("width", this.width)
+      .attr("height", this.height)
+      .on("click", this.reset);
 
-svg
-    .call(zoom) // delete this line to disable free zooming
-    .call(zoom.event);
+  // create map svg group
+  USMap.g = this.g = this.svg.append("g");
 
-// load US topo json
-d3.json("data/us.json", function(error, us) {
-  if (error) throw error;
+  this.svg
+      .call(this.zoom) // delete this line to disable free zooming
+      .call(this.zoom.event);
 
-  g.selectAll("path")
-      .data(topojson.feature(us, us.objects.states).features)
-    .enter().append("path")
-      .attr("d", path)
-      .attr("class", "feature")
-      .on("click", clicked);
-
-  g.append("path")
-      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-      .attr("class", "mesh")
-      .attr("d", path);
-});
+  _this = this;
+}
 
 
 /**
- * Map click event handler.
+ * Draws US map.
  */
-function clicked(d) {
-  if (active.node() === this) return reset();
-  active.classed("active", false);
-  active = d3.select(this).classed("active", true);
+USMap.prototype.redraw = function (){
 
+  // load US topo json
+  d3.json("../data/us.json", function(error, us) {
+    if (error) {
+      console.error(error);
+      throw error;
+    }
+
+    _this.g.selectAll("path")
+        .data( topojson.feature(us, us.objects.states).features )
+        .enter().append("path")
+        .attr("d", _this.path)
+        .attr("class", "feature")
+        .on("click", _this.onClick);
+
+    _this.g.append("path")
+        .datum( topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }) )
+        .attr("class", "mesh")
+        .attr("d", _this.path);
+  });
+}
+
+
+/**
+ * d3 path click event handler.
+ */
+function onClick(d) {
+  if (this.active.node() === this) {
+    return this.reset();
+  }
+
+  // toggle selection
+  this.active.classed("active", false);
+  this.active = d3.select(this).classed("active", true);
+
+  // get selected region bounds
   var bounds = path.bounds(d),
       dx = bounds[1][0] - bounds[0][0],
       dy = bounds[1][1] - bounds[0][1],
       x = (bounds[0][0] + bounds[1][0]) / 2,
-      y = (bounds[0][1] + bounds[1][1]) / 2,
-      scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height))),
-      translate = [width / 2 - scale * x, height / 2 - scale * y];
+      y = (bounds[0][1] + bounds[1][1]) / 2;
 
-  svg.transition()
+  // calculate new viewport scale and translate to coordinates for zoom
+  var scale = Math.max(1, 
+    Math.min(8, 0.9 / Math.max(dx / this.width, dy / this.height)));
+  var translate = [this.width / 2 - scale * x, this.height / 2 - scale * y];
+
+  // zoom
+  this.svg.transition()
       .duration(750)
       .call(zoom.translate(translate).scale(scale).event);
 }
@@ -77,28 +108,34 @@ function clicked(d) {
 /**
  * Resets active map feature.
  */
-function reset() {
-  active.classed("active", false);
-  active = d3.select(null);
+USMap.prototype.reset = function() {
+  this.active.classed("active", false);
+  this.active = d3.select(null);
 
-  svg.transition()
+  this.svg.transition()
       .duration(750)
       .call(zoom.translate([0, 0]).scale(1).event);
 }
 
 
 /**
- * Map zoom event handler.
+ * d3 zoom behavior handler.
  */
-function zoomed() {
-  g.style("stroke-width", 1.5 / d3.event.scale + "px");
-  g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+USMap.prototype.onZoom = function() {
+  USMap.g.style("stroke-width", 1.5 / d3.event.scale + "px");
+  USMap.g.attr("transform", 
+    "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
 
 
-// If the drag behavior prevents the default click,
-// also stop propagation so we don’t click-to-zoom.
-function stopped() {
-  if (d3.event.defaultPrevented) d3.event.stopPropagation();
+/**
+ * svg click stop handler.
+ */
+USMap.prototype.onStop = function() {
+  // If the drag behavior prevents the default click,
+  // also stop propagation so we don’t click-to-zoom  
+  if (d3.event.defaultPrevented) {
+    d3.event.stopPropagation();
+  }
 }
 
