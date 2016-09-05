@@ -17,7 +17,7 @@ var zoom = d3.behavior.zoom()
 var path = d3.geo.path()
     .projection(projection);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height)
     .on("click", stopped, true);
