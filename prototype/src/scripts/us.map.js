@@ -1,20 +1,19 @@
 /**
  * US map d3
  **/ 
-var _this;
+var _map;
 function USMap(window) {
 
+  // set map viewport size and scale
   this.window = window;
-
-  console.log(window.innerWidth);
   this.width = window.innerWidth - 240; // 720
   this.height = this.width / 3 * 2; // 480
   this.scale = 800;
   this.topology = {};
+  _map = this;
 
   // active feature for zoom in/out
   this.active = d3.select(null);
-  console.log(this.active);
 
   // create Albers USA map projection
   this.projection = d3.geo.albersUsa()
@@ -36,24 +35,26 @@ function USMap(window) {
       .attr('class', 'background')
       .attr('width', this.width)
       .attr('height', this.height)
-      .on('click', this.reset);
+      .on('click', function (d) {
+        _map.reset();
+      });
 
   // create map svg group
-  USMap.g = this.g = this.svg.append('g');
+  this.g = this.svg.append('g');
 
   // create Zoom behavior
   this.zoom = d3.behavior.zoom()
       .translate([0, 0])
       .scale(1)
       .scaleExtent([1, 8])
-      .on('zoom', this.onZoom);
+      .on('zoom', function() {
+        _map.onZoom();
+      });
 
   // add map zoom behavior
   this.svg
       .call(this.zoom) // delete this line to disable free zooming
       .call(this.zoom.event);
-
-  _this = this;
 }
 
 
@@ -69,7 +70,7 @@ USMap.prototype.load = function() {
     }
 
     // draw US topology
-    _this.redraw(us);
+    _map.redraw(us);
   });
 
 }
@@ -89,7 +90,13 @@ USMap.prototype.redraw = function (topoData){
         .enter().append('path')
         .attr('d', this.geoPath)
         .attr('class', 'feature')
-        .on('click', this.onClick);
+        .on('click', function(d) {
+          console.log('clicked');
+          if (_map.active.node() === this) {
+            return _this.reset();
+          }
+          _map.onClick(d, this); // selected region
+        });
 
   this.g.append('path')
         .datum( topojson.mesh(this.topology, 
@@ -102,19 +109,14 @@ USMap.prototype.redraw = function (topoData){
 /**
  * d3 path click event handler.
  */
-USMap.prototype.onClick = function (d) {
-  console.log('click');
-  console.log(this.active);
-  if (this.active.node() === this) {
-    return this.reset();
-  }
+USMap.prototype.onClick = function (d, region) {
 
   // toggle selection
   this.active.classed('active', false);
-  this.active = d3.select(this).classed('active', true);
+  this.active = d3.select(region).classed('active', true);
 
   // get selected region bounds
-  var bounds = path.bounds(d),
+  var bounds = this.geoPath.bounds(d),
       dx = bounds[1][0] - bounds[0][0],
       dy = bounds[1][1] - bounds[0][1],
       x = (bounds[0][0] + bounds[1][0]) / 2,
@@ -130,7 +132,7 @@ USMap.prototype.onClick = function (d) {
   // zoom
   this.svg.transition()
       .duration(750)
-      .call(zoom.translate(translate).scale(scale).event);
+      .call(this.zoom.translate(translate).scale(scale).event);
 }
 
 
@@ -143,7 +145,7 @@ USMap.prototype.reset = function() {
 
   this.svg.transition()
       .duration(750)
-      .call(zoom.translate([0, 0]).scale(1).event);
+      .call(this.zoom.translate([0, 0]).scale(1).event);
 }
 
 
@@ -151,8 +153,8 @@ USMap.prototype.reset = function() {
  * d3 zoom behavior handler.
  */
 USMap.prototype.onZoom = function() {
-  USMap.g.style('stroke-width', 1.5 / d3.event.scale + 'px');
-  USMap.g.attr('transform', 
+  this.g.style('stroke-width', 1.5 / d3.event.scale + 'px');
+  this.g.attr('transform', 
     'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
 }
 
