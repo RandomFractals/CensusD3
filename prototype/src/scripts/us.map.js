@@ -19,25 +19,25 @@ function USMap(width, height) {
       .translate([0, 0])
       .scale(1)
       .scaleExtent([1, 8])
-      .on("zoom", this.onZoom);
+      .on('zoom', this.onZoom);
 
   this.path = d3.geo.path()
       .projection(this.projection);
 
-  this.svg = d3.select("#map").append("svg")
-      .attr("width", this.width)
-      .attr("height", this.height)
-      .on("click", this.onStop, true);
+  this.svg = d3.select('#map').append('svg')
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .on('click', this.onStop, true);
 
   // create map bg rect 
-  this.svg.append("rect")
-      .attr("class", "background")
-      .attr("width", this.width)
-      .attr("height", this.height)
-      .on("click", this.reset);
+  this.svg.append('rect')
+      .attr('class', 'background')
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .on('click', this.reset);
 
   // create map svg group
-  USMap.g = this.g = this.svg.append("g");
+  USMap.g = this.g = this.svg.append('g');
 
   this.svg
       .call(this.zoom) // delete this line to disable free zooming
@@ -53,23 +53,23 @@ function USMap(width, height) {
 USMap.prototype.redraw = function (){
 
   // load US topo json
-  d3.json("../data/us.json", function(error, us) {
+  d3.json('../data/us.json', function(error, us) {
     if (error) {
       console.error(error);
       throw error;
     }
 
-    _this.g.selectAll("path")
+    _this.g.selectAll('path')
         .data( topojson.feature(us, us.objects.states).features )
-        .enter().append("path")
-        .attr("d", _this.path)
-        .attr("class", "feature")
-        .on("click", _this.onClick);
+        .enter().append('path')
+        .attr('d', _this.path)
+        .attr('class', 'feature')
+        .on('click', _this.onClick);
 
-    _this.g.append("path")
+    _this.g.append('path')
         .datum( topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }) )
-        .attr("class", "mesh")
-        .attr("d", _this.path);
+        .attr('class', 'mesh')
+        .attr('d', _this.path);
   });
 }
 
@@ -83,8 +83,8 @@ function onClick(d) {
   }
 
   // toggle selection
-  this.active.classed("active", false);
-  this.active = d3.select(this).classed("active", true);
+  this.active.classed('active', false);
+  this.active = d3.select(this).classed('active', true);
 
   // get selected region bounds
   var bounds = path.bounds(d),
@@ -109,7 +109,7 @@ function onClick(d) {
  * Resets active map feature.
  */
 USMap.prototype.reset = function() {
-  this.active.classed("active", false);
+  this.active.classed('active', false);
   this.active = d3.select(null);
 
   this.svg.transition()
@@ -122,9 +122,9 @@ USMap.prototype.reset = function() {
  * d3 zoom behavior handler.
  */
 USMap.prototype.onZoom = function() {
-  USMap.g.style("stroke-width", 1.5 / d3.event.scale + "px");
-  USMap.g.attr("transform", 
-    "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  USMap.g.style('stroke-width', 1.5 / d3.event.scale + 'px');
+  USMap.g.attr('transform', 
+    'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
 }
 
 
