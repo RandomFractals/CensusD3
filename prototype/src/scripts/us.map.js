@@ -2,15 +2,19 @@
  * US map d3
  **/ 
 var _this;
-function USMap(width, height) {
+function USMap(window) {
 
-  this.width = width;
-  this.height = height;
+  this.window = window;
+
+  console.log(window.innerWidth);
+  this.width = window.innerWidth - 240; // 720
+  this.height = this.width / 3 * 2; // 480
   this.scale = 800;
   this.topology = {};
 
   // active feature for zoom in/out
-  this.active = active = d3.select(null);
+  this.active = d3.select(null);
+  console.log(this.active);
 
   // create Albers USA map projection
   this.projection = d3.geo.albersUsa()
@@ -83,15 +87,15 @@ USMap.prototype.redraw = function (topoData){
   this.g.selectAll('path')
         .data( topojson.feature(this.topology, this.topology.objects.states).features )
         .enter().append('path')
-        .attr('d', _this.geoPath)
+        .attr('d', this.geoPath)
         .attr('class', 'feature')
-        .on('click', _this.onClick);
+        .on('click', this.onClick);
 
   this.g.append('path')
         .datum( topojson.mesh(this.topology, 
           this.topology.objects.states, function(a, b) { return a !== b; }) )
         .attr('class', 'mesh')
-        .attr('d', _this.geoPath);
+        .attr('d', this.geoPath);
 }
 
 
@@ -99,6 +103,8 @@ USMap.prototype.redraw = function (topoData){
  * d3 path click event handler.
  */
 USMap.prototype.onClick = function (d) {
+  console.log('click');
+  console.log(this.active);
   if (this.active.node() === this) {
     return this.reset();
   }
