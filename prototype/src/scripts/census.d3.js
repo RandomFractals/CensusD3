@@ -10,7 +10,10 @@ function CensusD3() {
  * Loads us map and initial data.
  */
 CensusD3.prototype.load = function() {
-  this.map.redraw();
+
+  // load US topology
+  this.map.load();
+  
   // TODO: load some census data here
 }
 

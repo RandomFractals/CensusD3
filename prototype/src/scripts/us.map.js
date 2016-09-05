@@ -1,19 +1,20 @@
 /**
  * US map d3
  **/ 
-
 var _this;
 function USMap(width, height) {
 
   this.width = width;
   this.height = height;
-  this.scale = 1000;
+  this.scale = 800;
+  this.topology = {};
+
   this.active = active = d3.select(null);
 
   // use Albers USA projection
   this.projection = d3.geo.albersUsa()
     .scale(this.scale)
-    .translate([this.width / 2, this.height / 2]);
+    .translate([this.width / 2, this.height / 2]); // center
 
   this.zoom = d3.behavior.zoom()
       .translate([0, 0])
@@ -21,7 +22,7 @@ function USMap(width, height) {
       .scaleExtent([1, 8])
       .on('zoom', this.onZoom);
 
-  this.path = d3.geo.path()
+  this.geoPath = d3.geo.path()
       .projection(this.projection);
 
   this.svg = d3.select('#map').append('svg')
@@ -48,36 +49,51 @@ function USMap(width, height) {
 
 
 /**
- * Draws US map.
+ * Loads US topology;
  */
-USMap.prototype.redraw = function (){
-
-  // load US topo json
+USMap.prototype.load = function() {
+  // load US topology
   d3.json('../data/us.json', function(error, us) {
     if (error) {
       console.error(error);
       throw error;
     }
 
-    _this.g.selectAll('path')
-        .data( topojson.feature(us, us.objects.states).features )
+    // draw US topology
+    _this.redraw(us);
+  });
+
+}
+
+
+/**
+ * Draws US map.
+ */
+USMap.prototype.redraw = function (topoData){
+  
+  if (topoData) {
+    this.topology = topoData;
+  }
+
+  this.g.selectAll('path')
+        .data( topojson.feature(this.topology, this.topology.objects.states).features )
         .enter().append('path')
-        .attr('d', _this.path)
+        .attr('d', _this.geoPath)
         .attr('class', 'feature')
         .on('click', _this.onClick);
 
-    _this.g.append('path')
-        .datum( topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }) )
+  this.g.append('path')
+        .datum( topojson.mesh(this.topology, 
+          this.topology.objects.states, function(a, b) { return a !== b; }) )
         .attr('class', 'mesh')
-        .attr('d', _this.path);
-  });
+        .attr('d', _this.geoPath);
 }
 
 
 /**
  * d3 path click event handler.
  */
-function onClick(d) {
+USMap.prototype.onClick = function (d) {
   if (this.active.node() === this) {
     return this.reset();
   }
