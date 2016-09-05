@@ -9,22 +9,19 @@ function USMap(width, height) {
   this.scale = 800;
   this.topology = {};
 
+  // active feature for zoom in/out
   this.active = active = d3.select(null);
 
-  // use Albers USA projection
+  // create Albers USA map projection
   this.projection = d3.geo.albersUsa()
     .scale(this.scale)
     .translate([this.width / 2, this.height / 2]); // center
 
-  this.zoom = d3.behavior.zoom()
-      .translate([0, 0])
-      .scale(1)
-      .scaleExtent([1, 8])
-      .on('zoom', this.onZoom);
-
+  // create geo path for map projection
   this.geoPath = d3.geo.path()
       .projection(this.projection);
 
+  // create map svg
   this.svg = d3.select('#map').append('svg')
       .attr('width', this.width)
       .attr('height', this.height)
@@ -40,6 +37,14 @@ function USMap(width, height) {
   // create map svg group
   USMap.g = this.g = this.svg.append('g');
 
+  // create Zoom behavior
+  this.zoom = d3.behavior.zoom()
+      .translate([0, 0])
+      .scale(1)
+      .scaleExtent([1, 8])
+      .on('zoom', this.onZoom);
+
+  // add map zoom behavior
   this.svg
       .call(this.zoom) // delete this line to disable free zooming
       .call(this.zoom.event);
@@ -49,7 +54,7 @@ function USMap(width, height) {
 
 
 /**
- * Loads US topology;
+ * Loads US topology.
  */
 USMap.prototype.load = function() {
   // load US topology
@@ -109,9 +114,11 @@ USMap.prototype.onClick = function (d) {
       x = (bounds[0][0] + bounds[1][0]) / 2,
       y = (bounds[0][1] + bounds[1][1]) / 2;
 
-  // calculate new viewport scale and translate to coordinates for zoom
+  // calculate new viewport scale 
   var scale = Math.max(1, 
     Math.min(8, 0.9 / Math.max(dx / this.width, dy / this.height)));
+
+  // determine translate coordinates for zoom
   var translate = [this.width / 2 - scale * x, this.height / 2 - scale * y];
 
   // zoom
