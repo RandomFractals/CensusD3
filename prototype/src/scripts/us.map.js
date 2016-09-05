@@ -93,7 +93,7 @@ USMap.prototype.redraw = function (topoData){
         .on('click', function(d) {
           console.log('clicked');
           if (_map.active.node() === this) {
-            return _this.reset();
+            return _map.reset();
           }
           _map.onClick(d, this); // selected region
         });
