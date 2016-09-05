@@ -1,0 +1,6 @@
+.env
+node_modules
+src/node_modules
+src/typings
+src/app/**/*.js
+src/app/**/*.js.map
