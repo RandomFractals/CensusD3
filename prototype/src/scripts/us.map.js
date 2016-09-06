@@ -6,11 +6,24 @@ function USMap(window) {
 
   // set map viewport size and scale
   this.window = window;
+
+  // size to window
   this.width = window.innerWidth - 240; // 720
-  this.height = this.width / 3 * 2; // 480
+  // Note: width/3*2 - approximate usa map size ratio
+  this.height = this.width / 3 * 2; // 480 
+
+  // map scale for default 720x480 usa map size
   this.scale = 800;
+
+  // usa topology with states and counties
   this.topology = {};
+
+  // state names and codes  
   this.states = [];
+
+  // TODO: simple states geojson topo to load first
+  // since we will be loading zips, counties, and districts
+  // on state click from us.json later. TBD 
   this.statesTopology = [];
   _map = this;
 
