@@ -11,6 +11,7 @@ function USMap(window) {
   this.scale = 800;
   this.topology = {};
   this.states = [];
+  this.statesTopology = [];
   _map = this;
 
   // active feature for zoom in/out
@@ -29,7 +30,7 @@ function USMap(window) {
   this.svg = d3.select('#map').append('svg')
       .attr('width', this.width)
       .attr('height', this.height)
-      .on('click', this.onStop, true);
+      .on('click', this.onSvgClick, true);
 
   // create map bg rect 
   this.svg.append('rect')
@@ -37,7 +38,7 @@ function USMap(window) {
       .attr('width', this.width)
       .attr('height', this.height)
       .on('mouseover', function(d) {
-        // hide map tooltip on bg mouse over
+        // hide map tooltip on bg rect mouse over
         _map.tooltip.style("opacity", 0)
       })
       .on('click', function (d) {
@@ -45,7 +46,7 @@ function USMap(window) {
         _map.reset();
       });
 
-  // create map svg group
+  // create us states map svg group
   this.g = this.svg.append('g');
 
   // create Zoom behavior
@@ -212,19 +213,23 @@ USMap.prototype.reset = function() {
 
 
 /**
- * d3 zoom behavior handler.
+ * Zooms map to the selected state region.
  */
 USMap.prototype.onZoom = function() {
+  // scale regions group stoke width on zoom
   this.g.style('stroke-width', 1.5 / d3.event.scale + 'px');
+  // TODO: scale state labels font size too
+
+  // transform states group to zoom in on selected state
   this.g.attr('transform', 
     'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
 }
 
 
 /**
- * svg click stop handler.
+ * Svg click stop handler for smooth dragging.
  */
-USMap.prototype.onStop = function() {
+USMap.prototype.onSvgClick = function() {
   // If the drag behavior prevents the default click,
   // also stop propagation so we don’t click-to-zoom  
   if (d3.event.defaultPrevented) {
