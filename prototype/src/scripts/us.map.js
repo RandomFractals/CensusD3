@@ -18,8 +18,8 @@ function USMap(window) {
   // US topology TopoJSON with land, states, and all counties
   this.usTopology = {};
 
-  // state names and codes  
-  this.states = [];
+  // state names and codes; can append more data :)  
+  this.stateData = [];
 
   // TODO: simple states GeoJSON loaded first
   // since we will be loading zips, counties, and districts
@@ -85,28 +85,38 @@ function USMap(window) {
       .call(this.zoom.event);
 
   // load state names and codes
+  this.loadStateData(this);
+
+  // load US topology with land, states, and counties geometries
+  this.loadUSTopology(this);
+
+} // end of USMap() constructor
+
+
+/**
+ * Loads state data from ../data/us-states.csv.
+ */
+USMap.prototype.loadStateData = function(map) {
+  console.log('USMap::loadStateData::loading ../data/us-states.csv...');
+
+  // load state names and codes; can append more data :)
   d3.csv('../data/us-states.csv')
     .row( function(d) { 
       return {name: d.state, code: d.code}; })
-    .get( function(error, rows) {
-      _map.states = rows;
+    .get( function(error, states) {
+      map.states = states;
+      console.log('USMap::loadStateData::loaded states: ' + map.states.length);      
     });
-
-  // load US topology with land, states and counties geometries
-  this.loadUSTopology(this);
 }
 
-
-USMap.prototype.onStatesLoad = function(error, statesData) {
-  console.log(statesData);
-}
 
 /**
- * Loads US topology with land, state, and counties boundaries
+ * Loads US topology from ../data/us.json topoJSON file
+ * with land, state, and counties boundaries
  * for zoom to state counties data load and graphs display later.
  */
 USMap.prototype.loadUSTopology = function(map) {
-  console.log('USMap::loadUSTopology::loading us.json...');
+  console.log('USMap::loadUSTopology::loading ../data/us.json...');
 
   // load US topology with land, state, and counties boundaries
   d3.json('../data/us.json', function(error, usTopology) {
@@ -119,24 +129,20 @@ USMap.prototype.loadUSTopology = function(map) {
 
     console.log('USMap::loadUSTopology::us.json topology loaded!');
 
-    // save it for counties display later
+    // save it for counties boundaries and data display later
     map.usTopology = usTopology;
 
     // draw US map topology
     map.redraw();
 
   });
-
 }
 
 
 /**
  * Draws US map based on the loaded states topology.
  */
-USMap.prototype.redraw = function (){
-  
-  //console.log(topoData);
-  console.log('USMap::redraw::loaded states: ' + this.states.length);
+USMap.prototype.redraw = function (){  
 
   // create states paths
   console.log('USMap::redraw::creating state paths...');  
@@ -188,6 +194,7 @@ USMap.prototype.redraw = function (){
             console.log(d.id);
           return d.id; 
         });
+
   console.log('USMap::redraw::state paths and labels added to DOM!');
 } // end of redraw ()
 
