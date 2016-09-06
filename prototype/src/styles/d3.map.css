@@ -7,6 +7,7 @@
 path:hover {
 	fill-opacity: .7;
   stroke: #999;
+  stroke-width: 1px;
 }
 
 /* map region tooltip styles for mouse over */
@@ -25,6 +26,8 @@ div.tooltip {
 
 .feature {
   fill: #ccc;
+  stroke: #fff;
+  stroke-width: 1px;
   cursor: pointer;
 }
 
