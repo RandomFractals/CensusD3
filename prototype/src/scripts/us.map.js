@@ -16,7 +16,7 @@ function USMap(window) {
   this.scale = 800;
 
   // US topology TopoJSON with land, states, and all counties
-  this.topology = {};
+  this.usTopology = {};
 
   // state names and codes  
   this.states = [];
@@ -90,8 +90,10 @@ function USMap(window) {
       return {name: d.state, code: d.code}; })
     .get( function(error, rows) {
       _map.states = rows;
-      console.log(rows);
     });
+
+  // load US topology with land, states and counties geometries
+  this.loadUSTopology(this);
 }
 
 
@@ -100,39 +102,46 @@ USMap.prototype.onStatesLoad = function(error, statesData) {
 }
 
 /**
- * Loads US topology.
+ * Loads US topology with land, state, and counties boundaries
+ * for zoom to state counties data load and graphs display later.
  */
-USMap.prototype.load = function() {
+USMap.prototype.loadUSTopology = function(map) {
+  console.log('USMap::loadUSTopology::loading us.json...');
+
   // load US topology with land, state, and counties boundaries
-  d3.json('../data/us.json', function(error, us) {
+  d3.json('../data/us.json', function(error, usTopology) {
+
     if (error) {
       console.error(error);
       // TODO: show error message
       throw error;
     }
 
-    // draw US topology
-    _map.redraw(us);
+    console.log('USMap::loadUSTopology::us.json topology loaded!');
+
+    // save it for counties display later
+    map.usTopology = usTopology;
+
+    // draw US map topology
+    map.redraw();
+
   });
 
 }
 
 
 /**
- * Draws US map.
+ * Draws US map based on the loaded states topology.
  */
-USMap.prototype.redraw = function (topoData){
+USMap.prototype.redraw = function (){
   
-  if (topoData) {
-    this.topology = topoData;
-  }
-
   //console.log(topoData);
-  console.log('loaded states: ' + this.states.length);
+  console.log('USMap::redraw::loaded states: ' + this.states.length);
 
-  // creates states paths
+  // create states paths
+  console.log('USMap::redraw::creating state paths...');  
   this.g.selectAll('path')
-        .data( topojson.feature(this.topology, this.topology.objects.states).features )
+        .data( topojson.feature(this.usTopology, this.usTopology.objects.states).features )
         .enter().append('path')
         .attr('d', this.geoPath)
         .attr('class', 'feature')
@@ -160,15 +169,15 @@ USMap.prototype.redraw = function (topoData){
 
   // create state borders
   this.g.append('path')
-        .datum( topojson.mesh(this.topology, 
-          this.topology.objects.states, function(a, b) { return a !== b; }) )
+        .datum( topojson.mesh(this.usTopology, 
+          this.usTopology.objects.states, function(a, b) { return a !== b; }) )
         .attr('class', 'mesh')
         .attr('d', this.geoPath);
 
   // create state labels
-  console.log('creating state labels...');
+  console.log('USMap::redraw::creating state labels...');
   this.g.selectAll(".state-label")
-        .data( topojson.feature(this.topology, this.topology.objects.states).features )
+        .data( topojson.feature(this.usTopology, this.usTopology.objects.states).features )
         .enter().append("text")
         .attr("class", function(d) { return "state-label " + d.id; })
         .attr("transform", function(d) { return "translate(" + _map.geoPath.centroid(d) + ")"; })
@@ -179,7 +188,8 @@ USMap.prototype.redraw = function (topoData){
             console.log(d.id);
           return d.id; 
         });
-}
+  console.log('USMap::redraw::state paths and labels added to DOM!');
+} // end of redraw ()
 
 
 /**
