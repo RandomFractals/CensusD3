@@ -1,33 +1,35 @@
 /**
- * US map d3
+ * US map d3.
  **/ 
 var _map;
 function USMap(window) {
 
-  // set map viewport size and scale
+  // save window ref for handling resize later
   this.window = window;
 
   // size to window
-  this.width = window.innerWidth - 240; // 720
+  this.width = window.innerWidth - 240; // 720, -240 for the data panel display later
   // Note: width/3*2 - approximate usa map size ratio
   this.height = this.width / 3 * 2; // 480 
 
   // map scale for default 720x480 usa map size
   this.scale = 800;
 
-  // usa topology with states and counties
+  // US topology TopoJSON with land, states, and all counties
   this.topology = {};
 
   // state names and codes  
   this.states = [];
 
-  // TODO: simple states geojson topo to load first
+  // TODO: simple states GeoJSON loaded first
   // since we will be loading zips, counties, and districts
-  // on state click from us.json later. TBD 
+  // on state click from us.json and others later. TBD 
   this.statesTopology = [];
+
+  // TODO: get rid of this hack with callbacks later
   _map = this;
 
-  // active feature for zoom in/out
+  // active region ref. for zoom in/out
   this.active = d3.select(null);
 
   // add map tooltip div for map regions mouseovers
