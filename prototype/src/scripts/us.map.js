@@ -86,6 +86,8 @@ function USMap(window) {
 
   this.loadStateData(this);
 
+  this.loadStatesGeoData(this);
+
   this.loadUSTopology(this);
 
 } // end of USMap() constructor
@@ -101,9 +103,23 @@ USMap.prototype.loadStateData = function(map) {
   d3.csv('../data/us-states.csv')
     .row( function(d) { 
       return {name: d.state, code: d.code}; })
-    .get( function(error, states) {
-      map.states = states;
-      console.log('USMap::loadStateData::loaded states: ' + map.states.length);      
+    .get( function(error, statesData) {
+      map.statesData = statesData;
+      console.log('USMap::loadStateData::loaded states: ' + map.statesData.length);      
+  });
+}
+
+/**
+ * Loads simple 86kb ../data/us-stats.json geo data
+ * for initial usa map display.
+ */
+USMap.prototype.loadStatesGeoData = function(map) {
+  console.log('USMap::loadStatesGeoData::loading ../data/us-states.json...');
+  
+  d3.json('../data/us-states.json', function(statesGeoData) {
+
+    map.statesTopology = statesGeoData.features;
+    console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesTopology.length);      
   });
 }
 
@@ -187,8 +203,8 @@ USMap.prototype.redraw = function (){
         .attr("transform", function(d) { return "translate(" + _map.geoPath.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .text(function(d) {
-          if (d.id <= _map.states.length)
-            return _map.states[d.id-1].code;  
+          if (d.id <= _map.statesData.length)
+            return _map.statesData[d.id-1].code;  
             console.log(d.id);
           return d.id; 
         });
