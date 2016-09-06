@@ -10,6 +10,7 @@ function USMap(window) {
   this.height = this.width / 3 * 2; // 480
   this.scale = 800;
   this.topology = {};
+  this.states = [];
   _map = this;
 
   // active feature for zoom in/out
@@ -55,8 +56,21 @@ function USMap(window) {
   this.svg
       .call(this.zoom) // delete this line to disable free zooming
       .call(this.zoom.event);
+
+  // load state names and codes
+  d3.csv('../data/states.csv')
+    .row( function(d) { 
+      return {name: d.state, code: d.code}; })
+    .get( function(error, rows) {
+      _map.states = rows;
+      console.log(rows);
+    });
 }
 
+
+USMap.prototype.onStatesLoad = function(error, statesData) {
+  console.log(statesData);
+}
 
 /**
  * Loads US topology.
@@ -85,7 +99,7 @@ USMap.prototype.redraw = function (topoData){
     this.topology = topoData;
   }
 
-  console.log(topoData);
+  //console.log(topoData);
 
   // creates states
   this.g.selectAll('path')
