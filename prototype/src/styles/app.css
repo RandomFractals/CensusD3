@@ -23,8 +23,8 @@ span {
 
 .right {
 	float: right;
-	right: 0;
-	width: 180px;
+	right: 0px;
+	width: 240px;
 }
 
 .clear {
@@ -74,12 +74,23 @@ span {
   overflow: hidden;
 }
 
-.data {
-	background-color: #fff;	
+.data {  
+	background-color: #fff;
 	overflow-y: scroll;
 }
 
 /* app text elements + link styles */
+
+.section-title {
+  font-weight: bold;
+  padding: 10px;
+}
+
+.section-data {
+  font-size: 12px;
+  padding: 10px;
+}
+
 .footer, .label {
 	font-size: .8em;	
 	color: #333;
