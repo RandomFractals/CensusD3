@@ -206,9 +206,6 @@ USMap.prototype.onClick = function (d, region) {
   this.svg.transition()
       .duration(750)
       .call(this.zoom.translate(translate).scale(scale).event);
-
-  // get region id
-  console.log(region);
 }
 
 
