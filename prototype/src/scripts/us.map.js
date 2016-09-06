@@ -58,7 +58,7 @@ function USMap(window) {
       .call(this.zoom.event);
 
   // load state names and codes
-  d3.csv('../data/states.csv')
+  d3.csv('../data/us-states.csv')
     .row( function(d) { 
       return {name: d.state, code: d.code}; })
     .get( function(error, rows) {
