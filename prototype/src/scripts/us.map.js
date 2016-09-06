@@ -100,6 +100,7 @@ USMap.prototype.redraw = function (topoData){
   }
 
   //console.log(topoData);
+  console.log('states: ' + this.states.length);
 
   // creates states
   this.g.selectAll('path')
@@ -125,13 +126,19 @@ USMap.prototype.redraw = function (topoData){
         .attr('d', this.geoPath);
 
   // create state labels
+  console.log('creating state labels...');
   this.g.selectAll(".state-label")
         .data( topojson.feature(this.topology, this.topology.objects.states).features )
         .enter().append("text")
         .attr("class", function(d) { return "state-label " + d.id; })
         .attr("transform", function(d) { return "translate(" + _map.geoPath.centroid(d) + ")"; })
         .attr("dy", ".35em")
-        .text(function(d) { return d.id; });
+        .text(function(d) {
+          if (d.id <= _map.states.length)
+            return _map.states[d.id-1].code;  
+            console.log(d.id);
+          return d.id; 
+        });
 }
 
 
