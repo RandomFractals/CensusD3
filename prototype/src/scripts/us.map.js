@@ -84,10 +84,8 @@ function USMap(window) {
       .call(this.zoom) // delete this line to disable free zooming
       .call(this.zoom.event);
 
-  // load state names and codes
   this.loadStateData(this);
 
-  // load US topology with land, states, and counties geometries
   this.loadUSTopology(this);
 
 } // end of USMap() constructor
@@ -106,7 +104,7 @@ USMap.prototype.loadStateData = function(map) {
     .get( function(error, states) {
       map.states = states;
       console.log('USMap::loadStateData::loaded states: ' + map.states.length);      
-    });
+  });
 }
 
 
