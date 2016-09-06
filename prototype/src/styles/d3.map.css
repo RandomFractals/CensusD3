@@ -6,6 +6,7 @@
 /* lighten region fill on mouse over */
 path:hover {
 	fill-opacity: .7;
+  stroke: #999;
 }
 
 /* map region tooltip styles for mouse over */
