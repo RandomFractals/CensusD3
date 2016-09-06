@@ -110,7 +110,7 @@ USMap.prototype.loadStateData = function(map) {
 }
 
 /**
- * Loads simple 86kb ../data/us-stats.json geo data
+ * Loads light 86kb ../data/us-states.json geo data
  * for initial usa map display.
  */
 USMap.prototype.loadStatesGeoData = function(map) {
@@ -119,7 +119,10 @@ USMap.prototype.loadStatesGeoData = function(map) {
   d3.json('../data/us-states.json', function(statesGeoData) {
 
     map.statesTopology = statesGeoData.features;
-    console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesTopology.length);      
+    console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesTopology.length);   
+
+    // show states
+    map.redraw(map);   
   });
 }
 
@@ -141,27 +144,24 @@ USMap.prototype.loadUSTopology = function(map) {
       throw error;
     }
 
-    console.log('USMap::loadUSTopology::us.json topology loaded!');
-
     // save it for counties boundaries and data display later
     map.usTopology = usTopology;
 
-    // draw US map topology
-    map.redraw();
-
+    console.log('USMap::loadUSTopology::us.json topology loaded!');
   });
 }
 
 
 /**
- * Draws US map based on the loaded states topology.
+ * Draws US map with interactive states
+ * using loaded states geo data.
  */
-USMap.prototype.redraw = function (){  
+USMap.prototype.redraw = function (map){  
 
   // create states paths
   console.log('USMap::redraw::creating state paths...');  
   this.g.selectAll('path')
-        .data( topojson.feature(this.usTopology, this.usTopology.objects.states).features )
+        .data( map.statesTopology )
         .enter().append('path')
         .attr('d', this.geoPath)
         .attr('class', 'feature')
@@ -170,46 +170,37 @@ USMap.prototype.redraw = function (){
         })
         .on('mouseover', function(d) {
           // show map tooltip
-          _map.tooltip.transition()
+          map.tooltip.transition()
               .duration(200)      
               .style("opacity", .9);
 
-          // display state name
-          _map.tooltip.text(d.id) // TODO: show state name, when it's in topojson
+          // display state name in tooltip
+          map.tooltip.text(d.properties.name)
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");  
         })
         .on('click', function(d) {
-          if (_map.active.node() === this) {
+          if (map.active.node() === this) {
             // reset to zoom out on active region click
-            return _map.reset();
+            return map.reset();
           }
-          _map.onClick(d, this); // selected region
+          map.onClick(d, this); // selected region
         });
-
-  // create state borders
-  this.g.append('path')
-        .datum( topojson.mesh(this.usTopology, 
-          this.usTopology.objects.states, function(a, b) { return a !== b; }) )
-        .attr('class', 'mesh')
-        .attr('d', this.geoPath);
 
   // create state labels
   console.log('USMap::redraw::creating state labels...');
   this.g.selectAll(".state-label")
-        .data( topojson.feature(this.usTopology, this.usTopology.objects.states).features )
+        .data( map.statesTopology )
         .enter().append("text")
         .attr("class", function(d) { return "state-label " + d.id; })
-        .attr("transform", function(d) { return "translate(" + _map.geoPath.centroid(d) + ")"; })
+        .attr("transform", function(d) { return "translate(" + map.geoPath.centroid(d) + ")"; })
         .attr("dy", ".35em")
-        .text(function(d) {
-          if (d.id <= _map.statesData.length)
-            return _map.statesData[d.id-1].code;  
-            console.log(d.id);
-          return d.id; 
+        .text( function(d, i) {
+          return map.statesData[i].code;
         });
 
   console.log('USMap::redraw::state paths and labels added to DOM!');
+
 } // end of redraw ()
 
 
