@@ -3,6 +3,11 @@
   pointer-events: all;
 }
 
+/* lighten region fill on mouse hover */
+path:hover {
+	fill-opacity: .7;
+}
+
 .feature {
   fill: #ccc;
   cursor: pointer;
