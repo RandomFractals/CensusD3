@@ -213,12 +213,21 @@ USMap.prototype.onClick = function (d, region) {
 
 
 /**
- * Resets active map feature.
+ * Resets active map feature and zooms out.
  */
 USMap.prototype.reset = function() {
+
+  console.log('zoomOut');
+
+  // clear active region selection
   this.active.classed('active', false);
   this.active = d3.select(null);
 
+  // reset state labels font size
+  this.g.selectAll(".state-label")
+        .style('font-size', '12px');
+
+  // zoom out
   this.svg.transition()
       .duration(750)
       .call(this.zoom.translate([0, 0]).scale(1).event);
@@ -226,14 +235,18 @@ USMap.prototype.reset = function() {
 
 
 /**
- * Zooms map to the selected state region.
+ * Map zoom behaviour event handler.
  */
 USMap.prototype.onZoom = function() {
+
   // scale regions group stoke width on zoom
   this.g.style('stroke-width', 1.5 / d3.event.scale + 'px');
-  // TODO: scale state labels font size too
 
-  // transform states group to zoom in on selected state
+  // scale state labels font size
+  this.g.selectAll(".state-label")
+        .style('font-size', 12 / d3.event.scale + 'px');
+
+  // transform states group for zoom
   this.g.attr('transform', 
     'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
 }
