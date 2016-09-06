@@ -57,6 +57,12 @@ function USMap(window) {
       .call(this.zoom) // delete this line to disable free zooming
       .call(this.zoom.event);
 
+  // add tooltip div
+  this.tooltip = d3.select("body")
+		  .append("div")   
+    	.attr("class", "tooltip")               
+    	.style("opacity", 0);
+
   // load state names and codes
   d3.csv('../data/us-states.csv')
     .row( function(d) { 
@@ -110,6 +116,15 @@ USMap.prototype.redraw = function (topoData){
         .attr('class', 'feature')
         .attr('id', function(d) {
           return 'state-' + d.id
+        })
+        .on('mouseover', function(d) {
+          _map.tooltip.transition()
+              .duration(200)      
+              .style("opacity", .9);
+
+          _map.tooltip.text(d.id) // TODO: show state name, when it's in topojson
+              .style("left", (d3.event.pageX) + "px")     
+              .style("top", (d3.event.pageY - 28) + "px");  
         })
         .on('click', function(d) {
           if (_map.active.node() === this) {
