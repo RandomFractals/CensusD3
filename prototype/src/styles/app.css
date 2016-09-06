@@ -10,6 +10,7 @@ body {
   color: #fff;
   font-size: 14pt;
   padding: 5px;
+  margin-left: 10px;
 }
 
 span {
@@ -40,7 +41,7 @@ span {
 }
 
 /* toolbar styles */
-#toolbar {
+#tool-bar {
 	background: #06f;	
 	margin: 0px;
 	padding: 0px;		
@@ -50,8 +51,28 @@ span {
 	height: 32px;
 }
 
+/* statusbar styles */
+#status-bar {
+	background: #f9f9f9;	
+	border: solid 1px #ccc;  
+	margin: 0px;
+	padding: 0px;		
+	position: fixed;
+	top: 32px;
+	width: 100%;
+	height: 18px;
+}
+
+#message {
+  color: #666;
+  font-weight: normal;
+  padding: 10px;  
+  margin-left: 10px;
+}
+
+/* page content styles */ 
 #content {
-	margin-top: 32px;
+	margin-top: 50px;
   margin-left: 0px;
 	padding: 0px;
 	width: 100%;
@@ -82,8 +103,10 @@ span {
 /* app text elements + link styles */
 
 .section-title {
+  color: #999;
   font-weight: bold;
   padding: 10px;
+  padding-bottom: 0px;
 }
 
 .section-data {
