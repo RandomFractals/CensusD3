@@ -36,7 +36,12 @@ function USMap(window) {
       .attr('class', 'background')
       .attr('width', this.width)
       .attr('height', this.height)
+      .on('mouseover', function(d) {
+        // hide map tooltip on bg mouse over
+        _map.tooltip.style("opacity", 0)
+      })
       .on('click', function (d) {
+        // reset to zoom out on map bg rect click
         _map.reset();
       });
 
@@ -118,16 +123,19 @@ USMap.prototype.redraw = function (topoData){
           return 'state-' + d.id
         })
         .on('mouseover', function(d) {
+          // show map tooltip
           _map.tooltip.transition()
               .duration(200)      
               .style("opacity", .9);
 
+          // display state name
           _map.tooltip.text(d.id) // TODO: show state name, when it's in topojson
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");  
         })
         .on('click', function(d) {
           if (_map.active.node() === this) {
+            // reset to zoom out on same region click
             return _map.reset();
           }
           _map.onClick(d, this); // selected region
