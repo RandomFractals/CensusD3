@@ -261,17 +261,37 @@ USMap.prototype.reset = function() {
  */
 USMap.prototype.onZoom = function() {
 
+  var scale = d3.event.transform.k; // TODO: need to double check on this
+  //console.log('onZoom:zoom: ' + d3.event.transform.k);
+
   // scale regions group stoke width on zoom
-  this.g.style('stroke-width', 1.5 / d3.event.transform.k + 'px');
+  this.g.style('stroke-width', 1.5 / scale + 'px');
 
   // scale state labels font size
   this.g.selectAll(".state-label")
-        .style('font-size', 12 / d3.event.transform.k + 'px');
+        .style('font-size', 12 / scale + 'px');
 
   // transform states group for zoom
   this.g.attr('transform', 
     'translate(' + d3.event.transform.x + ',' + 
-      d3.event.transform.y + ')scale(' + d3.event.transform.k + ')');
+      d3.event.transform.y + ')scale(' + scale + ')');
+
+  if (scale > 3) {
+    // show state names
+    this.g.selectAll(".state-label")
+        .data( this.statesTopology )
+        .text( function(d, i) {
+          return d.properties.name;
+        });    
+  } else {
+    // show state abbreviations
+    var map = this; 
+    this.g.selectAll(".state-label")
+        .data( this.statesTopology )
+        .text( function(d, i) {
+          return map.statesData[i].code;
+        });    
+  }
 }
 
 
