@@ -76,28 +76,14 @@ function USMap(window) {
   // create d3 map zoom behavior
   this.zoom = d3.zoom()
       .scaleExtent([1, 8])
-      .translateExtent([[-100, -100], [this.width + 90, this.height + 100]])
+      .translateExtent([[0, 0], [this.width, this.height]])
       .on('zoom', function() {
         _map.onZoom();
       });
 
-  /* old d3 v3 zoom behavior hookup
-  this.zoom = d3.behavior.zoom()
-      .translate([0, 0])
-      .scale(1)
-      .scaleExtent([1, 8])
-      .on('zoom', function() {
-        _map.onZoom();
-      });*/
-      
   // add d3 svg map zoom behavior
   this.svg.call(this.zoom);
 
-  // old d3 v3 svg zoom hookup:
-  //this.svg
-  //    .call(this.zoom) // delete this line to disable free zooming
-  //    .call(this.zoom.event);
-  
   this.loadStateData(this);
 
   this.loadStatesGeoData(this);
@@ -267,7 +253,6 @@ USMap.prototype.reset = function() {
   this.svg.transition()
       .duration(750)
       .call(this.zoom.transform, d3.zoomIdentity);
-      //.call(this.zoom.translate([0, 0]).scale(1).event); // d3 v3 way            
 }
 
 
