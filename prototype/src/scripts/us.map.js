@@ -7,8 +7,11 @@ function USMap(window) {
   // save window ref for handling resize later
   this.window = window;
 
+  // data panel margin for map resize
+  this.margin = 264;
+
   // size to window
-  this.width = window.innerWidth - 240; // 720, -240 for the data panel display later
+  this.width = window.innerWidth - this.margin; // 720
   // Note: width/3*2 - approximate usa map size ratio
   this.height = this.width / 3 * 2; // 480 
 
@@ -71,19 +74,30 @@ function USMap(window) {
   this.g = this.svg.append('g');
 
   // create d3 map zoom behavior
-  /*this.zoom = d3.zoom()
+  this.zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .translateExtent([[-100, -100], [this.width + 90, this.height + 100]])
+      .on('zoom', function() {
+        _map.onZoom();
+      });
+
+  /* old d3 v3 zoom behavior hookup
+  this.zoom = d3.behavior.zoom()
       .translate([0, 0])
       .scale(1)
       .scaleExtent([1, 8])
       .on('zoom', function() {
         _map.onZoom();
       });*/
+      
+  // add d3 svg map zoom behavior
+  this.svg.call(this.zoom);
 
-  // add d3 map zoom behavior
+  // old d3 v3 svg zoom hookup:
   //this.svg
   //    .call(this.zoom) // delete this line to disable free zooming
-  //   .call(this.zoom.event);
-
+  //    .call(this.zoom.event);
+  
   this.loadStateData(this);
 
   this.loadStatesGeoData(this);
