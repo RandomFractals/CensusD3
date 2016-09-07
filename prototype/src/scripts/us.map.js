@@ -39,12 +39,12 @@ function USMap(window) {
     	.style("opacity", 0);
 
   // create Albers USA map projection
-  this.projection = d3.geo.albersUsa()
+  this.projection = d3.geoAlbersUsa()
     .scale(this.scale)
     .translate([this.width / 2, this.height / 2]); // center
 
   // create geo path for map projection
-  this.geoPath = d3.geo.path()
+  this.geoPath = d3.geoPath()
       .projection(this.projection);
 
   // create map svg
@@ -71,18 +71,18 @@ function USMap(window) {
   this.g = this.svg.append('g');
 
   // create d3 map zoom behavior
-  this.zoom = d3.behavior.zoom()
+  /*this.zoom = d3.zoom()
       .translate([0, 0])
       .scale(1)
       .scaleExtent([1, 8])
       .on('zoom', function() {
         _map.onZoom();
-      });
+      });*/
 
   // add d3 map zoom behavior
-  this.svg
-      .call(this.zoom) // delete this line to disable free zooming
-      .call(this.zoom.event);
+  //this.svg
+  //    .call(this.zoom) // delete this line to disable free zooming
+  //   .call(this.zoom.event);
 
   this.loadStateData(this);
 
@@ -228,9 +228,9 @@ USMap.prototype.onClick = function (d, region) {
   var translate = [this.width / 2 - scale * x, this.height / 2 - scale * y];
 
   // zoom in
-  this.svg.transition()
+  /*this.svg.transition()
       .duration(750)
-      .call(this.zoom.translate(translate).scale(scale).event);
+      .call(this.zoom.translate(translate).scale(scale).event);*/
 }
 
 
