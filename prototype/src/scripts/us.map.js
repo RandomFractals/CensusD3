@@ -262,15 +262,16 @@ USMap.prototype.reset = function() {
 USMap.prototype.onZoom = function() {
 
   // scale regions group stoke width on zoom
-  this.g.style('stroke-width', 1.5 / d3.event.scale + 'px');
+  this.g.style('stroke-width', 1.5 / d3.event.transform.k + 'px');
 
   // scale state labels font size
   this.g.selectAll(".state-label")
-        .style('font-size', 12 / d3.event.scale + 'px');
+        .style('font-size', 12 / d3.event.transform.k + 'px');
 
   // transform states group for zoom
   this.g.attr('transform', 
-    'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+    'translate(' + d3.event.transform.x + ',' + 
+      d3.event.transform.y + ')scale(' + d3.event.transform.k + ')');
 }
 
 
