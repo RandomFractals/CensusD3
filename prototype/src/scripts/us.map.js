@@ -228,6 +228,10 @@ USMap.prototype.onClick = function (d, region) {
   var translate = [this.width / 2 - scale * x, this.height / 2 - scale * y];
 
   // zoom in
+  // transform states group for zoom
+  this.scaleSvg(scale);
+  this.transform(translate, scale);
+
   /*this.svg.transition()
       .duration(750)
       .call(this.zoom.translate(translate).scale(scale).event);*/
@@ -261,22 +265,28 @@ USMap.prototype.reset = function() {
  */
 USMap.prototype.onZoom = function() {
 
-  var scale = d3.event.transform.k; // TODO: need to double check on this
-  //console.log('onZoom:zoom: ' + d3.event.transform.k);
+  var zoomLevel = d3.event.transform.k; // TODO: need to double check on this
 
+  // scale svg strokes and labels  
+  this.scaleSvg(zoomLevel);
+
+  // transform states group for zoom
+  this.transform([d3.event.transform.x, d3.event.transform.y], zoomLevel);
+}
+
+
+/**
+ * Scales region paths stroke width and labels on zoom in/out.
+ */
+USMap.prototype.scaleSvg = function(zoomLevel) {
   // scale regions group stoke width on zoom
-  this.g.style('stroke-width', 1.5 / scale + 'px');
+  this.g.style('stroke-width', 1.5 / zoomLevel + 'px');
 
   // scale state labels font size
   this.g.selectAll(".state-label")
-        .style('font-size', 12 / scale + 'px');
+        .style('font-size', 12 / zoomLevel + 'px');
 
-  // transform states group for zoom
-  this.g.attr('transform', 
-    'translate(' + d3.event.transform.x + ',' + 
-      d3.event.transform.y + ')scale(' + scale + ')');
-
-  if (scale > 3) {
+  if (zoomLevel > 3) {
     // show state names
     this.g.selectAll(".state-label")
         .data( this.statesTopology )
@@ -292,6 +302,17 @@ USMap.prototype.onZoom = function() {
           return map.statesData[i].code;
         });    
   }
+}
+
+
+/**
+ * Transforms map geometry to the specified 
+ * transform x,y and scale.
+ */
+USMap.prototype.transform = function(transform, scale) {
+  // transform states group for zoom
+  this.g.attr('transform', 
+    'translate(' + transform[0] + ',' + transform[1] + ')scale(' + scale + ')');  
 }
 
 
