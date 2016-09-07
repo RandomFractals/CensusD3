@@ -266,7 +266,8 @@ USMap.prototype.reset = function() {
   // zoom out
   this.svg.transition()
       .duration(750)
-      .call(this.zoom.translate([0, 0]).scale(1).event);
+      .call(this.zoom.transform, d3.zoomIdentity);
+      //.call(this.zoom.translate([0, 0]).scale(1).event); // d3 v3 way            
 }
 
 
