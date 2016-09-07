@@ -20,6 +20,7 @@ span {
 /* div magic styles */
 .left {
 	float: left;
+	width: auto;
 }
 
 .right {

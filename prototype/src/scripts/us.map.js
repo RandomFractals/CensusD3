@@ -4,14 +4,15 @@
 var _map;
 function USMap(window) {
 
-  // save window ref for handling resize later
+  // save window ref for map sizing
   this.window = window;
 
   // data panel margin for map resize
   this.margin = 264;
 
-  // size to window
+  // size to window - data panel margin
   this.width = window.innerWidth - this.margin; // 720
+
   // Note: width/3*2 - approximate usa map size ratio
   this.height = this.width / 3 * 2; // 480 
 
@@ -28,6 +29,9 @@ function USMap(window) {
   // since we will be loading zips, counties, and districts
   // on state click from us.json and others later. TBD 
   this.statesTopology = [];
+
+  // add window resize event handler
+  this.window.addEventListener('resize', this.onWindowResize);
 
   // TODO: get rid of this hack with callbacks later
   _map = this;
@@ -149,6 +153,18 @@ USMap.prototype.loadUSTopology = function(map) {
 
     console.log('USMap::loadUSTopology::us.json topology loaded!');
   });
+}
+
+
+/**
+ * Updates map svg width on window resize.
+ */
+USMap.prototype.onWindowResize = function() {
+  console.log('USMap::onWindowResize:width: ' + this.window.innerWidth);
+
+  // update map containter width
+  this.width = this.window.innerWidth;
+  redraw(this);
 }
 
 
