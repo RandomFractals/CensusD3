@@ -22,13 +22,10 @@ function USMap(window) {
   // US topology TopoJSON with land, states, and all counties
   this.usTopology = {};
 
-  // simple states GeoJSON data loaded first
+  // simple states Geo JSON data loaded first
   // since we will be loading zips, counties, and districts
   // on state click from us.json and others later 
-  this.statesTopology = [];
-
-  // state names and codes; can append more data :)  
-  this.statesData = [];
+  this.statesGeoData = [];
 
   // us population data
   this.usPopulation = []
@@ -118,7 +115,6 @@ function USMap(window) {
 
   // load us data async with d3 queue
   var q = d3.queue();
-  q.defer(this.loadStatesData, this);
   // TODO: merge with states data ???
   q.defer(this.loadStateCapitals, this);  
   q.defer(this.loadStatesGeoData, this);
@@ -194,29 +190,11 @@ USMap.prototype.loadStatesGeoData = function(map) {
   console.log('USMap::loadStatesGeoData::loading ../data/us-states.json...');
   
   d3.json('../data/us-states.json', function(statesGeoData) {
-    map.statesTopology = statesGeoData.features;
-    console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesTopology.length);   
+    map.statesGeoData = statesGeoData.features;
+    console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesGeoData.length);   
 
     // show states
     map.redraw(map);   
-  });
-}
-
-
-
-/**
- * Loads states data from ../data/us-states.csv.
- */
-USMap.prototype.loadStatesData = function(map) {
-  console.log('USMap::loadStatesData::loading ../data/us-states.csv...');
-
-  // load state names and codes; can append more data :)
-  d3.csv('../data/us-states.csv')
-    .row( function(d) { 
-      return {name: d.state, code: d.code}; })
-    .get( function(error, statesData) {
-      map.statesData = statesData;
-      console.log('USMap::loadStateData::loaded states: ' + map.statesData.length);      
   });
 }
 
@@ -261,7 +239,7 @@ USMap.prototype.redraw = function (map){
   // create states paths
   console.log('USMap::redraw::creating state paths...');  
   this.g.selectAll('path')
-        .data( map.statesTopology )
+        .data( map.statesGeoData )
         .enter().append('path')
         .attr('d', this.geoPath)
         .attr('class', 'feature')
@@ -296,13 +274,13 @@ USMap.prototype.redraw = function (map){
   // create state labels
   console.log('USMap::redraw::creating state labels...');
   this.g.selectAll(".state-label")
-        .data( map.statesTopology )
+        .data( map.statesGeoData )
         .enter().append("text")
-        .attr("class", function(d) { return "state-label " + d.id; })
+        .attr("class", function(d) { return "state-label " + d.properties.code; }) // state code
         .attr("transform", function(d) { return "translate(" + map.geoPath.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .text( function(d, i) {
-          return map.statesData[i].code;
+          return map.statesGeoData[i].properties.code;
         });
 
   console.log('USMap::redraw::creating state capitals...');  
@@ -453,7 +431,7 @@ USMap.prototype.scaleSvg = function(zoomLevel) {
   if (zoomLevel > 3) {
     // show state names
     this.g.selectAll(".state-label")
-        .data( this.statesTopology )
+        .data( this.statesGeoData )
         .text( function(d, i) {
           return d.properties.name;
         });    
@@ -461,9 +439,9 @@ USMap.prototype.scaleSvg = function(zoomLevel) {
     // show state abbreviations
     var map = this; 
     this.g.selectAll(".state-label")
-        .data( this.statesTopology )
+        .data( this.statesGeoData )
         .text( function(d, i) {
-          return map.statesData[i].code;
+          return d.properties.code;
         });    
   }
 }
