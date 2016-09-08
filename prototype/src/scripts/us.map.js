@@ -48,6 +48,12 @@ function USMap(window) {
     	.attr("class", "tooltip")               
     	.style("opacity", 0);
 
+  // app status message ref
+  this.message = d3.select('#message');
+
+  // region name section title ref 
+  this.regionName = d3.select('#regionName');
+
   // create Albers USA map projection
   this.projection = d3.geoAlbersUsa()
     .scale(this.scale)
@@ -98,7 +104,10 @@ function USMap(window) {
   // add d3 svg map zoom behavior
   this.svg.call(this.zoom);
 
-  // loas us data async with d3 queue
+  // show loading data message
+  this.message.text('loading USA map data...');
+
+  // load us data async with d3 queue
   var q = d3.queue();
   q.defer(this.loadStatesData, this);
   q.defer(this.loadStateCapitalsData, this);  
@@ -163,6 +172,9 @@ USMap.prototype.loadStatesGeoData = function(map) {
 
     map.statesTopology = statesGeoData.features;
     console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesTopology.length);   
+
+    // update app message
+    map.message.text('select state:');
 
     // show states
     map.redraw(map);   
@@ -303,6 +315,9 @@ USMap.prototype.onClick = function (d, region) {
   // toggle active region selection
   this.active.classed('active', false);
   this.active = d3.select(region).classed('active', true);
+
+  // update region data panel
+  this.regionName.text(d.properties.name);
 
   // get selected region bounds
   var bounds = this.geoPath.bounds(d),
