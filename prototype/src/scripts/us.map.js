@@ -203,6 +203,7 @@ USMap.prototype.onWindowResize = function() {
 
   // update map containter width
   this.width = this.window.innerWidth;
+  // TODO: update constructor and redraw to make this work properly
   redraw(this);
 }
 
@@ -230,7 +231,8 @@ USMap.prototype.redraw = function (map){
               .style("opacity", .9);
 
           // display state name in tooltip
-          map.tooltip.text(d.properties.name)
+          map.tooltip.html('<img height="18" src="../images/flags/' +
+            d.properties.name.split(' ').join('_') + '.svg.png" /> ' + d.properties.name)
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");  
         })
