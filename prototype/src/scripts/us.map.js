@@ -244,9 +244,11 @@ USMap.prototype.redraw = function (map){
 
           // display state name in tooltip
           map.tooltip.html('<img height="18" src="../images/flags/' +
-            d.properties.name.split(' ').join('_') + '.svg.png" /> ' + d.properties.name)
+            d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
+            d.properties.name + 
+            '<br /> population: [TODO]')
               .style("left", (d3.event.pageX) + "px")     
-              .style("top", (d3.event.pageY - 28) + "px");  
+              .style("top", (d3.event.pageY - 28) + "px");            
         })
         .on('click', function(d) {
           if (map.active.node() === this) {

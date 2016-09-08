@@ -12,9 +12,9 @@ path:hover {
 /* map region tooltip styles for mouse over */
 div.tooltip {   
  	position: absolute;           
-	text-align: center;           
+	text-align: left;           
 	width: auto;                  
-	height: 18px;                 
+	height: 42px;                 
 	padding: 3px;             
 	font: 10px;        
 	background: white;   
