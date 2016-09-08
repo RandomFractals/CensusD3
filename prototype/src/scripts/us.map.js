@@ -22,16 +22,20 @@ function USMap(window) {
   // US topology TopoJSON with land, states, and all counties
   this.usTopology = {};
 
+  // simple states GeoJSON data loaded first
+  // since we will be loading zips, counties, and districts
+  // on state click from us.json and others later 
+  this.statesTopology = [];
+
   // state names and codes; can append more data :)  
   this.statesData = [];
 
-  // state capitals names and coordinates
-  this.statesCapitalsData = [];
+  // state population data;
+  this.statesPopulation = []
 
-  // TODO: simple states GeoJSON loaded first
-  // since we will be loading zips, counties, and districts
-  // on state click from us.json and others later. TBD 
-  this.statesTopology = [];
+  // state capitals names and coordinates
+  this.stateCapitals = [];
+
 
   // add window resize event handler
   this.window.addEventListener('resize', this.onWindowResize);
@@ -87,7 +91,7 @@ function USMap(window) {
         _map.reset();
       });
 
-  // creates tiles raster svg group
+  // create map tiles raster layer svg group
   this.raster = this.svg.append('g');
 
   // create us states map svg group
@@ -110,7 +114,8 @@ function USMap(window) {
   // load us data async with d3 queue
   var q = d3.queue();
   q.defer(this.loadStatesData, this);
-  q.defer(this.loadStateCapitalsData, this);  
+  q.defer(this.loadStatesPopulation, this);
+  q.defer(this.loadStateCapitals, this);  
   q.defer(this.loadStatesGeoData, this);
   q.defer(this.loadUSTopology, this);
   q.awaitAll( function(error) {
@@ -124,62 +129,6 @@ function USMap(window) {
   });
 
 } // end of USMap() constructor
-
-
-/**
- * Loads states data from ../data/us-states.csv.
- */
-USMap.prototype.loadStatesData = function(map) {
-  console.log('USMap::loadStatesData::loading ../data/us-states.csv...');
-
-  // load state names and codes; can append more data :)
-  d3.csv('../data/us-states.csv')
-    .row( function(d) { 
-      return {name: d.state, code: d.code}; })
-    .get( function(error, statesData) {
-      map.statesData = statesData;
-      console.log('USMap::loadStateData::loaded states: ' + map.statesData.length);      
-  });
-}
-
-
-/**
- * Loads state capitals data from ../data/us-state-capitals.csv.
- */
-USMap.prototype.loadStateCapitalsData = function(map) {
-  console.log('USMap::loadStateCapitalsData::loading ../data/us-state-capitals.csv...');
-
-  // load state capital names and lat/longs; can append more data :)
-  d3.csv('../data/us-state-capitals.csv')
-    .row( function(d) { 
-      return {state: d.state, capital: d.capital, 
-        latitude: +d.latitude, longitude: +d.longitude}; })
-    .get( function(error, capitalsData) {
-      map.stateCapitalsData = capitalsData;
-      console.log('USMap::loadStateCapitalsData::loaded state capitals: ' + map.stateCapitalsData.length);      
-  });
-}
-
-
-/**
- * Loads light 86kb ../data/us-states.json geo data
- * for initial usa map display.
- */
-USMap.prototype.loadStatesGeoData = function(map) {
-  console.log('USMap::loadStatesGeoData::loading ../data/us-states.json...');
-  
-  d3.json('../data/us-states.json', function(statesGeoData) {
-
-    map.statesTopology = statesGeoData.features;
-    console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesTopology.length);   
-
-    // update app message
-    map.message.text('select state:');
-
-    // show states
-    map.redraw(map);   
-  });
-}
 
 
 /**
@@ -203,6 +152,75 @@ USMap.prototype.loadUSTopology = function(map) {
     map.usTopology = usTopology;
 
     console.log('USMap::loadUSTopology::us.json topology loaded!');
+  });
+}
+
+
+/**
+ * Loads light 86kb ../data/us-states.json geo data
+ * for initial usa map display.
+ */
+USMap.prototype.loadStatesGeoData = function(map) {
+  console.log('USMap::loadStatesGeoData::loading ../data/us-states.json...');
+  
+  d3.json('../data/us-states.json', function(statesGeoData) {
+    map.statesTopology = statesGeoData.features;
+    console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesTopology.length);   
+
+    // update app message
+    map.message.text('select state:');
+
+    // show states
+    map.redraw(map);   
+  });
+}
+
+
+
+/**
+ * Loads states data from ../data/us-states.csv.
+ */
+USMap.prototype.loadStatesData = function(map) {
+  console.log('USMap::loadStatesData::loading ../data/us-states.csv...');
+
+  // load state names and codes; can append more data :)
+  d3.csv('../data/us-states.csv')
+    .row( function(d) { 
+      return {name: d.state, code: d.code}; })
+    .get( function(error, statesData) {
+      map.statesData = statesData;
+      console.log('USMap::loadStateData::loaded states: ' + map.statesData.length);      
+  });
+}
+
+
+/**
+ * Loads states population data from ../data/us-state-population.json.
+ */
+USMap.prototype.loadStatesPopulation = function(map) {
+  console.log('USMap::loadStatesPopulation::loading ../data/us-state-population.json...');
+  d3.json('../data/us-state-population.json', function(statesPopulationData) {
+    map.statesPopulation = statesPopulationData.population;
+    console.log('USMap::loadStatesPopulation::loaded states population data: ' + 
+      map.statesPopulation.length);   
+  });
+}
+
+
+/**
+ * Loads state capitals data from ../data/us-state-capitals.csv.
+ */
+USMap.prototype.loadStateCapitals = function(map) {
+  console.log('USMap::loadStateCapitals::loading ../data/us-state-capitals.csv...');
+
+  // load state capital names and lat/longs; can append more data :)
+  d3.csv('../data/us-state-capitals.csv')
+    .row( function(d) { 
+      return {state: d.state, capital: d.capital, 
+        latitude: +d.latitude, longitude: +d.longitude}; })
+    .get( function(error, capitalsData) {
+      map.stateCapitals = capitalsData;
+      console.log('USMap::loadStateCapitals::loaded state capitals: ' + map.stateCapitals.length);      
   });
 }
 
@@ -272,7 +290,7 @@ USMap.prototype.redraw = function (map){
 
   console.log('USMap::redraw::creating state capitals...');  
   this.g.selectAll('circle')
-        .data( map.stateCapitalsData )
+        .data( map.stateCapitals )
         .enter().append('circle')
         .attr('cx', function (d) { 
           return map.projection( [d.longitude, d.latitude] )[0]; 
