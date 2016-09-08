@@ -52,7 +52,7 @@ function USMap(window) {
   this.message = d3.select('#message');
 
   // region name section title ref 
-  this.regionName = d3.select('#regionName');
+  this.regionTitle = d3.select('#region');
 
   // create Albers USA map projection
   this.projection = d3.geoAlbersUsa()
@@ -246,7 +246,7 @@ USMap.prototype.redraw = function (map){
           map.tooltip.html('<img height="18" src="../images/flags/' +
             d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
             d.properties.name + 
-            '<br /> population: [TODO]')
+            '<br /> population: [todo]')
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");            
         })
@@ -319,7 +319,7 @@ USMap.prototype.onClick = function (d, region) {
   this.active = d3.select(region).classed('active', true);
 
   // update region data panel
-  this.regionName.text(d.properties.name);
+  this.regionTitle.text(d.properties.name);
 
   // get selected region bounds
   var bounds = this.geoPath.bounds(d),
