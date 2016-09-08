@@ -95,11 +95,20 @@ function USMap(window) {
   // add d3 svg map zoom behavior
   this.svg.call(this.zoom);
 
-  this.loadStateData(this);
-
-  this.loadStatesGeoData(this);
-
-  this.loadUSTopology(this);
+  // loas us data async with d3 queue
+  var q = d3.queue();
+  q.defer(this.loadStateData, this);
+  q.defer(this.loadStatesGeoData, this);
+  q.defer(this.loadUSTopology, this);
+  q.awaitAll( function(error) {
+    if (error) {
+      console.error(error);
+      throw error;
+    }
+    // draw map
+    console.log('USMap::drawing map...');
+    //_map.redraw(_map);
+  });
 
 } // end of USMap() constructor
 
