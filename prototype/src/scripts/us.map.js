@@ -30,13 +30,14 @@ function USMap(window) {
   // state names and codes; can append more data :)  
   this.statesData = [];
 
-  // state population data;
-  this.statesPopulation = []
+  // us population data
+  this.usPopulation = []
 
   // state capitals names and coordinates
   this.stateCapitals = [];
 
-  this.format = d3.format(',');
+  // number format for display
+  this.numberFormat = d3.format(',');
 
   // add window resize event handler
   this.window.addEventListener('resize', this.onWindowResize);
@@ -118,9 +119,10 @@ function USMap(window) {
   // load us data async with d3 queue
   var q = d3.queue();
   q.defer(this.loadStatesData, this);
-  q.defer(this.loadStatesPopulation, this);
+  // TODO: merge with states data
   q.defer(this.loadStateCapitals, this);  
   q.defer(this.loadStatesGeoData, this);
+  q.defer(this.loadUSPopulationData, this);  
   q.defer(this.loadUSTopology, this);
   q.awaitAll( function(error) {
     if (error) {
@@ -161,6 +163,29 @@ USMap.prototype.loadUSTopology = function(map) {
 
 
 /**
+ * Loads US population data from ../data/us-population.json.
+ */
+USMap.prototype.loadUSPopulationData = function(map) {
+  console.log('USMap::loadUSPopulationData::loading ../data/us-population.json...');
+  d3.json('../data/us-population.json', function(usPopulationData) {
+    // save us population data
+    map.usPopulationData = usPopulationData;
+
+    // update app message
+    map.message.text('USA population: ' + usPopulationData.total)
+
+    // update app data panel
+    map.regionTitle.text('USA');
+    map.regionData.text('population: ' +
+      map.numberFormat( map.usPopulationData.total) );
+
+    console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
+      map.usPopulationData.states.length);   
+  });
+}
+
+
+/**
  * Loads light 86kb ../data/us-states.json geo data
  * for initial usa map display.
  */
@@ -170,9 +195,6 @@ USMap.prototype.loadStatesGeoData = function(map) {
   d3.json('../data/us-states.json', function(statesGeoData) {
     map.statesTopology = statesGeoData.features;
     console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesTopology.length);   
-
-    // update app message
-    map.message.text('select state:');
 
     // show states
     map.redraw(map);   
@@ -194,19 +216,6 @@ USMap.prototype.loadStatesData = function(map) {
     .get( function(error, statesData) {
       map.statesData = statesData;
       console.log('USMap::loadStateData::loaded states: ' + map.statesData.length);      
-  });
-}
-
-
-/**
- * Loads states population data from ../data/us-state-population.json.
- */
-USMap.prototype.loadStatesPopulation = function(map) {
-  console.log('USMap::loadStatesPopulation::loading ../data/us-state-population.json...');
-  d3.json('../data/us-state-population.json', function(statesPopulationData) {
-    map.statesPopulation = statesPopulationData.population;
-    console.log('USMap::loadStatesPopulation::loaded states population data: ' + 
-      map.statesPopulation.length);   
   });
 }
 
@@ -269,7 +278,7 @@ USMap.prototype.redraw = function (map){
                 d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
                 d.properties.name + 
                 '<br /> population: ' + 
-                map.format( map.statesPopulation[Number(d.id)][0] ) 
+                map.numberFormat( map.usPopulationData.states[Number(d.id)][0] ) 
               )
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");            
@@ -347,7 +356,7 @@ USMap.prototype.onClick = function (d, region) {
 
   // show state population data for now
   this.regionData.text('population: ' +
-    this.format( this.statesPopulation[Number(regionId)][0]) );
+    this.numberFormat( this.usPopulationData.states[Number(regionId)][0]) );
 
   // update region data panel
   this.regionTitle.text(d.properties.name);
@@ -391,6 +400,11 @@ USMap.prototype.reset = function() {
   // reset state labels font size
   this.g.selectAll(".state-label")
         .style('font-size', '12px');
+
+  // update app data panel
+  this.regionTitle.text('USA');
+  this.regionData.text('population: ' +
+      this.numberFormat( this.usPopulationData.total) );
 
   // zoom out
   this.svg.transition()
