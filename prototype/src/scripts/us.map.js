@@ -23,7 +23,10 @@ function USMap(window) {
   this.usTopology = {};
 
   // state names and codes; can append more data :)  
-  this.stateData = [];
+  this.statesData = [];
+
+  // state capitals names and coordinates
+  this.statesCapitalsData = [];
 
   // TODO: simple states GeoJSON loaded first
   // since we will be loading zips, counties, and districts
@@ -97,7 +100,8 @@ function USMap(window) {
 
   // loas us data async with d3 queue
   var q = d3.queue();
-  q.defer(this.loadStateData, this);
+  q.defer(this.loadStatesData, this);
+  q.defer(this.loadStateCapitalsData, this);  
   q.defer(this.loadStatesGeoData, this);
   q.defer(this.loadUSTopology, this);
   q.awaitAll( function(error) {
@@ -114,10 +118,10 @@ function USMap(window) {
 
 
 /**
- * Loads state data from ../data/us-states.csv.
+ * Loads states data from ../data/us-states.csv.
  */
-USMap.prototype.loadStateData = function(map) {
-  console.log('USMap::loadStateData::loading ../data/us-states.csv...');
+USMap.prototype.loadStatesData = function(map) {
+  console.log('USMap::loadStatesData::loading ../data/us-states.csv...');
 
   // load state names and codes; can append more data :)
   d3.csv('../data/us-states.csv')
@@ -128,6 +132,25 @@ USMap.prototype.loadStateData = function(map) {
       console.log('USMap::loadStateData::loaded states: ' + map.statesData.length);      
   });
 }
+
+
+/**
+ * Loads state capitals data from ../data/us-state-capitals.csv.
+ */
+USMap.prototype.loadStateCapitalsData = function(map) {
+  console.log('USMap::loadStateCapitalsData::loading ../data/us-state-capitals.csv...');
+
+  // load state capital names and lat/longs; can append more data :)
+  d3.csv('../data/us-state-capitals.csv')
+    .row( function(d) { 
+      return {state: d.state, capital: d.capital, 
+        latitude: +d.latitude, longitude: +d.longitude}; })
+    .get( function(error, capitalsData) {
+      map.stateCapitalsData = capitalsData;
+      console.log('USMap::loadStateCapitalsData::loaded state capitals: ' + map.stateCapitalsData.length);      
+  });
+}
+
 
 /**
  * Loads light 86kb ../data/us-states.json geo data
