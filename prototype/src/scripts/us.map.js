@@ -176,8 +176,8 @@ USMap.prototype.loadUSPopulationData = function(map) {
 
     // update app data panel
     map.regionTitle.text('USA');
-    map.regionData.text('population: ' +
-      map.numberFormat( map.usPopulationData.total) );
+    map.regionData.html('population: <span class="data-text">' +
+      map.numberFormat( map.usPopulationData.total) + '</span>');
 
     console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
       map.usPopulationData.states.length);   
@@ -356,8 +356,9 @@ USMap.prototype.onClick = function (d, region) {
   var regionId = region.id.replace('state-', '');
 
   // show state population data for now
-  this.regionData.text('population: ' +
-    this.numberFormat( this.usPopulationData.states[Number(regionId)][0]) );
+  this.regionData.html('population: <span class="data-text">' +
+    this.numberFormat( this.usPopulationData.states[Number(regionId)][0]) +
+    '</span>');
 
   // update region data panel
   this.regionTitle.text(d.properties.name);
@@ -404,8 +405,8 @@ USMap.prototype.reset = function() {
 
   // update app data panel
   this.regionTitle.text('USA');
-  this.regionData.text('population: ' +
-      this.numberFormat( this.usPopulationData.total) );
+  this.regionData.html('population: <span class="data-text">' +
+      this.numberFormat( this.usPopulationData.total) + '</span>');
 
   // zoom out
   this.svg.transition()
