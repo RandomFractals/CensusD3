@@ -172,7 +172,8 @@ USMap.prototype.loadUSPopulationData = function(map) {
     map.usPopulationData = usPopulationData;
 
     // update app message
-    map.message.text('USA population: ' + usPopulationData.total)
+    map.message.html('USA population: <span class="data-text">' + 
+      map.numberFormat(usPopulationData.total) + '</span>');
 
     // update app data panel
     map.regionTitle.text('USA');
