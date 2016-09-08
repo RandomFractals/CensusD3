@@ -4,5 +4,5 @@ Pure d3 v.4 maps & graphs data viz mix of US census data from census.gov
 
 Just a start: 
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3Day4.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3D4Pop.png?raw=true 
  "latest") 
