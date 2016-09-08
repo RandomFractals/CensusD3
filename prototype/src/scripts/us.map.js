@@ -54,6 +54,10 @@ function USMap(window) {
   this.geoPath = d3.geoPath()
       .projection(this.projection);
 
+  // create map tiles layer
+  this.tile = d3.tile()
+    .size([this.width, this.height]);
+
   // create map svg
   this.svg = d3.select('#map').append('svg')
       .attr('width', this.width)
@@ -73,6 +77,9 @@ function USMap(window) {
         // reset to zoom out on map bg rect click
         _map.reset();
       });
+
+  // creates tiles raster svg group
+  this.raster = this.svg.append('g');
 
   // create us states map svg group
   this.g = this.svg.append('g');
@@ -281,13 +288,56 @@ USMap.prototype.reset = function() {
  */
 USMap.prototype.onZoom = function() {
 
-  var zoomLevel = d3.event.transform.k; // TODO: need to double check on this
+  // get zoom transform vars
+  var transform = d3.event.transform;
 
   // scale svg strokes and labels  
-  this.scaleSvg(zoomLevel);
+  this.scaleSvg(transform.k);
 
   // transform states group for zoom
-  this.transform([d3.event.transform.x, d3.event.transform.y], zoomLevel);
+  this.transform([transform.x, transform.y], transform.k); // scale
+
+  // load map tiles
+  //this.loadTiles(transform);
+}
+
+
+/**
+ * Loads map tiles on zoom.
+ */
+USMap.prototype.loadTiles = function(transform) {
+  var tiles = this.tile
+      .scale(transform.k)
+      .translate([transform.x, transform.y])
+      ();
+
+  var image = this.raster.attr("transform", 
+      this.getTilesTransform(tiles.scale, tiles.translate))
+    .selectAll("image")
+    .data(tiles, function(d) { return d; });
+
+  image.exit().remove();
+
+  image.enter().append("image")
+      .attr("xlink:href", function(d) { 
+        return "http://" + "abc"[d[1] % 3] + ".tile.openstreetmap.org/" + 
+          d[2] + "/" + d[0] + "/" + d[1] + ".png"; 
+      })
+      .attr("x", function(d) { return d[0] * 256; })
+      .attr("y", function(d) { return d[1] * 256; })
+      .attr("width", 256)
+      .attr("height", 256);
+}
+
+
+/**
+ * Gets tiles layer transform.
+ */
+USMap.prototype.getTilesTransform = function(scale, translate) {
+  var k = scale / 256;
+  var r = scale % 1 ? Number : Math.round;
+  return "translate(" + r(translate[0] * scale) + "," + 
+    r(translate[1] * scale) + ") scale(" + k + ")";
 }
 
 
