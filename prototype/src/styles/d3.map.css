@@ -48,6 +48,10 @@ div.tooltip {
   text-anchor: middle;
 }
 
+.city {
+  fill: #c33;
+}
+
 .county {
   fill: none;
   stroke-width: .5px;

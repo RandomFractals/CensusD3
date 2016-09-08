@@ -254,6 +254,40 @@ USMap.prototype.redraw = function (map){
           return map.statesData[i].code;
         });
 
+  console.log('USMap::redraw::creating state capitals...');  
+  this.g.selectAll('circle')
+        .data( map.stateCapitalsData )
+        .enter().append('circle')
+        .attr('cx', function (d) { 
+          return map.projection( [d.longitude, d.latitude] )[0]; 
+        })
+        .attr('cy', function (d) { 
+          return map.projection( [d.longitude, d.latitude] )[1]; 
+        })
+        .attr('r', 4)
+        .attr('class', 'city')
+        .attr('id', function(d) {
+          return 'city-' + d.capital
+        })
+        .on('mouseover', function(d) {
+          // show map tooltip
+          map.tooltip.transition()
+              .duration(200)      
+              .style("opacity", .9);
+
+          // display state capital name in tooltip
+          map.tooltip.text(d.capital)
+              .style("left", (d3.event.pageX) + "px")     
+              .style("top", (d3.event.pageY - 28) + "px");  
+        }) /*
+        .on('click', function(d) {
+          if (map.active.node() === this) {
+            // reset to zoom out on active region click
+            return map.reset();
+          }
+          map.onClick(d, this); // selected region
+        });*/
+
   console.log('USMap::redraw::state paths and labels added to DOM!');
 
 } // end of redraw ()
@@ -335,6 +369,52 @@ USMap.prototype.onZoom = function() {
 
 
 /**
+ * Scales region paths stroke width and labels on zoom in/out.
+ */
+USMap.prototype.scaleSvg = function(zoomLevel) {
+  // scale regions group stoke width on zoom
+  this.g.style('stroke-width', 1.5 / zoomLevel + 'px');
+
+  // scale city bubbles
+  this.g.selectAll(".city")
+        .attr('r', 4 / zoomLevel + 'px');
+
+  // scale state labels font size
+  this.g.selectAll(".state-label")
+        .style('font-size', 12 / zoomLevel + 'px');
+
+  if (zoomLevel > 3) {
+    // show state names
+    this.g.selectAll(".state-label")
+        .data( this.statesTopology )
+        .text( function(d, i) {
+          return d.properties.name;
+        });    
+  } else {
+    // show state abbreviations
+    var map = this; 
+    this.g.selectAll(".state-label")
+        .data( this.statesTopology )
+        .text( function(d, i) {
+          return map.statesData[i].code;
+        });    
+  }
+}
+
+
+/**
+ * Transforms map geometry to the specified 
+ * transform x,y and scale.
+ */
+USMap.prototype.transform = function(transform, scale) {
+  // transform states group for zoom
+  this.g.attr('transform', 
+    'translate(' + transform[0] + ',' + transform[1] + ')scale(' + scale + ')');  
+}
+
+
+
+/**
  * Loads map tiles on zoom.
  */
 USMap.prototype.loadTiles = function(transform) {
@@ -370,47 +450,6 @@ USMap.prototype.getTilesTransform = function(scale, translate) {
   var r = scale % 1 ? Number : Math.round;
   return "translate(" + r(translate[0] * scale) + "," + 
     r(translate[1] * scale) + ") scale(" + k + ")";
-}
-
-
-/**
- * Scales region paths stroke width and labels on zoom in/out.
- */
-USMap.prototype.scaleSvg = function(zoomLevel) {
-  // scale regions group stoke width on zoom
-  this.g.style('stroke-width', 1.5 / zoomLevel + 'px');
-
-  // scale state labels font size
-  this.g.selectAll(".state-label")
-        .style('font-size', 12 / zoomLevel + 'px');
-
-  if (zoomLevel > 3) {
-    // show state names
-    this.g.selectAll(".state-label")
-        .data( this.statesTopology )
-        .text( function(d, i) {
-          return d.properties.name;
-        });    
-  } else {
-    // show state abbreviations
-    var map = this; 
-    this.g.selectAll(".state-label")
-        .data( this.statesTopology )
-        .text( function(d, i) {
-          return map.statesData[i].code;
-        });    
-  }
-}
-
-
-/**
- * Transforms map geometry to the specified 
- * transform x,y and scale.
- */
-USMap.prototype.transform = function(transform, scale) {
-  // transform states group for zoom
-  this.g.attr('transform', 
-    'translate(' + transform[0] + ',' + transform[1] + ')scale(' + scale + ')');  
 }
 
 
