@@ -36,6 +36,7 @@ function USMap(window) {
   // state capitals names and coordinates
   this.stateCapitals = [];
 
+  this.format = d3.format(',');
 
   // add window resize event handler
   this.window.addEventListener('resize', this.onWindowResize);
@@ -57,6 +58,9 @@ function USMap(window) {
 
   // region name section title ref 
   this.regionTitle = d3.select('#region');
+
+  // region data section ref 
+  this.regionData = d3.select('#regionData');
 
   // create Albers USA map projection
   this.projection = d3.geoAlbersUsa()
@@ -262,9 +266,11 @@ USMap.prototype.redraw = function (map){
 
           // display state name in tooltip
           map.tooltip.html('<img height="18" src="../images/flags/' +
-            d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
-            d.properties.name + 
-            '<br /> population: [todo]')
+                d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
+                d.properties.name + 
+                '<br /> population: ' + 
+                map.format( map.statesPopulation[Number(d.id)][0] ) 
+              )
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");            
         })
@@ -335,6 +341,13 @@ USMap.prototype.onClick = function (d, region) {
   // toggle active region selection
   this.active.classed('active', false);
   this.active = d3.select(region).classed('active', true);
+
+  // get selected state region id
+  var regionId = region.id.replace('state-', '');
+
+  // show state population data for now
+  this.regionData.text('population: ' +
+    this.format( this.statesPopulation[Number(regionId)][0]) );
 
   // update region data panel
   this.regionTitle.text(d.properties.name);
