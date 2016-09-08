@@ -2,7 +2,7 @@ body {
 	background-color: #fff;
 	color: #000000;	
 	font-family: 'Istok Web', Helvetica, Arial, FreeSans, sans-serif;
-	font-size: 0.7em;
+	font-size: 0.8em;
 	margin: 0px;
 }
 
@@ -70,6 +70,10 @@ span {
   padding: 10px;  
 }
 
+.info {
+	font-size: 12px;
+}
+
 /* page content styles */ 
 #content {
 	margin-top: 64px;
@@ -102,7 +106,8 @@ span {
 /* app text elements + link styles */
 
 .section-title {
-  color: #999;
+  color: #666;
+	font-size: 12px;
   font-weight: bold;
   padding: 5px;
   padding-bottom: 0px;

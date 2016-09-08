@@ -119,7 +119,7 @@ function USMap(window) {
   // load us data async with d3 queue
   var q = d3.queue();
   q.defer(this.loadStatesData, this);
-  // TODO: merge with states data
+  // TODO: merge with states data ???
   q.defer(this.loadStateCapitals, this);  
   q.defer(this.loadStatesGeoData, this);
   q.defer(this.loadUSPopulationData, this);  
@@ -276,9 +276,10 @@ USMap.prototype.redraw = function (map){
           // display state name in tooltip
           map.tooltip.html('<img height="18" src="../images/flags/' +
                 d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
-                d.properties.name + 
-                '<br /> population: ' + 
-                map.numberFormat( map.usPopulationData.states[Number(d.id)][0] ) 
+                '<span class="state-tooltip">' + d.properties.name + 
+                '</span><br /><span class="label">population:</span><span class="data-text">' + 
+                map.numberFormat( map.usPopulationData.states[Number(d.id)][0] ) +
+                "</span>" 
               )
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");            

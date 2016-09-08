@@ -14,9 +14,9 @@ div.tooltip {
  	position: absolute;           
 	text-align: left;           
 	width: auto;                  
-	height: 32px;                 
-	padding: 5px;             
-	font: 8px;        
+	height: 36px;                 
+	padding: 3px;             
+	font-size: 10px;        
 	background: white;   
 	border: 0px;      
 	border-radius: 3px;           
@@ -40,8 +40,27 @@ div.tooltip {
   stroke-linejoin: round;
 }
 
+.data-text {
+  fill-opacity: .5;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.label {
+  fill-opacity: .5;
+  font-size: 12px;
+  font-weight: normal;
+}
+
 .state-label {
   fill: #777;
+  fill-opacity: .5;
+  font-size: 12px;
+  font-weight: bold;
+  text-anchor: middle;
+}
+
+.state-tooltip {
   fill-opacity: .5;
   font-size: 12px;
   font-weight: bold;
