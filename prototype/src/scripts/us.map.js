@@ -36,7 +36,7 @@ function USMap(window, margin) {
   this.stateCapitals = [];
 
   // state capitals display toggle
-  this.showStateCapitals = false;
+  this.showStateCapitals = true;
 
   // total USA house seats for elections data viz
   this.houseSeats = 435;
@@ -324,6 +324,7 @@ USMap.prototype.drawStates = function (map){
         });
 
   this.drawStateCapitals(this);
+  this.drawCities(this);
 
   console.log('USMap::drawStates::state paths and labels added to DOM!');
 
@@ -360,6 +361,49 @@ USMap.prototype.drawStateCapitals = function(map) {
 
           // display state capital name in tooltip
           map.tooltip.text(d.capital)
+              .style("left", (d3.event.pageX) + "px")     
+              .style("top", (d3.event.pageY - 28) + "px");  
+        }) /*
+        .on('click', function(d) {
+          if (map.active.node() === this) {
+            // reset to zoom out on active region click
+            return map.reset();
+          }
+          map.onClick(d, this); // selected region
+        });*/        
+} // end of drawStateCapitals()
+
+
+/**
+ * Draws state capital bubbles.
+ */
+USMap.prototype.drawCities = function(map) {
+  if (!this.showStateCapitals)
+    return;
+
+  console.log('USMap::drawCities::creating city bubbles...');  
+  this.g.selectAll('circle')
+        .data( map.usCities )
+        .enter().append('circle')
+        .attr('cx', function (d) { 
+          return map.projection( [d.longitude, d.latitude] )[0]; 
+        })
+        .attr('cy', function (d) { 
+          return map.projection( [d.longitude, d.latitude] )[1]; 
+        })
+        .attr('r', 4)
+        .attr('class', 'city')
+        .attr('id', function(d) {
+          return 'city-' + d.name
+        })
+        .on('mouseover', function(d) {
+          // show map tooltip
+          map.tooltip.transition()
+              .duration(200)      
+              .style("opacity", .9);
+
+          // display state capital name in tooltip
+          map.tooltip.text(d.name)
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");  
         }) /*
