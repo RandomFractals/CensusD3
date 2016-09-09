@@ -1,14 +1,13 @@
 /**
  * US map d3.
  **/ 
-var _map;
-function USMap(window) {
+function USMap(window, margin) {
 
   // save window ref for map sizing
   this.window = window;
 
-  // data panel margin for map resize
-  this.margin = 264;
+  // data side panel margin for map resize
+  this.margin = margin;
 
   // size to window - data panel margin
   this.width = window.innerWidth - this.margin; // 720
@@ -43,7 +42,7 @@ function USMap(window) {
   this.window.addEventListener('resize', this.onWindowResize);
 
   // TODO: get rid of this hack with callbacks later
-  _map = this;
+  var _map = this;
 
   // active region ref. for zoom in/out
   this.active = d3.select(null);
@@ -75,8 +74,8 @@ function USMap(window) {
   // create quantize scale for pop data map choropleth
   this.quantize = d3.scaleQuantize()
     .domain([0, 40000000]) // 40mils tops for Cali
-    .range( d3.range(9).map( 
-      function(i) { return 'q' + i; }
+    .range( d3.range(5).map( 
+      function(i) { return (i + 1); } // q-1 to q-5
       ));
 
   // create map tiles layer
@@ -258,7 +257,7 @@ USMap.prototype.drawStates = function (map){
         })
         .attr("class", function(d, i) {
           if ( i < map.usPopulation.states.length) {
-            return map.quantize( map.usPopulation.states[i][0] );
+            return 'q' + map.quantize( map.usPopulation.states[i][0] );
           }
           return ''; 
         })
@@ -461,7 +460,6 @@ USMap.prototype.scaleSvg = function(zoomLevel) {
         });    
   } else {
     // show state abbreviations
-    var map = this; 
     this.g.selectAll(".state-label")
         .data( this.statesGeoData )
         .text( function(d, i) {
