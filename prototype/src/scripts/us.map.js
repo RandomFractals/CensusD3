@@ -134,7 +134,6 @@ function USMap(window, margin) {
   var q = d3.queue();
   q.defer(this.loadUSTopology, this);    
   q.defer(this.loadUSPopulationData, this);
-  q.defer(this.loadUSCities, this);     
   q.defer(this.loadStatesGeoData, this);
   // TODO: merge with states geo data ???  
   q.defer(this.loadStateCapitals, this);
@@ -197,21 +196,6 @@ USMap.prototype.loadUSPopulationData = function(map) {
 
     console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
       map.usPopulation.states.length);   
-  });
-}
-
-
-/**
- * Loads US cities data from ../data/us-cities.json.
- */
-USMap.prototype.loadUSCities = function(map) {
-  console.log('USMap::loadUSCities::loading ../data/us-cities.json...');
-  d3.json('../data/us-cities.json', function(usCities) {
-    // save us cities data
-    map.usCities = usCities;
-
-    console.log('USMap::loadUSCities::loaded cities data: ' + 
-      map.usCities.length);   
   });
 }
 
@@ -324,7 +308,6 @@ USMap.prototype.drawStates = function (map){
         });
 
   this.drawStateCapitals(this);
-  this.drawCities(this);
 
   console.log('USMap::drawStates::state paths and labels added to DOM!');
 
@@ -361,49 +344,6 @@ USMap.prototype.drawStateCapitals = function(map) {
 
           // display state capital name in tooltip
           map.tooltip.text(d.capital)
-              .style("left", (d3.event.pageX) + "px")     
-              .style("top", (d3.event.pageY - 28) + "px");  
-        }) /*
-        .on('click', function(d) {
-          if (map.active.node() === this) {
-            // reset to zoom out on active region click
-            return map.reset();
-          }
-          map.onClick(d, this); // selected region
-        });*/        
-} // end of drawStateCapitals()
-
-
-/**
- * Draws state capital bubbles.
- */
-USMap.prototype.drawCities = function(map) {
-  if (!this.showStateCapitals)
-    return;
-
-  console.log('USMap::drawCities::creating city bubbles...');  
-  this.g.selectAll('circle')
-        .data( map.usCities )
-        .enter().append('circle')
-        .attr('cx', function (d) { 
-          return map.projection( [d.longitude, d.latitude] )[0]; 
-        })
-        .attr('cy', function (d) { 
-          return map.projection( [d.longitude, d.latitude] )[1]; 
-        })
-        .attr('r', 4)
-        .attr('class', 'city')
-        .attr('id', function(d) {
-          return 'city-' + d.name
-        })
-        .on('mouseover', function(d) {
-          // show map tooltip
-          map.tooltip.transition()
-              .duration(200)      
-              .style("opacity", .9);
-
-          // display state capital name in tooltip
-          map.tooltip.text(d.name)
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");  
         }) /*
