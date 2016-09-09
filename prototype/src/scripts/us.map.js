@@ -33,6 +33,9 @@ function USMap(window) {
   // state capitals names and coordinates
   this.stateCapitals = [];
 
+  // state capitals display toggle
+  this.showStateCapitals = false;
+
   // number format for display
   this.numberFormat = d3.format(',');
 
@@ -194,7 +197,7 @@ USMap.prototype.loadStatesGeoData = function(map) {
     console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesGeoData.length);   
 
     // show states
-    map.redraw(map);   
+    map.drawStates(map);   
   });
 }
 
@@ -226,7 +229,7 @@ USMap.prototype.onWindowResize = function() {
   // update map containter width
   this.width = this.window.innerWidth;
   // TODO: update constructor and redraw to make this work properly
-  redraw(this);
+  drawStates(this);
 }
 
 
@@ -234,7 +237,7 @@ USMap.prototype.onWindowResize = function() {
  * Draws US map with interactive states
  * using loaded states geo data.
  */
-USMap.prototype.redraw = function (map){  
+USMap.prototype.drawStates = function (map){  
 
   // create states paths
   console.log('USMap::redraw::creating state paths...');  
@@ -283,7 +286,21 @@ USMap.prototype.redraw = function (map){
           return map.statesGeoData[i].properties.code;
         });
 
-  console.log('USMap::redraw::creating state capitals...');  
+  this.drawStateCapitals(this);
+
+  console.log('USMap::redraw::state paths and labels added to DOM!');
+
+} // end of redraw ()
+
+
+/**
+ * Draws state capital bubbles.
+ */
+USMap.prototype.drawStateCapitals = function(map) {
+  if (!this.showStateCapitals)
+    return;
+
+  console.log('USMap::drawStateCapitals::creating state capitals...');  
   this.g.selectAll('circle')
         .data( map.stateCapitals )
         .enter().append('circle')
@@ -315,11 +332,8 @@ USMap.prototype.redraw = function (map){
             return map.reset();
           }
           map.onClick(d, this); // selected region
-        });*/
-
-  console.log('USMap::redraw::state paths and labels added to DOM!');
-
-} // end of redraw ()
+        });*/        
+} // end of drawStateCapitals()
 
 
 /**
