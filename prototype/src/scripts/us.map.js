@@ -78,9 +78,9 @@ function USMap(window, margin) {
 
   // create quantize scale for pop data map choropleth
   this.quantize = d3.scaleQuantize()
-    .domain([0, 40000000]) // 40mils tops for Cali
-    .range( d3.range(5).map( 
-      function(i) { return (i + 1); } // q-1 to q-5
+    .domain([0, 0.4]) // 40mils tops for Cali
+    .range( d3.range(9).map( 
+      function(i) {return i;}
       ));
 
   // create map tiles layer
@@ -252,7 +252,7 @@ USMap.prototype.onWindowResize = function() {
 USMap.prototype.drawStates = function (map){  
 
   // create states paths
-  console.log('USMap::drawStates::creating state paths...');  
+  console.log('USMap::drawStates::creating state paths...');
   this.g.selectAll('path')
         .data( map.statesGeoData )
         .enter().append('path')
@@ -260,10 +260,10 @@ USMap.prototype.drawStates = function (map){
         .attr('class', 'feature')
         .attr('id', function(d) {
           return 'state-' + d.id
-        })
+        })         
         .attr("class", function(d, i) {
           if ( i < map.usPopulation.states.length) {
-            return 'q' + map.quantize( map.usPopulation.states[i][0] );
+            return 'q' + map.quantize( map.usPopulation.states[i][0] / 40000000 );
           }
           return ''; 
         })
