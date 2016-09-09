@@ -395,19 +395,12 @@ USMap.prototype.onClick = function (d, region) {
 
 
 /**
- * Gets population count for the specified state.
+ * Gets population count for the specified state id.
  */
 USMap.prototype.getPopulationCount = function(stateId) {
   var stateIndex = Number(stateId);
   if ( stateIndex < this.usPopulation.states.length) {
-    try {
-      return this.usPopulation.states[stateId][0];
-    } catch (error) {
-      // TODO: need to look into this occasioanl 'unable to get property '0'' error
-      console.error(error);
-      console.log('getPopulationCount::stateIndex: ' + stateIndex);
-      return 0;
-    }
+    return this.usPopulation.states[stateIndex][0];
   }
   return 0;
 } 
