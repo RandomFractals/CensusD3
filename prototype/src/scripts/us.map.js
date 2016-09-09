@@ -29,6 +29,9 @@ function USMap(window, margin) {
   // us population data
   this.usPopulation = []
 
+  // major us cities with population info
+  this.usCities = [];
+
   // state capitals names and coordinates
   this.stateCapitals = [];
 
@@ -130,10 +133,11 @@ function USMap(window, margin) {
   // load us data async with d3 queue
   var q = d3.queue();
   q.defer(this.loadUSTopology, this);    
-  q.defer(this.loadUSPopulationData, this);  
+  q.defer(this.loadUSPopulationData, this);
+  q.defer(this.loadUSCities, this);     
   q.defer(this.loadStatesGeoData, this);
   // TODO: merge with states geo data ???  
-  q.defer(this.loadStateCapitals, this);    
+  q.defer(this.loadStateCapitals, this);
   q.awaitAll( function(error) {
     if (error) {
       console.error(error);
@@ -193,6 +197,21 @@ USMap.prototype.loadUSPopulationData = function(map) {
 
     console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
       map.usPopulation.states.length);   
+  });
+}
+
+
+/**
+ * Loads US cities data from ../data/us-cities.json.
+ */
+USMap.prototype.loadUSCities = function(map) {
+  console.log('USMap::loadUSCities::loading ../data/us-cities.json...');
+  d3.json('../data/us-cities.json', function(usCities) {
+    // save us cities data
+    map.usCities = usCities;
+
+    console.log('USMap::loadUSCities::loaded cities data: ' + 
+      map.usCities.length);   
   });
 }
 
