@@ -3,6 +3,10 @@
   pointer-events: all;
 }
 
+path {
+  stroke: #ccc;
+}
+
 /* lighten region fill on mouse over */
 path:hover {
 	fill-opacity: .7;
@@ -78,12 +82,22 @@ div.tooltip {
 
 
 /* map choropleth color styles */
-.q0 { fill:rgb(247,251,255); }
-.q1 { fill:rgb(222,235,247); }
-.q2 { fill:rgb(198,219,239); }
-.q3 { fill:rgb(158,202,225); }
-.q4 { fill:rgb(107,174,214); }
-.q5 { fill:rgb(66,146,198); }
-.q6 { fill:rgb(33,113,181); }
-.q7 { fill:rgb(8,81,156); }
-.q8 { fill:rgb(8,48,107); }
+.s0 { fill:rgb(247,251,255); }
+.s1 { fill:rgb(222,235,247); }
+.s2 { fill:rgb(198,219,239); }
+.s3 { fill:rgb(158,202,225); }
+.s4 { fill:rgb(107,174,214); }
+.s5 { fill:rgb(95,146,198); }
+.s6 { fill:rgb(66,113,181); }
+.s7 { fill:rgb(54,100,176); }
+.s8 { fill:rgb(42,81,156); }
+
+.q8{fill:rgb(251,180,174)} 
+.q7{fill:rgb(179,205,227)} 
+.q6{fill:rgb(204,235,197)} 
+.q5{fill:rgb(222,203,228)} 
+.q4{fill:rgb(254,217,166)} 
+.q3{fill:rgb(255,255,204)} 
+.q2{fill:rgb(229,216,189)} 
+.q1{fill:rgb(253,218,236)} 
+.q0{fill:rgb(242,242,242)}
