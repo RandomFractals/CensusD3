@@ -72,6 +72,13 @@ function USMap(window) {
   this.geoPath = d3.geoPath()
       .projection(this.projection);
 
+  // create quantize scale for pop data map choropleth
+  this.quantize = d3.scaleQuantize()
+    .domain([0, 322000000]) // usa pop max for now
+    .range( d3.range(9).map( 
+      function(i) { return 'q' + i; }
+      ));
+
   // create map tiles layer
   this.tile = d3.tile()
     .size([this.width, this.height]);
@@ -118,11 +125,11 @@ function USMap(window) {
 
   // load us data async with d3 queue
   var q = d3.queue();
-  // TODO: merge with states data ???
-  q.defer(this.loadStateCapitals, this);  
-  q.defer(this.loadStatesGeoData, this);
+  q.defer(this.loadUSTopology, this);    
   q.defer(this.loadUSPopulationData, this);  
-  q.defer(this.loadUSTopology, this);
+  q.defer(this.loadStatesGeoData, this);
+  // TODO: merge with states geo data ???  
+  q.defer(this.loadStateCapitals, this);    
   q.awaitAll( function(error) {
     if (error) {
       console.error(error);
@@ -166,21 +173,21 @@ USMap.prototype.loadUSTopology = function(map) {
  */
 USMap.prototype.loadUSPopulationData = function(map) {
   console.log('USMap::loadUSPopulationData::loading ../data/us-population.json...');
-  d3.json('../data/us-population.json', function(usPopulationData) {
+  d3.json('../data/us-population.json', function(usPopulation) {
     // save us population data
-    map.usPopulationData = usPopulationData;
+    map.usPopulation = usPopulation;
 
     // update app message
     map.message.html('USA population: <span class="data-text">' + 
-      map.numberFormat(usPopulationData.total) + '</span>');
+      map.numberFormat(usPopulation.total) + '</span>');
 
     // update app data panel
     map.regionTitle.text('USA');
     map.regionData.html('population: <span class="data-text">' +
-      map.numberFormat( map.usPopulationData.total) + '</span>');
+      map.numberFormat( map.usPopulation.total) + '</span>');
 
     console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
-      map.usPopulationData.states.length);   
+      map.usPopulation.states.length);   
   });
 }
 
@@ -240,7 +247,7 @@ USMap.prototype.onWindowResize = function() {
 USMap.prototype.drawStates = function (map){  
 
   // create states paths
-  console.log('USMap::redraw::creating state paths...');  
+  console.log('USMap::drawStates::creating state paths...');  
   this.g.selectAll('path')
         .data( map.statesGeoData )
         .enter().append('path')
@@ -248,7 +255,13 @@ USMap.prototype.drawStates = function (map){
         .attr('class', 'feature')
         .attr('id', function(d) {
           return 'state-' + d.id
-        })
+        }) /*
+        .attr("class", function(d, i) {
+          if ( i < map.usPopulation.states.length) {
+            return map.quantize( map.getPopulationCount(d.id) );
+          }
+          return ''; 
+        })*/
         .on('mouseover', function(d) {
           // show map tooltip
           map.tooltip.transition()
@@ -260,7 +273,7 @@ USMap.prototype.drawStates = function (map){
                 d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
                 '<span class="state-tooltip">' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
-                map.numberFormat( map.usPopulationData.states[Number(d.id)][0] ) +
+                map.numberFormat( map.getPopulationCount(d.id) ) + 
                 "</span>" 
               )
               .style("left", (d3.event.pageX) + "px")     
@@ -275,7 +288,7 @@ USMap.prototype.drawStates = function (map){
         });
 
   // create state labels
-  console.log('USMap::redraw::creating state labels...');
+  console.log('USMap::drawStates::creating state labels...');
   this.g.selectAll(".state-label")
         .data( map.statesGeoData )
         .enter().append("text")
@@ -288,7 +301,7 @@ USMap.prototype.drawStates = function (map){
 
   this.drawStateCapitals(this);
 
-  console.log('USMap::redraw::state paths and labels added to DOM!');
+  console.log('USMap::drawStates::state paths and labels added to DOM!');
 
 } // end of redraw ()
 
@@ -350,7 +363,7 @@ USMap.prototype.onClick = function (d, region) {
 
   // show state population data for now
   this.regionData.html('population: <span class="data-text">' +
-    this.numberFormat( this.usPopulationData.states[Number(regionId)][0]) +
+    this.numberFormat( this.getPopulationCount(regionId) ) +
     '</span>');
 
   // update region data panel
@@ -382,6 +395,25 @@ USMap.prototype.onClick = function (d, region) {
 
 
 /**
+ * Gets population count for the specified state.
+ */
+USMap.prototype.getPopulationCount = function(stateId) {
+  var stateIndex = Number(stateId);
+  if ( stateIndex < this.usPopulation.states.length) {
+    try {
+      return this.usPopulation.states[stateId][0];
+    } catch (error) {
+      // TODO: need to look into this occasioanl 'unable to get property '0'' error
+      console.error(error);
+      console.log('getPopulationCount::stateIndex: ' + stateIndex);
+      return 0;
+    }
+  }
+  return 0;
+} 
+
+
+/**
  * Resets active map feature and zooms out.
  */
 USMap.prototype.reset = function() {
@@ -399,7 +431,7 @@ USMap.prototype.reset = function() {
   // update app data panel
   this.regionTitle.text('USA');
   this.regionData.html('population: <span class="data-text">' +
-      this.numberFormat( this.usPopulationData.total) + '</span>');
+      this.numberFormat( this.usPopulation.total) + '</span>');
 
   // zoom out
   this.svg.transition()
