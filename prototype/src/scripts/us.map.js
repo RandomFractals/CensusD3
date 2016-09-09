@@ -74,7 +74,7 @@ function USMap(window) {
 
   // create quantize scale for pop data map choropleth
   this.quantize = d3.scaleQuantize()
-    .domain([0, 322000000]) // usa pop max for now
+    .domain([0, 40000000]) // 40mils tops for Cali
     .range( d3.range(9).map( 
       function(i) { return 'q' + i; }
       ));
@@ -255,14 +255,14 @@ USMap.prototype.drawStates = function (map){
         .attr('class', 'feature')
         .attr('id', function(d) {
           return 'state-' + d.id
-        }) /*
+        })
         .attr("class", function(d, i) {
           if ( i < map.usPopulation.states.length) {
-            return map.quantize( map.getPopulationCount(d.id) );
+            return map.quantize( map.usPopulation.states[i][0] );
           }
           return ''; 
-        })*/
-        .on('mouseover', function(d) {
+        })
+        .on('mouseover', function(d, i) {
           // show map tooltip
           map.tooltip.transition()
               .duration(200)      
@@ -273,18 +273,18 @@ USMap.prototype.drawStates = function (map){
                 d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
                 '<span class="state-tooltip">' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
-                map.numberFormat( map.getPopulationCount(d.id) ) + 
+                map.numberFormat( map.usPopulation.states[i][0] ) + 
                 "</span>" 
               )
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px");            
         })
-        .on('click', function(d) {
+        .on('click', function(d, i) {
           if (map.active.node() === this) {
             // reset to zoom out on active region click
             return map.reset();
           }
-          map.onClick(d, this); // selected region
+          map.onClick(d, i, this); // selected region
         });
 
   // create state labels
@@ -352,18 +352,15 @@ USMap.prototype.drawStateCapitals = function(map) {
 /**
  * d3 path click event handler.
  */
-USMap.prototype.onClick = function (d, region) {
+USMap.prototype.onClick = function (d, i, region) {
 
   // toggle active region selection
   this.active.classed('active', false);
   this.active = d3.select(region).classed('active', true);
 
-  // get selected state region id
-  var regionId = region.id.replace('state-', '');
-
   // show state population data for now
   this.regionData.html('population: <span class="data-text">' +
-    this.numberFormat( this.getPopulationCount(regionId) ) +
+    this.numberFormat( this.usPopulation.states[i][0] ) +
     '</span>');
 
   // update region data panel
@@ -392,18 +389,6 @@ USMap.prototype.onClick = function (d, region) {
       .duration(750)
       .call(this.zoom.translate(translate).scale(scale).event);*/
 }
-
-
-/**
- * Gets population count for the specified state id.
- */
-USMap.prototype.getPopulationCount = function(stateId) {
-  var stateIndex = Number(stateId);
-  if ( stateIndex < this.usPopulation.states.length) {
-    return this.usPopulation.states[stateIndex][0];
-  }
-  return 0;
-} 
 
 
 /**
