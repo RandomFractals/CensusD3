@@ -59,8 +59,9 @@ function USMap(window, margin) {
   // region name section title ref 
   this.regionTitle = d3.select('#region');
 
-  // region data section ref 
+  // region data section refs 
   this.regionData = d3.select('#regionData');
+  this.populationData = d3.select('#populationData');
 
   // create Albers USA map projection
   this.projection = d3.geoAlbersUsa()
@@ -182,8 +183,8 @@ USMap.prototype.loadUSPopulationData = function(map) {
 
     // update app data panel
     map.regionTitle.text('USA');
-    map.regionData.html('population: <span class="data-text">' +
-      map.numberFormat( map.usPopulation.total) + '</span>');
+    map.populationData.text(
+      map.numberFormat( map.usPopulation.total) );
 
     console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
       map.usPopulation.states.length);   
@@ -358,9 +359,8 @@ USMap.prototype.onClick = function (d, i, region) {
   this.active = d3.select(region).classed('active', true);
 
   // show state population data for now
-  this.regionData.html('population: <span class="data-text">' +
-    this.numberFormat( this.usPopulation.states[i][0] ) +
-    '</span>');
+  this.populationData.text(
+    this.numberFormat( this.usPopulation.states[i][0] ) );
 
   // update region data panel
   this.regionTitle.text(d.properties.name);
@@ -407,8 +407,8 @@ USMap.prototype.reset = function() {
 
   // update app data panel
   this.regionTitle.text('USA');
-  this.regionData.html('population: <span class="data-text">' +
-      this.numberFormat( this.usPopulation.total) + '</span>');
+  this.populationData.text(
+    this.numberFormat( this.usPopulation.total) );
 
   // zoom out
   this.svg.transition()
