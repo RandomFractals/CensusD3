@@ -35,6 +35,9 @@ function USMap(window, margin) {
   // state capitals display toggle
   this.showStateCapitals = false;
 
+  // total USA house seats for elections data viz
+  this.houseSeats = 435;
+
   // number format for display
   this.numberFormat = d3.format(',');
 
@@ -62,6 +65,7 @@ function USMap(window, margin) {
   // region data section refs 
   this.regionData = d3.select('#regionData');
   this.populationData = d3.select('#populationData');
+  this.houseSeatsData = d3.select('#houseSeatsData');
 
   // create Albers USA map projection
   this.projection = d3.geoAlbersUsa()
@@ -185,6 +189,7 @@ USMap.prototype.loadUSPopulationData = function(map) {
     map.regionTitle.text('USA');
     map.populationData.text(
       map.numberFormat( map.usPopulation.total) );
+    map.houseSeatsData.text(map.houseSeats);
 
     console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
       map.usPopulation.states.length);   
@@ -361,6 +366,7 @@ USMap.prototype.onClick = function (d, i, region) {
   // show state population data for now
   this.populationData.text(
     this.numberFormat( this.usPopulation.states[i][0] ) );
+  this.houseSeatsData.text(d.properties.houseSeats);
 
   // update region data panel
   this.regionTitle.text(d.properties.name);
@@ -409,6 +415,8 @@ USMap.prototype.reset = function() {
   this.regionTitle.text('USA');
   this.populationData.text(
     this.numberFormat( this.usPopulation.total) );
+  this.houseSeatsData.text(this.houseSeats);
+
 
   // zoom out
   this.svg.transition()
