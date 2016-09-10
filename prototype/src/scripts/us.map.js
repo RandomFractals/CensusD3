@@ -506,7 +506,7 @@ USMap.prototype.drawCounties = function (stateCode, map){
 
   // draw selected state counties
   //console.log(this.usTopology.objects.counties);
-  this.g.selectAll('.county')
+  this.g.selectAll('.county').remove()
         .data( 
           topojson.feature(this.usTopology, stateCountiesTopology).features ) 
             //this.usTopology.objects.counties).features ) // to show all counties
