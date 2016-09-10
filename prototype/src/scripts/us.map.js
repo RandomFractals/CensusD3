@@ -529,6 +529,9 @@ USMap.prototype.drawCounties = function (stateCode, map){
 
           //d3.event.stopPropagation();         
         })
+        .on('dblclick', function(d, i) {
+          map.reset();
+        });
                  
 
   console.log('USMap::drawCounties::' + stateCode +  ' county paths added to DOM!');
@@ -593,7 +596,7 @@ USMap.prototype.reset = function() {
 
   // remove counties
   this.g.selectAll('.county').remove();
-  
+
   // reset state labels font size
   this.g.selectAll(".state-label")
         .style('font-size', '12px');
