@@ -371,7 +371,7 @@ USMap.prototype.drawStates = function (map){
                 map.numberFormat( map.usPopulation.states[i][0] ) + 
                 "</span>" 
               )
-              .style("left", (d3.event.pageX) + "px")     
+              .style("left", (d3.event.pageX + 24) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
               .style('height', '36px');         
         })
@@ -432,7 +432,7 @@ USMap.prototype.drawStateCapitals = function(map) {
 
           // display state capital name in tooltip
           map.tooltip.text(d.capital)
-              .style("left", (d3.event.pageX) + "px")     
+              .style("left", (d3.event.pageX + 24) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
               .style('height', '16px'); 
         }); /* 
@@ -527,7 +527,7 @@ USMap.prototype.drawCounties = function (stateCode, map){
 
           // display state name in tooltip
           map.tooltip.text( d.properties.state + ': ' + d.properties.name )
-              .style("left", (d3.event.pageX) + "px")     
+              .style("left", (d3.event.pageX + 10) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
               .style('height', '16px');
 
