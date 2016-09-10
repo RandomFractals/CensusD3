@@ -76,7 +76,8 @@ div.tooltip {
 }
 
 .county {
-  fill: none;
+  fill: #fff;
+  fill-opacity: .9;
   stroke-width: .5px;
 }
 
