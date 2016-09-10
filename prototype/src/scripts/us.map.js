@@ -535,6 +535,8 @@ USMap.prototype.onZoom = function() {
 }
 
 
+/** -------------- Global SVG Scale/Transfrom/Click Methods ----------------------*/
+
 /**
  * Scales region paths stroke width and labels on zoom in/out.
  */
@@ -579,6 +581,21 @@ USMap.prototype.transform = function(transform, scale) {
 }
 
 
+/**
+ * Svg click stop handler for smooth dragging.
+ */
+USMap.prototype.onSvgClick = function() {
+  // If the drag behavior prevents the default click,
+  // also stop propagation so we don’t click-to-zoom  
+  if (d3.event.defaultPrevented) {
+    d3.event.stopPropagation();
+  }
+}
+
+
+/** --------------- Future Map Tiles Methods --------------------------------- */
+
+/** TODO: Figure out how to map open street map titles to US Albers projection ??? */
 
 /**
  * Loads map tiles on zoom.
@@ -617,16 +634,3 @@ USMap.prototype.getTilesTransform = function(scale, translate) {
   return "translate(" + r(translate[0] * scale) + "," + 
     r(translate[1] * scale) + ") scale(" + k + ")";
 }
-
-
-/**
- * Svg click stop handler for smooth dragging.
- */
-USMap.prototype.onSvgClick = function() {
-  // If the drag behavior prevents the default click,
-  // also stop propagation so we don’t click-to-zoom  
-  if (d3.event.defaultPrevented) {
-    d3.event.stopPropagation();
-  }
-}
-
