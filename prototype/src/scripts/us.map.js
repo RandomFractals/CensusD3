@@ -29,6 +29,9 @@ function USMap(window, margin) {
   // us counties FIPS codes and names keyd by state code
   this.stateCounties = {};
 
+  // show all counties borders toggle for initial map load
+  this.showAllCounties = true;
+
   // us states population data
   this.usPopulation = []
 
@@ -39,7 +42,7 @@ function USMap(window, margin) {
   this.stateCapitals = [];
 
   // state capitals display toggle
-  this.showStateCapitals = true;
+  this.showStateCapitals = false;
 
   // total USA house seats for elections data viz
   this.houseSeats = 435;
@@ -139,7 +142,7 @@ function USMap(window, margin) {
 
   // load us data async with d3 queue
   var q = d3.queue();
-  q.defer(this.loadUSTopology, this);
+  q.defer(this.loadUSTopology, this);  
   q.defer(this.loadUSCounties, this);      
   q.defer(this.loadUSPopulationData, this);
   q.defer(this.loadStatesGeoData, this);
@@ -180,6 +183,9 @@ USMap.prototype.loadUSTopology = function(map) {
 
     console.log('USMap::loadUSTopology::us.json topology loaded!');
     //console.log(usTopology);
+
+    // draw states map
+    //map.drawStates(map);    
   });
 }
 
@@ -309,6 +315,11 @@ USMap.prototype.onWindowResize = function() {
  * using loaded states geo data.
  */
 USMap.prototype.drawStates = function (map){  
+
+  if (this.showAllCounties) {
+      // draw all state counties borders
+    //this.drawCounties('AK', this);
+  }
 
   // create states paths
   console.log('USMap::drawStates::creating state paths...');
@@ -473,15 +484,18 @@ USMap.prototype.drawCounties = function (stateCode, map){
 
   var stateCountiesGeo = this.getStateCountiesGeo(stateCode);
 
-  /*
+  // draw selected state counties
+  console.log(this.usTopology.objects.counties);
   this.g.selectAll('path')
-        .data( this.stateCounties[stateCode] )
+        .data( 
+          topojson.feature(this.usTopology, //stateCountiesGeo).features ) 
+            this.usTopology.objects.counties).features ) // to show all counties
         .enter().append('path')
-        //.attr('d', this.geoPath)
+        .attr('d', this.geoPath)
         .attr('class', 'county')
         .attr('id', function(d) {
-          return 'county-' + d.county;
-        })*/         
+          return 'county-' + d.properties.id;
+        })         
 
   console.log('USMap::drawCounties::' + stateCode +  ' county paths added to DOM!');
 
