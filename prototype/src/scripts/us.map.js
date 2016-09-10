@@ -26,7 +26,10 @@ function USMap(window, margin) {
   // on state click from us.json and others later 
   this.statesGeoData = [];
 
-  // us population data
+  // us counties FIPS codes and names keyd by state code
+  this.stateCounties = {};
+
+  // us states population data
   this.usPopulation = []
 
   // major us cities with population info
@@ -132,7 +135,8 @@ function USMap(window, margin) {
 
   // load us data async with d3 queue
   var q = d3.queue();
-  q.defer(this.loadUSTopology, this);    
+  q.defer(this.loadUSTopology, this);
+  q.defer(this.loadUSCounties, this);      
   q.defer(this.loadUSPopulationData, this);
   q.defer(this.loadStatesGeoData, this);
   // TODO: merge with states geo data ???  
@@ -171,6 +175,54 @@ USMap.prototype.loadUSTopology = function(map) {
     map.usTopology = usTopology;
 
     console.log('USMap::loadUSTopology::us.json topology loaded!');
+  });
+}
+
+
+/**
+ * Loads US counties FIPS codes and names from ../data/us-counties.json file
+ * for zoom to state counties data load and graphs display later.
+ */
+USMap.prototype.loadUSCounties = function(map) {
+  console.log('USMap::loadUSCounties::loading ../data/us-counties.json...');
+
+  // load US counties data
+  d3.json('../data/us-counties.json', function(error, usCounties) {
+
+    if (error) {
+      console.error(error);
+      // TODO: show error message
+      throw error;
+    }
+
+    //console.log(usCounties);
+    var state, lastState = '';
+    var stateCounties = {};
+    var stateCounty;
+    var countyCount = 0;
+    for (county in usCounties) {
+      state = usCounties[county].state
+      if (state !== lastState) {
+        lastState = state;
+        // create new state counties collection
+        stateCounties[state] = [];
+        console.log('USMap::loadUSCounties::adding counties for state: ' + state);
+      }
+      // add state county
+      stateCounty = {county};
+      stateCounty[county] = usCounties[county]; // county name and state code
+      stateCounties[state].push( stateCounty ); 
+      countyCount++;
+    }
+
+    console.log('USMap::loadUSCounties::loaded county states: ' + Object.keys(stateCounties).length );
+    console.log('USMap::loadUSCounties::loaded counties: ' + countyCount);
+    console.log(stateCounties);
+
+    // save loaded state counties data
+    // for counties boundaries and data display 
+    // on state selection
+    map.stateCounties = stateCounties;    
   });
 }
 
