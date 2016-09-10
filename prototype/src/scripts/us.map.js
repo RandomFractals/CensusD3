@@ -526,7 +526,7 @@ USMap.prototype.drawCounties = function (stateCode, map){
               .style("opacity", .9);
 
           // display state name in tooltip
-          map.tooltip.text( d.properties.name )
+          map.tooltip.text( d.properties.state + ': ' + d.properties.name )
               .style("left", (d3.event.pageX) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
               .style('height', '16px');
