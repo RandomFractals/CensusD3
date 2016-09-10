@@ -530,6 +530,9 @@ USMap.prototype.drawCounties = function (stateCode, map){
 
           //d3.event.stopPropagation();         
         })
+        .on('click', function(d, i) {
+          map.reset();
+        })
         .on('dblclick', function(d, i) {
           map.reset();
         });
