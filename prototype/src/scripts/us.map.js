@@ -591,6 +591,9 @@ USMap.prototype.reset = function() {
   this.active.classed('active', false);
   this.active = d3.select(null);
 
+  // remove counties
+  this.g.selectAll('.county').remove();
+  
   // reset state labels font size
   this.g.selectAll(".state-label")
         .style('font-size', '12px');
