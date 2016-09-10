@@ -161,21 +161,22 @@ function USMap(window, margin) {
     //_map.redraw(_map);
   });
 
+  console.log('USMap::created');
+
 } // end of USMap() constructor
 
 
 /**
  * US topology data load complete handler.
  */
-USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {
-  console.log('USMap::onUSTopologyLoaded::US topology loaded!');
-  console.log(usTopology);
-
+USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {  
   map.usTopology = usTopology;
   //console.log(Object.keys(map));
+  console.log('USMap::onUSTopologyLoaded::US topology loaded!');
+  //console.log(usTopology);
 
   // get US counties data
-  map.getUSCounties(map);
+  map.usMapDataService.getUSCounties(map.onUSCountiesLoaded, map);
 
   // draw states map
   //this.drawStates(this);  
@@ -183,58 +184,12 @@ USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {
 
 
 /**
- * Gets US counties FIPS codes and names from ../data/us-counties.json file
- * for zoom to state counties data load and graphs display later.
+ * US counties data load complete handler.
  */
-USMap.prototype.getUSCounties = function(map) {
-  console.log('USMap::getUSCounties::loading ../data/us-counties.json...');
-
-  // load US counties data
-  d3.json('../data/us-counties.json', function(error, usCounties) {
-
-    if (error) {
-      console.error(error);
-      // TODO: show error message ???
-      throw error;
-    }
-
-    //console.log(usCounties);
-    var state, lastState = '';
-    var stateCounties = {};
-    var stateCounty;
-    var countyCount = 0;
-    for (var countyId in usCounties) {
-      state = usCounties[countyId].state
-      if (state !== lastState) {
-        lastState = state;
-        // create new state counties data map and 
-        // add topology for state counties topojson load later
-        stateCounties[state] = {
-          counties: {}, 
-          topology: {
-            type: 'GeometryCollection',
-            // copy bounding box from us counties topojson
-            bbox: map.usTopology.objects.counties.bbox,
-            geometries: []
-          }
-        };
-        //console.log('USMap::getUSCounties::adding counties for state: ' + state);
-      }
-      // set county id and add it to the state counties collection
-      usCounties[countyId].id = countyId;
-      stateCounties[state].counties[Number(countyId)] = usCounties[countyId]; 
-      countyCount++;
-    }
-
-    console.log('USMap::getUSCounties::loaded counties: ' + countyCount);
-    console.log('USMap::getUSCounties::loaded county states: ' + Object.keys(stateCounties).length );
-    //console.log(stateCounties);
-
-    // save loaded state counties data
-    // for counties boundaries and data display 
-    // on state selection
-    map.stateCounties = stateCounties;    
-  });
+USMap.prototype.onUSCountiesLoaded = function(stateCounties, map) {
+  map.stateCounties = stateCounties;
+  console.log('USMap::onUSCountiesLoaded::US state counties data loaded!');
+  //console.log(stateCounties);  
 }
 
 
