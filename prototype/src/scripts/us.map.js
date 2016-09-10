@@ -18,6 +18,10 @@ function USMap(window, margin) {
   // map scale for default 720x480 usa map size
   this.scale = 800;
 
+  // us map data service for getting all us states 
+  // and regions geo data, names and codes for plotting the map 
+  this.usMapDataService = new USMapDataService();
+
   // US topology TopoJSON with land, states, and all counties
   this.usTopology = {};
 
@@ -142,7 +146,7 @@ function USMap(window, margin) {
 
   // load us data async with d3 queue
   var q = d3.queue();
-  q.defer(this.getUSTopology, this.onUSTopologyLoaded, this);  
+  q.defer(this.usMapDataService.getUSTopology, this.onUSTopologyLoaded, this);  
   q.defer(this.loadUSPopulationData, this);
   q.defer(this.loadStatesGeoData, this);
   // TODO: merge with states geo data ???  
@@ -158,29 +162,6 @@ function USMap(window, margin) {
   });
 
 } // end of USMap() constructor
-
-
-/**
- * Gets US topology from ../data/us.json topoJSON file
- * with land, state, and counties boundaries
- * for zoom to state counties data load and graphs display later.
- */
-USMap.prototype.getUSTopology = function(onDataReady, map) {
-
-  // load US topology with land, state, and counties boundaries
-  console.log('USMap::getUSTopology::loading ../data/us.json...');  
-  d3.json('../data/us.json', function(error, usTopology) {
-
-    if (error) {
-      console.error(error);
-      // TODO: show error message ???
-      throw error;
-    }
-
-    onDataReady(usTopology, map);
-
-  });
-}
 
 
 /**
