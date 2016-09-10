@@ -44,6 +44,10 @@ function USMap(window, margin) {
   // total USA house seats for elections data viz
   this.houseSeats = 435;
 
+  // selected state code for state selection tracking
+  // and county regions geo data load
+  this.selectedStateCode = '';
+
   // number format for display
   this.numberFormat = d3.format(',');
 
@@ -201,7 +205,7 @@ USMap.prototype.loadUSCounties = function(map) {
     var stateCounties = {};
     var stateCounty;
     var countyCount = 0;
-    for (county in usCounties) {
+    for (var county in usCounties) {
       state = usCounties[county].state
       if (state !== lastState) {
         lastState = state;
@@ -209,10 +213,9 @@ USMap.prototype.loadUSCounties = function(map) {
         stateCounties[state] = [];
         console.log('USMap::loadUSCounties::adding counties for state: ' + state);
       }
-      // add state county
-      stateCounty = {county};
-      stateCounty[county] = usCounties[county]; // county name and state code
-      stateCounties[state].push( stateCounty ); 
+      // set county id and add it to state counties collection
+      usCounties[county].id = county;
+      stateCounties[state].push( usCounties[county] ); 
       countyCount++;
     }
 
@@ -364,7 +367,7 @@ USMap.prototype.drawStates = function (map){
 
   console.log('USMap::drawStates::state paths and labels added to DOM!');
 
-} // end of redraw ()
+} // end of drawStates ()
 
 
 /**
@@ -419,6 +422,13 @@ USMap.prototype.onStateClick = function (d, i, region) {
   this.active.classed('active', false);
   this.active = d3.select(region).classed('active', true);
 
+  // save current state selection code
+  this.selectedStateCode = d.properties.code;
+  console.log('USMap::onStateClick::selected state: ' + this.selectedStateCode); 
+
+  // draw state counties
+  this.drawCounties(this.selectedStateCode, this);
+
   // show state population data for now
   this.populationData.text(
     this.numberFormat( this.usPopulation.states[i][0] ) );
@@ -426,8 +436,6 @@ USMap.prototype.onStateClick = function (d, i, region) {
 
   // update region data panel
   this.regionTitle.text(d.properties.name);
-  console.log('USMap::onStateClick::selected state: ' + d.properties.code + 
-    ' counties: ' + this.stateCounties[d.properties.code].length);
 
   // get selected region bounds
   var bounds = this.geoPath.bounds(d),
@@ -455,6 +463,34 @@ USMap.prototype.onStateClick = function (d, i, region) {
 
 
 /**
+ * Draws selected state counties on state path click.
+ */
+USMap.prototype.drawCounties = function (stateCode, map){  
+
+  // create state county paths
+  console.log('USMap::drawCounties::selected state: ' + stateCode + 
+    ' counties: ' + this.stateCounties[stateCode].length);
+
+  // add state counties topology
+  for (var county in this.stateCounties[stateCode] ) {
+    console.log(this.stateCounties[stateCode][county]);
+  }
+  /*
+  this.g.selectAll('path')
+        .data( this.stateCounties[stateCode] )
+        .enter().append('path')
+        //.attr('d', this.geoPath)
+        .attr('class', 'county')
+        .attr('id', function(d) {
+          return 'county-' + d.county;
+        })*/         
+
+  console.log('USMap::drawCounties::' + stateCode +  ' county paths added to DOM!');
+
+} // end of drawCounties ()
+
+
+/**
  * Resets active map feature and zooms out.
  */
 USMap.prototype.reset = function() {
@@ -462,6 +498,7 @@ USMap.prototype.reset = function() {
   console.log('reset');
 
   // clear active region selection
+  this.selectedStateCode = '';
   this.active.classed('active', false);
   this.active = d3.select(null);
 
@@ -469,7 +506,7 @@ USMap.prototype.reset = function() {
   this.g.selectAll(".state-label")
         .style('font-size', '12px');
 
-  // update app data panel
+  // update app data panel with total US pop data
   this.regionTitle.text('USA');
   this.populationData.text(
     this.numberFormat( this.usPopulation.total) );
