@@ -6,6 +6,12 @@
 function USMapDataService() {
   // US topology TopoJSON with land, states, and all counties
   this.usTopology = {};  
+
+  // us state counties with names, fips codes, 
+  // and topojson for drawing state counties path
+  // keyed by state code/abbreviation
+  this.stateCounties = {};
+
   console.log('USMapDataService::created');
 }
 
@@ -81,10 +87,9 @@ USMapDataService.prototype.getUSCounties = function(onDataReady, map) {
       Object.keys(stateCounties).length );
     //console.log(stateCounties);
 
-    // save loaded state counties data
-    // for counties boundaries and data display 
-    // on state selection
-    //map.stateCounties = stateCounties;
+    // save it for state counties topojson inject/mapping later
+    this.stateCounties = stateCounties;
+
     // update map comp.
     onDataReady(stateCounties, map);
   });
