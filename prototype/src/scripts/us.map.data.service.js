@@ -1,17 +1,9 @@
 /**
- * Sateful US map geo data service.
+ * US map geo data service.
  * 
  * TODO: some data can be lazy loaded later.
  **/ 
 function USMapDataService() {
-  // US topology TopoJSON with land, states, and all counties
-  this.usTopology = {};  
-
-  // us state counties with names, fips codes, 
-  // and topojson for drawing state counties path
-  // keyed by state code/abbreviation
-  this.stateCounties = {};
-
   console.log('USMapDataService::created');
 }
 
@@ -24,16 +16,12 @@ function USMapDataService() {
 USMapDataService.prototype.getUSTopology = function(onDataReady, map) {
 
   // load US topology with land, state, and counties boundaries
-  console.log('USMapDataService::getUSTopology::loading ../data/us.json...');  
+  console.log('USMapDataService::getUSTopology::loading ../data/us.json...');
   d3.json('../data/us.json', function(error, usTopology) {
     if (error) {
       console.error(error);
       throw error;
     }
-
-    // save it for state counties geo data load and topojson mapping later
-    this.usTopology = usTopology;
-
     // update map comp.
     onDataReady(usTopology, map);
   });
@@ -44,7 +32,7 @@ USMapDataService.prototype.getUSTopology = function(onDataReady, map) {
  * Gets US counties FIPS codes and names from ../data/us-counties.json file
  * for zoom to state counties data load and graphs display later.
  */
-USMapDataService.prototype.getUSCounties = function(onDataReady, map) {
+USMapDataService.prototype.getUSCounties = function(usTopology, onDataReady, map) {
 
   // load US counties data
   console.log('USMapDataService::getUSCounties::loading ../data/us-counties.json...');
@@ -70,7 +58,7 @@ USMapDataService.prototype.getUSCounties = function(onDataReady, map) {
           topology: {
             type: 'GeometryCollection',
             // copy bounding box from us counties topojson
-            bbox: this.usTopology.objects.counties.bbox,
+            bbox: usTopology.objects.counties.bbox,
             geometries: []
           }
         };
@@ -87,10 +75,54 @@ USMapDataService.prototype.getUSCounties = function(onDataReady, map) {
       Object.keys(stateCounties).length );
     //console.log(stateCounties);
 
-    // save it for state counties topojson inject/mapping later
-    this.stateCounties = stateCounties;
-
     // update map comp.
     onDataReady(stateCounties, map);
   });
+} // end of getUSCounties()
+
+
+
+/**
+ * Gets state counties topology from usTopology
+ * for plotting state counties paths on state click.
+ */
+USMapDataService.prototype.getStateCountiesTopology = 
+  function(usTopology, stateCounties, stateCode) {
+  if (stateCounties[stateCode].topology.geometries.length > 0) {
+    // state counties topology already loaded
+    return stateCounties[stateCode].topology;
+  }
+
+  // create state counties geometry collection
+  var countyKeys = Object.keys(stateCounties[stateCode].counties);
+  console.log('USMapDataService::getStateCountiesTopology::creating ' + stateCode +
+    ' counties topology...'); // for: ' + countyKeys);
+  //console.log(stateCounties[stateCode].counties);  
+  //console.log(usTopology.objects.counties.geometries);
+
+  // lazy load state counties geometries from us topology geo data
+  var county;
+  var countyGeo;  
+  var countiesGeo = usTopology.objects.counties.geometries; 
+  for (var i=0; i < countiesGeo.length; i++) {
+    // get county geo data
+    countyGeo = countiesGeo[i];
+    //console.log(countyGeo.id);
+
+    // look up county info
+    county = stateCounties[stateCode].counties[countyGeo.id]; 
+    if (county !== null && county !== undefined) {
+      // set county geo data properties for tooltip display
+      countyGeo.properties = county;
+      // add it to the state counties topology geometries
+      stateCounties[stateCode].topology.geometries.push(countyGeo); 
+      //console.log(countyGeo);
+    }
+  }
+
+  console.log('USMapDataService::getStateCountiesTopology::created ' + 
+    stateCode + ' counties topology!');
+  //console.log(stateCounties[stateCode].topology);
+
+  return stateCounties[stateCode].topology;
 }

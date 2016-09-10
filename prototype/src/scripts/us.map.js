@@ -1,7 +1,7 @@
 /**
- * US map d3.
+ * d3 v.4 US map UI component.
  **/ 
-function USMap(window, margin) {
+function USMap(usMapDataService, window, margin) {
 
   // save window ref for map sizing
   this.window = window;
@@ -20,7 +20,7 @@ function USMap(window, margin) {
 
   // us map data service for getting all us states 
   // and regions geo data, names and codes for plotting the map 
-  this.usMapDataService = new USMapDataService();
+  this.usMapDataService = usMapDataService;
 
   // US topology TopoJSON with land, states, and all counties
   this.usTopology = {};
@@ -176,7 +176,9 @@ USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {
   //console.log(usTopology);
 
   // get US counties data
-  map.usMapDataService.getUSCounties(map.onUSCountiesLoaded, map);
+  map.usMapDataService.getUSCounties(
+    map.usTopology,
+    map.onUSCountiesLoaded, map);
 
   // draw states map
   //this.drawStates(this);  
@@ -438,7 +440,9 @@ USMap.prototype.drawCounties = function (stateCode, map){
   console.log('USMap::drawCounties::' + stateCode + 
     ' counties: ' + Object.keys(this.stateCounties[stateCode].counties).length );
 
-  var stateCountiesTopology = this.getStateCountiesTopology(stateCode);
+  var stateCountiesTopology = 
+    this.usMapDataService.getStateCountiesTopology(
+      this.usTopology, this.stateCounties, stateCode);
 
   // draw selected state counties
   //console.log(this.usTopology.objects.counties);
@@ -477,49 +481,6 @@ USMap.prototype.drawCounties = function (stateCode, map){
   console.log('USMap::drawCounties::' + stateCode +  ' county paths added to DOM!');
 
 } // end of drawCounties ()
-
-
-/**
- * Gets state counties topology for display on state click.
- */
-USMap.prototype.getStateCountiesTopology = function(stateCode) {
-  if (this.stateCounties[stateCode].topology.geometries.length > 0) {
-    return this.stateCounties[stateCode].topology;
-  }
-
-  // create state counties geometry collection
-  var countyKeys = Object.keys(this.stateCounties[stateCode].counties);
-  console.log('USMap::getStateCountiesTopology::creating ' + stateCode +
-    ' counties topology...'); // for: ' + countyKeys);
-  //console.log(this.stateCounties[stateCode].counties);  
-  //console.log(this.usTopology.objects.counties.geometries);
-
-  // lazy load state counties geometries from us topology geo data
-  var county;
-  var countyGeo;  
-  var countiesGeo = this.usTopology.objects.counties.geometries; 
-  for (var i=0; i < countiesGeo.length; i++) {
-
-    // get county geo data
-    countyGeo = countiesGeo[i];
-    //console.log(countyGeo.id);
-
-    // look up county info
-    county = this.stateCounties[stateCode].counties[countyGeo.id]; 
-    if (county !== null && county !== undefined) {
-      // set county geo data properties for tooltip display
-      countyGeo.properties = county;
-      // add it to the state counties topology geometries
-      this.stateCounties[stateCode].topology.geometries.push(countyGeo); 
-      //console.log(countyGeo);
-    }
-  }
-
-  console.log('USMap::getStateCountiesTopology::created ' + stateCode + ' counties topology!');
-  //console.log(this.stateCounties[stateCode].topology);
-
-  return this.stateCounties[stateCode].topology;
-}
 
 
 /**
