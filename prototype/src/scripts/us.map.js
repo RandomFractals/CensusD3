@@ -193,8 +193,8 @@ USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {
   map.usTopology = usTopology;
   //console.log(Object.keys(map));
 
-  // load counties data
-  map.loadUSCounties(map);
+  // get US counties data
+  map.getUSCounties(map);
 
   // draw states map
   //this.drawStates(this);  
@@ -202,18 +202,18 @@ USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {
 
 
 /**
- * Loads US counties FIPS codes and names from ../data/us-counties.json file
+ * Gets US counties FIPS codes and names from ../data/us-counties.json file
  * for zoom to state counties data load and graphs display later.
  */
-USMap.prototype.loadUSCounties = function(map) {
-  console.log('USMap::loadUSCounties::loading ../data/us-counties.json...');
+USMap.prototype.getUSCounties = function(map) {
+  console.log('USMap::getUSCounties::loading ../data/us-counties.json...');
 
   // load US counties data
   d3.json('../data/us-counties.json', function(error, usCounties) {
 
     if (error) {
       console.error(error);
-      // TODO: show error message
+      // TODO: show error message ???
       throw error;
     }
 
@@ -237,7 +237,7 @@ USMap.prototype.loadUSCounties = function(map) {
             geometries: []
           }
         };
-        console.log('USMap::loadUSCounties::adding counties for state: ' + state);
+        //console.log('USMap::getUSCounties::adding counties for state: ' + state);
       }
       // set county id and add it to the state counties collection
       usCounties[countyId].id = countyId;
@@ -245,8 +245,8 @@ USMap.prototype.loadUSCounties = function(map) {
       countyCount++;
     }
 
-    console.log('USMap::loadUSCounties::loaded county states: ' + Object.keys(stateCounties).length );
-    console.log('USMap::loadUSCounties::loaded counties: ' + countyCount);
+    console.log('USMap::getUSCounties::loaded counties: ' + countyCount);
+    console.log('USMap::getUSCounties::loaded county states: ' + Object.keys(stateCounties).length );
     console.log(stateCounties);
 
     // save loaded state counties data
@@ -505,11 +505,11 @@ USMap.prototype.drawCounties = function (stateCode, map){
   var stateCountiesTopology = this.getStateCountiesTopology(stateCode);
 
   // draw selected state counties
-  console.log(this.usTopology.objects.counties);
+  //console.log(this.usTopology.objects.counties);
   this.g.selectAll('path')
         .data( 
-          topojson.feature(this.usTopology, //stateCountiesTopology).features ) 
-            this.usTopology.objects.counties).features ) // to show all counties
+          topojson.feature(this.usTopology, stateCountiesTopology).features ) 
+            //this.usTopology.objects.counties).features ) // to show all counties
         .enter().append('path')
         .attr('d', this.geoPath)
         .attr('class', 'county')
@@ -532,7 +532,7 @@ USMap.prototype.getStateCountiesTopology = function(stateCode) {
 
   // create state counties geometry collection
   var countyKeys = Object.keys(this.stateCounties[stateCode].counties);
-  console.log('USMap::getStateCountiesGeo::creating counties geo data for: ' + countyKeys);
+  console.log('USMap::getStateCountiesTopology::creating counties topology for: ' + countyKeys);
   //console.log(this.stateCounties[stateCode].counties);  
   //console.log(this.usTopology.objects.counties.geometries);
 
@@ -557,7 +557,8 @@ USMap.prototype.getStateCountiesTopology = function(stateCode) {
     }
   }
 
-  //console.log(this.stateCounties[stateCode]);
+  console.log('USMap::getStateCountiesTopology::created counties topology for: ' + stateCode);
+  console.log(this.stateCounties[stateCode].topology);
 
   return this.stateCounties[stateCode].topology;
 }
