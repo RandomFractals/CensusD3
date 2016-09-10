@@ -175,6 +175,7 @@ USMap.prototype.loadUSTopology = function(map) {
     map.usTopology = usTopology;
 
     console.log('USMap::loadUSTopology::us.json topology loaded!');
+    console.log(usTopology);
   });
 }
 
@@ -344,7 +345,7 @@ USMap.prototype.drawStates = function (map){
             // reset to zoom out on active region click
             return map.reset();
           }
-          map.onClick(d, i, this); // selected region
+          map.onStateClick(d, i, this); // selected region
         });
 
   // create state labels
@@ -410,9 +411,9 @@ USMap.prototype.drawStateCapitals = function(map) {
 
 
 /**
- * d3 path click event handler.
+ * State path click event handler.
  */
-USMap.prototype.onClick = function (d, i, region) {
+USMap.prototype.onStateClick = function (d, i, region) {
 
   // toggle active region selection
   this.active.classed('active', false);
@@ -425,6 +426,8 @@ USMap.prototype.onClick = function (d, i, region) {
 
   // update region data panel
   this.regionTitle.text(d.properties.name);
+  console.log('USMap::onStateClick::selected state: ' + d.properties.code + 
+    ' counties: ' + this.stateCounties[d.properties.code].length);
 
   // get selected region bounds
   var bounds = this.geoPath.bounds(d),
