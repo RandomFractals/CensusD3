@@ -343,11 +343,11 @@ USMap.prototype.drawStates = function (map){
 
   // create states paths
   console.log('USMap::drawStates::creating state paths...');
-  this.g.selectAll('path')
+  this.g.selectAll('.state')
         .data( map.statesGeoData )
         .enter().append('path')
         .attr('d', this.geoPath)
-        .attr('class', 'feature')
+        .attr('class', 'feature state')
         .attr('id', function(d) {
           return 'state-' + d.id
         })         
@@ -506,7 +506,7 @@ USMap.prototype.drawCounties = function (stateCode, map){
 
   // draw selected state counties
   //console.log(this.usTopology.objects.counties);
-  this.g.selectAll('path')
+  this.g.selectAll('.county')
         .data( 
           topojson.feature(this.usTopology, stateCountiesTopology).features ) 
             //this.usTopology.objects.counties).features ) // to show all counties
@@ -515,7 +515,21 @@ USMap.prototype.drawCounties = function (stateCode, map){
         .attr('class', 'county')
         .attr('id', function(d) {
           return 'county-' + d.properties.id;
-        })         
+        })
+        .on('mouseover', function(d, i) {
+          // show map tooltip
+          map.tooltip.transition()
+              .duration(200)      
+              .style("opacity", .9);
+
+          // display state name in tooltip
+          map.tooltip.text( d.properties.name )
+              .style("left", (d3.event.pageX) + "px")     
+              .style("top", (d3.event.pageY - 28) + "px");
+
+          //d3.event.stopPropagation();         
+        })
+                 
 
   console.log('USMap::drawCounties::' + stateCode +  ' county paths added to DOM!');
 
