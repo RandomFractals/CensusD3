@@ -78,7 +78,8 @@ div.tooltip {
 .county {
   fill: #fff;
   fill-opacity: .1;
-  stroke-width: .5px;
+  stroke: #666;
+  stroke-width: .2px;
 }
 
 
