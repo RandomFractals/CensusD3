@@ -372,7 +372,8 @@ USMap.prototype.drawStates = function (map){
                 "</span>" 
               )
               .style("left", (d3.event.pageX) + "px")     
-              .style("top", (d3.event.pageY - 28) + "px");            
+              .style("top", (d3.event.pageY - 28) + "px")
+              .style('height', '36px');         
         })
         .on('click', function(d, i) {
           if (map.active.node() === this) {
@@ -432,14 +433,16 @@ USMap.prototype.drawStateCapitals = function(map) {
           // display state capital name in tooltip
           map.tooltip.text(d.capital)
               .style("left", (d3.event.pageX) + "px")     
-              .style("top", (d3.event.pageY - 28) + "px");  
-        }) /*
+              .style("top", (d3.event.pageY - 28) + "px")
+              .style('height', '16px'); 
+        }); /* 
         .on('click', function(d) {
           if (map.active.node() === this) {
             // reset to zoom out on active region click
             return map.reset();
           }
-          map.onClick(d, this); // selected region
+          // TODO: implement city click
+          map.onCityClick(d, this); // selected city
         });*/        
 } // end of drawStateCapitals()
 
@@ -525,7 +528,8 @@ USMap.prototype.drawCounties = function (stateCode, map){
           // display state name in tooltip
           map.tooltip.text( d.properties.name )
               .style("left", (d3.event.pageX) + "px")     
-              .style("top", (d3.event.pageY - 28) + "px");
+              .style("top", (d3.event.pageY - 28) + "px")
+              .style('height', '16px');
 
           //d3.event.stopPropagation();         
         })
