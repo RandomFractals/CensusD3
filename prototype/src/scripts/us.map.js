@@ -1,13 +1,19 @@
 /**
  * d3 v.4 US map UI component.
  **/ 
-function USMap(usMapDataService, statusBar, window, margin) {
+function USMap(usMapDataService, statusBar, dataPanel, window) {
+
+  // status bar for app messages display
+  this.statusBar = statusBar;
+
+  // data panel for geo data text ang graphs display
+  this.dataPanel = dataPanel;
 
   // save window ref for map sizing
   this.window = window;
 
   // data side panel margin for map resize
-  this.margin = margin;
+  this.margin = this.dataPanel.width;
 
   // size to window - data panel margin
   this.width = window.innerWidth - this.margin; // 720
@@ -17,9 +23,6 @@ function USMap(usMapDataService, statusBar, window, margin) {
 
   // map scale for default 720x480 usa map size
   this.scale = 800;
-
-  // status bar for app messages display
-  this.statusBar = statusBar;
 
   // us map data service for getting all us states 
   // and regions geo data, names and codes for plotting the map 
@@ -75,17 +78,6 @@ function USMap(usMapDataService, statusBar, window, margin) {
 		  .append("div")   
     	.attr("class", "tooltip")               
     	.style("opacity", 0);
-
-  // region name section title ref 
-  this.regionTitle = d3.select('#regionTitle');
-
-  // region image ref
-  this.regionImage = d3.select('#regionImage');
-
-  // region data section refs 
-  this.regionData = d3.select('#regionData');
-  this.populationData = d3.select('#populationData');
-  this.houseSeatsData = d3.select('#houseSeatsData');
 
   // create Albers USA map projection
   this.projection = d3.geoAlbersUsa()
@@ -223,17 +215,14 @@ USMap.prototype.onStateCapitalsLoaded = function(statesCapitals, map) {
 
 
 /**
- * Loads US population data from ../data/us-population.json.
+ * USA population data load complete handler.
  */
 USMap.prototype.onUSPopulationDataLoaded = function(usPopulation, map) {
   map.usPopulation = usPopulation;
   console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
     map.usPopulation.states.length);
 
-  // update app status bar with USA total pop data
-  map.statusBar.update('USA', 'population:', usPopulation.total);
-
-  // update app data panel
+  // reset region data display to total USA data stats
   map.resetRegionData();
 }
 
@@ -416,9 +405,8 @@ USMap.prototype.onStateClick = function (d, i, region) {
 
 
 /**
- * Updates region data panel and msg bar to state data stats + flag.
- * 
- * TODO: move it to us.data.panel.js
+ * Updates region data panel and 
+ * app msg bar to state data stats + flag.
  */
 USMap.prototype.updateRegionData = function (d, i){
   console.log('USMap::updateRegionData: ' + d.properties.name);
@@ -428,17 +416,12 @@ USMap.prototype.updateRegionData = function (d, i){
     'population: ', 
     this.usPopulation.states[i][0] ); // state pop count
 
-  // update region data panel flag images
-  var regionFlag = '../images/flags/' +
-    d.properties.name.split(' ').join('_') + '.svg.png';     
-  this.regionImage.attr('src', regionFlag);
-
-  // show current state population data for now  
-  this.populationData.text(
-    this.numberFormat( this.usPopulation.states[i][0] ) );
-
-  // show state house seats count
-  this.houseSeatsData.text(d.properties.houseSeats);
+  // update data panel with state pop and house seats for now
+  this.dataPanel.update(d.properties.name, { // state name 
+      // list data
+      population: this.usPopulation.states[i][0], 
+      house_seats: d.properties.houseSeats
+    }, this.usPopulation.states); // all states graph data for now  
 }
 
 
@@ -526,26 +509,18 @@ USMap.prototype.reset = function() {
 
 /**
  * Resets region data panel and msg bar to USA stats + flags.
- * 
- * TODO: move it to us.data.panel.js
  */
-USMap.prototype.resetRegionData = function (){
+USMap.prototype.resetRegionData = function () {
   console.log('USMap::resetRegionData');
 
   // update app status bar with us pop info
   this.statusBar.update('USA', 'population: ', this.usPopulation.total)
 
-  // reset region flag image
-  var regionFlag = '../images/flags/USA.svg.png';   
-  this.regionImage.attr('src', regionFlag);
-
-  // reset region title
-  this.regionTitle.text('USA');
-
-  // show us pop and total number of house seats for now
-  this.populationData.text(
-    this.numberFormat( this.usPopulation.total) );
-  this.houseSeatsData.text(this.houseSeats);  
+  // update data panel with total us pop and house seats for now
+  this.dataPanel.update('USA', { // list data
+      population: this.usPopulation.total, 
+      house_seats: this.houseSeats
+    }, this.usPopulation.states); // graph data  
 }
 
 

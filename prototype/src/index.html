@@ -12,7 +12,8 @@
     <script src="//d3js.org/d3-tile.v0.0.min.js"></script>
     <script src="scripts/us.map.app.js"></script>         
     <script src="scripts/us.map.data.service.js"></script>
-    <script src="scripts/status.bar.js"></script>                
+    <script src="scripts/status.bar.js"></script>
+    <script src="scripts/data.panel.js"></script>                    
     <script src="scripts/us.map.js"></script>
   </head>
   <body>      
@@ -32,16 +33,18 @@
       <div id="map" class="left"></div>
       <div id="data" class="right">
         <div class="region-title">
-          <img id="regionImage" height="18" src="../images/flags/USA.svg.png" />
-          <span id="regionTitle" class="section-title">select state</span>
+          <img id="dataImage" height="18" src="../images/flags/USA.svg.png" />
+          <span id="dataTitle" class="section-title">select state</span>
         </div>
         <hr />
-        <div id="regionData" class="section-data">
+        <div id="dataList" class="section-data">
             population: <span id="populationData" class="data-text"></span>
             <br />
             house seats: <span id="houseSeatsData" class="data-text"></span>            
         </div>
-        [todo: show historical population data graph]        
+        <div id="dataGraph" class="graph">
+          [todo: show historical population data graph for a starter]
+        </div>        
       </div>
     </div>
     <!-- footer -->
