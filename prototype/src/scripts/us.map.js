@@ -77,7 +77,7 @@ function USMap(usMapDataService, window, margin) {
   this.message = d3.select('#message');
 
   // region name section title ref 
-  this.regionTitle = d3.select('#region');
+  this.regionTitle = d3.select('#regionTitle');
 
   // region data section refs 
   this.regionData = d3.select('#regionData');
@@ -249,7 +249,7 @@ USMap.prototype.onWindowResize = function() {
 
   // update map containter width
   this.width = this.window.innerWidth;
-  
+
   // TODO: update constructor and redraw to make this work properly
   drawStates(this);
 }
