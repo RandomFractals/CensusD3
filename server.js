@@ -6,5 +6,5 @@ var path = require('path');
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'prototype/src')));
 
-app.listen(8000);
+app.listen(process.env.PORT || 8000);
 console.log('Listening on port 8000');
