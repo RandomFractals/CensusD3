@@ -376,9 +376,6 @@ USMap.prototype.onStateClick = function (d, i, region) {
   // show state population data for now
   this.updateRegionData(d, i);
 
-  // update region data panel
-  this.regionTitle.text(d.properties.name);
-
   // get selected region bounds
   var bounds = this.geoPath.bounds(d),
       dx = bounds[1][0] - bounds[0][0],
