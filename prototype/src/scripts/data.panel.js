@@ -26,6 +26,7 @@ function DataPanel() {
  * data list and data graph with the selection region
  * or census data type geo data.
  */
+DataPanel.prototype.update = function (title, listData, graphData){
   console.log('DataPanel::update', listData, graphData);
 
   // update data section title
