@@ -11,7 +11,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js"></script>
     <script src="//d3js.org/d3-tile.v0.0.min.js"></script>
     <script src="scripts/us.map.app.js"></script>         
-    <script src="scripts/us.map.data.service.js"></script>            
+    <script src="scripts/us.map.data.service.js"></script>
+    <script src="scripts/status.bar.js"></script>                
     <script src="scripts/us.map.js"></script>
   </head>
   <body>      
@@ -21,7 +22,7 @@
 	</div>
     <!-- status bar -->
     <div id=status-bar>
-      <img id="messageImage" height="18" src="../images/flags/USA.png" />
+      <img id="messageImage" height="18" src="../images/flags/USA.svg.png" />
       <span id="messageTitle" class="section-title">select state:</span>
       <span id="message" class="info"></span>
       <span id="messageNumber" class="data-text"></span>
@@ -31,7 +32,7 @@
       <div id="map" class="left"></div>
       <div id="data" class="right">
         <div class="region-title">
-          <img id="regionImage" height="18" src="../images/flags/USA.png" />
+          <img id="regionImage" height="18" src="../images/flags/USA.svg.png" />
           <span id="regionTitle" class="section-title">select state</span>
         </div>
         <hr />
