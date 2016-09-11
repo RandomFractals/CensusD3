@@ -9,9 +9,9 @@ function USMapDataService() {
 
 
 /**
- * Gets US topology from ../data/us.json topoJSON file
+ * Gets 642Kb US topology from ../data/us.json topoJSON file
  * with land, state, and counties boundaries
- * for zoom to state counties data load and graphs display later.
+ * for zoom to state counties map display.
  */
 USMapDataService.prototype.getUSTopology = function(onDataReady, map) {
 
@@ -24,6 +24,22 @@ USMapDataService.prototype.getUSTopology = function(onDataReady, map) {
     }
     // update map comp.
     onDataReady(usTopology, map);
+  });
+}
+
+
+
+/**
+ * Gets light 90+kb ../data/us-states.json geo data
+ * for initial usa states map display.
+ */
+USMapDataService.prototype.getStatesGeoData = function(onDataReady, map) {
+  console.log('USMapDataService::getStatesGeoData::loading ../data/us-states.json...');  
+  d3.json('../data/us-states.json', function(statesGeoData) {
+    console.log('USMapDataService::getStatesGeoData::loaded states geo data: ' + 
+      statesGeoData.features.length);   
+    // update map comp.
+    onDataReady(statesGeoData.features, map);
   });
 }
 

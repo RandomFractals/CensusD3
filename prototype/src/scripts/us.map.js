@@ -146,9 +146,9 @@ function USMap(usMapDataService, window, margin) {
 
   // load us data async with d3 queue
   var q = d3.queue();
-  q.defer(this.usMapDataService.getUSTopology, this.onUSTopologyLoaded, this);  
-  q.defer(this.loadUSPopulationData, this);
-  q.defer(this.loadStatesGeoData, this);
+  q.defer(this.usMapDataService.getUSTopology, this.onUSTopologyLoaded, this);
+  q.defer(this.loadUSPopulationData, this);      
+  q.defer(this.usMapDataService.getStatesGeoData, this.onStatesGeoDataLoaded, this);
   // TODO: merge with states geo data ???  
   q.defer(this.loadStateCapitals, this);
   q.awaitAll( function(error) {
@@ -195,6 +195,19 @@ USMap.prototype.onUSCountiesLoaded = function(stateCounties, map) {
 }
 
 
+
+/**
+ * Loads light 86kb ../data/us-states.json geo data
+ * for initial usa map display.
+ */
+USMap.prototype.onStatesGeoDataLoaded = function(statesGeoData, map) {
+  map.statesGeoData = statesGeoData;
+  console.log('USMap::onStatesGeoData::states geo json loaded!');
+  // show states
+   map.drawStates(map);   
+}
+
+
 /**
  * Loads US population data from ../data/us-population.json.
  */
@@ -216,23 +229,6 @@ USMap.prototype.loadUSPopulationData = function(map) {
 
     console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
       map.usPopulation.states.length);   
-  });
-}
-
-
-/**
- * Loads light 86kb ../data/us-states.json geo data
- * for initial usa map display.
- */
-USMap.prototype.loadStatesGeoData = function(map) {
-  console.log('USMap::loadStatesGeoData::loading ../data/us-states.json...');
-  
-  d3.json('../data/us-states.json', function(statesGeoData) {
-    map.statesGeoData = statesGeoData.features;
-    console.log('USMap::loadStatesGeoData::loaded states geo data: ' + map.statesGeoData.length);   
-
-    // show states
-    map.drawStates(map);   
   });
 }
 
