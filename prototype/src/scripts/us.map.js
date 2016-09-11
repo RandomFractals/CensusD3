@@ -73,12 +73,18 @@ function USMap(usMapDataService, window, margin) {
     	.attr("class", "tooltip")               
     	.style("opacity", 0);
 
+  // app message image ref.
+  // TODO: add /images/message/info, warning, error
+  this.messageImage = d3.select('#messageImage');
+
+  // message title: region name, or info, warning, error
+  this.messageTitle = d3.select('#messageTitle');
+
   // app status message ref
   this.message = d3.select('#message');
 
-  // app message image ref.
-  // TODO: add /images/message/info, warning, error, etc.
-  this.messageImage = d3.select('#messageImage');
+  // message number UI ref.
+  this.messageNumber = d3.select('#messageNumber');
 
   // region name section title ref 
   this.regionTitle = d3.select('#regionTitle');
@@ -239,10 +245,7 @@ USMap.prototype.onUSPopulationDataLoaded = function(usPopulation, map) {
     map.numberFormat(usPopulation.total) + '</span>');
 
   // update app data panel
-  map.regionTitle.text('USA');
-  map.populationData.text(
-    map.numberFormat( map.usPopulation.total) );
-  map.houseSeatsData.text(map.houseSeats);
+  map.resetRegionData();
 }
 
 
@@ -434,11 +437,12 @@ USMap.prototype.updateRegionData = function (d, i){
   var regionFlag = '../images/flags/' +
     d.properties.name.split(' ').join('_') + '.svg.png';
 
-  // update region flag image   
+  // update state bar and region data panel flag images   
   this.regionImage.attr('src', regionFlag);
-
-  // update msg flag image
   this.messageImage.attr('src', regionFlag);
+  this.messageTitle.text(d.properties.name); // state name
+  this.messageNumber.text(
+    this.numberFormat( this.usPopulation.states[i][0] ) );
 
   // show current state population data for now  
   this.populationData.text(
@@ -546,11 +550,17 @@ USMap.prototype.resetRegionData = function (){
   // update msg flag image
   this.messageImage.attr('src', regionFlag);
 
-  // update app data panel with total US pop data
+  // update msg and data panel with total US pop data
+  this.messageTitle.text('USA');  
   this.regionTitle.text('USA');
+
   this.populationData.text(
     this.numberFormat( this.usPopulation.total) );
   this.houseSeatsData.text(this.houseSeats);
+
+  // update USA total pop app message
+  this.message.text('population:');
+  this.messageNumber.text( this.numberFormat(this.usPopulation.total) );  
 }
 
 
