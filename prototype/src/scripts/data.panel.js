@@ -1,7 +1,10 @@
 /**
  * App data panel UI component.
  **/ 
-function DataPanel() {
+function DataPanel(width) {
+
+  // fixed data panel width
+  this.width = width;
 
   // data section title ref 
   this.dataTitle = d3.select('#dataTitle');
