@@ -239,6 +239,8 @@ USMap.prototype.onUSPopulationDataLoaded = function(usPopulation, map) {
 }
 
 
+/**------------ USA Map Draw/Click/Zoom/Reset Methods -----------------------*/
+
 /**
  * Updates map svg width on window resize.
  */
@@ -247,12 +249,11 @@ USMap.prototype.onWindowResize = function() {
 
   // update map containter width
   this.width = this.window.innerWidth;
+  
   // TODO: update constructor and redraw to make this work properly
   drawStates(this);
 }
 
-
-/**------------ USA Map Draw/Click/Zoom/Reset Methods -----------------------*/
 
 /**
  * Draws US map with interactive states
