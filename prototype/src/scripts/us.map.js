@@ -197,8 +197,7 @@ USMap.prototype.onUSCountiesLoaded = function(stateCounties, map) {
 
 
 /**
- * Loads light 86kb ../data/us-states.json geo data
- * for initial usa map display.
+ * Displays loaded us states geo data.
  */
 USMap.prototype.onStatesGeoDataLoaded = function(statesGeoData, map) {
   map.statesGeoData = statesGeoData;
