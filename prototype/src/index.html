@@ -21,7 +21,7 @@
 	<div id="tool-bar">
       <div class="title">census d3</div>
 	</div>
-    <!-- status bar -->
+    <!-- app status bar -->
     <div id=status-bar>
       <img id="messageImage" height="18" src="../images/flags/USA.svg.png" />
       <span id="messageTitle" class="section-title">select state:</span>
@@ -30,18 +30,23 @@
     </div>
     <!-- content -->
     <div id="content">
+      <!-- map content -->
       <div id="map" class="left"></div>
+      <!-- data panel -->
       <div id="data" class="right">
+        <!-- data panel title -->
         <div class="region-title">
           <img id="dataImage" height="18" src="../images/flags/USA.svg.png" />
           <span id="dataTitle" class="section-title">select state</span>
         </div>
         <hr />
+        <!-- data list -->
         <div id="dataList" class="section-data">
             population: <span id="populationData" class="data-text"></span>
             <br />
             house seats: <span id="houseSeatsData" class="data-text"></span>            
         </div>
+        <!-- data graphs -->
         <div id="dataGraph" class="graph">
           [todo: show historical population data graph for a starter]
         </div>        
