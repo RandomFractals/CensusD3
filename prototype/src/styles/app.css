@@ -115,7 +115,16 @@ span {
 
 .section-data {
   font-size: 12px;
-  padding: 10px;
+  padding: 0px;
+}
+
+ul {
+	margin: 5px;
+}
+
+ul li {
+	list-style-type: none;
+	margin: 5px;
 }
 
 .footer, .label {

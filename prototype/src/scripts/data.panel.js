@@ -25,6 +25,9 @@ function DataPanel(window) {
   // data list section ref 
   this.dataList = d3.select('#dataList');
 
+  // create list data display
+  this.list = this.dataList.append('ul');
+
   // data graph section ref 
   this.dataGraph = d3.select('#dataGraph');
 
@@ -61,7 +64,7 @@ DataPanel.prototype.onWindowResize = function() {
  * or census data type geo data.
  */
 DataPanel.prototype.update = function (title, listData, graphData){
-  console.log('DataPanel::update', listData, graphData);
+  console.log('DataPanel::update'); //, listData, graphData);
 
   // update data section title
   this.dataTitle.text(title);
@@ -70,8 +73,27 @@ DataPanel.prototype.update = function (title, listData, graphData){
   this.dataImage.attr('src', '../images/flags/' + 
     title.split(' ').join('_') + '.svg.png'); // convert spaces to _
 
-  // TODO: gen ul/li for list data display
-  this.dataList.text( JSON.stringify(listData) );
+  // create list data items for display
+  var dataItems = [];
+  var item;
+  for (var propertyName in listData) {
+    item = {id: propertyName, 
+      label: propertyName.split('_').join(' '),
+      data: this.numberFormat( listData[propertyName] )
+    };
+    dataItems.push(item)
+  }
+
+  this.list.selectAll('li').remove();
+  this.list.selectAll('li')
+    .data(dataItems)
+    .enter()
+    .append('li')
+    .attr('id', function(d, i) { return d.id; })
+    .attr('class', 'list-tem')
+    .html( function(d, i) {
+      return d.label + ': <span class="data-text">' + d.data + '</span>';
+    });
 
   // TODO: create data graph for graph data display
   this.dataGraph.text('[todo: create data.graph UI component]\n' +
