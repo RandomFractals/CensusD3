@@ -95,8 +95,8 @@ DataPanel.prototype.update = function (title, listData, graphData){
       return d.label + ': <span class="data-text">' + d.data + '</span>';
     });
 
-  // TODO: create data graph for graph data display
-  this.dataGraph.text('[todo: create data.graph UI component]\n' +
-    JSON.stringify(graphData) );
+  // TODO: create data graph for graph data display 
+  //this.dataGraph.text('[todo: create data.graph UI component]\n' +
+  //  JSON.stringify(graphData) );
 }
 
