@@ -76,8 +76,15 @@ function USMap(usMapDataService, window, margin) {
   // app status message ref
   this.message = d3.select('#message');
 
+  // app message image ref.
+  // TODO: add /images/message/info, warning, error, etc.
+  this.messageImage = d3.select('#messageImage');
+
   // region name section title ref 
   this.regionTitle = d3.select('#regionTitle');
+
+  // region image ref
+  this.regionImage = d3.select('#regionImage');
 
   // region data section refs 
   this.regionData = d3.select('#regionData');
@@ -386,9 +393,7 @@ USMap.prototype.onStateClick = function (d, i, region) {
   this.drawCounties(this.selectedStateCode, this);
 
   // show state population data for now
-  this.populationData.text(
-    this.numberFormat( this.usPopulation.states[i][0] ) );
-  this.houseSeatsData.text(d.properties.houseSeats);
+  this.updateRegionData(d, i);
 
   // update region data panel
   this.regionTitle.text(d.properties.name);
@@ -417,6 +422,26 @@ USMap.prototype.onStateClick = function (d, i, region) {
       .call(this.zoom.translate(translate).scale(scale).event);*/
 }
 
+
+/**
+ * Updates region data panel for now.
+ * 
+ * TODO: move it to us.data.panel.js
+ */
+USMap.prototype.updateRegionData = function (d, i){
+  console.log('USMap::updateRegionData: ' + d.properties.name);
+
+  // update region flag image src
+  this.regionImage.attr('src', '../images/flags/' +
+    d.properties.name.split(' ').join('_') + '.svg.png');
+
+  // show current state population data for now  
+  this.populationData.text(
+    this.numberFormat( this.usPopulation.states[i][0] ) );
+
+  // show state house seats count
+  this.houseSeatsData.text(d.properties.houseSeats);
+}
 
 /**
  * Draws selected state counties on state path click.

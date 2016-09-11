@@ -21,13 +21,17 @@
 	</div>
     <!-- status bar -->
     <div id=status-bar>
+      <img id="messageImage" height="18" src="../images/flags/USA.png" />
       <span id="message" class="info">select state:</span>
     </div>
     <!-- content -->
     <div id="content">
       <div id="map" class="left"></div>
       <div id="data" class="right">
-        <span id="regionTitle" class="section-title">select state</span>
+        <div class="region-title">
+          <img id="regionImage" height="18" src="../images/flags/USA.png" />
+          <span id="regionTitle" class="section-title">select state</span>
+        </div>
         <hr />
         <div id="regionData" class="section-data">
             population: <span id="populationData" class="data-text"></span>
