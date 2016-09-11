@@ -10,7 +10,7 @@ function USMapApp(window) {
   this.statusBar = new StatusBar();
 
   // create data panel for census data and graphs display
-  this.dataPanel = new DataPanel(264); // fixed panel width
+  this.dataPanel = new DataPanel(window); 
 
   // create us map
   this.map = new USMap( new USMapDataService(), // for map geo data

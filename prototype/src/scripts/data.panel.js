@@ -1,10 +1,20 @@
 /**
  * App data panel UI component.
  **/ 
-function DataPanel(width) {
+function DataPanel(window) {
+
+  // save window ref. for panel sizing on window resize
+  this.window = window;
 
   // fixed data panel width
-  this.width = width;
+  this.width = 264;
+
+  // fixed data panel top + bottom margin
+  // for app toolbar, status bar, and footer content
+  this.margin = 80;
+
+  // data panel container ref for sizing on window resize
+  this.dataPanel = d3.select('#data');
 
   // data section title ref 
   this.dataTitle = d3.select('#dataTitle');
@@ -21,7 +31,28 @@ function DataPanel(width) {
   // number format for display
   this.numberFormat = d3.format(',');
 
+  // update data panel height
+  this.dataPanel.attr('height', this.window.innerHeight - this.margin);
+
+  // add window resize event handler
+  this.window.addEventListener('resize', this.onWindowResize);
+
 } // end of DataPanel() constructor
+
+
+
+/**
+ * Updates data panel and graphs section height on window resize.
+ */
+DataPanel.prototype.onWindowResize = function() {
+  console.log('DataPanel::onWindowResize::height: ' + this.window.innerHeight);
+
+  // update data panel containter height
+  this.dataPanel.attr('height', this.window.innerHeight - this.margin);
+
+  // TODO: redraw graphs when they are added
+  // this.drawGraph()
+}
 
 
 /**
