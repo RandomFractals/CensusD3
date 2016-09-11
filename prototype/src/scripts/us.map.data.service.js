@@ -30,7 +30,24 @@ USMapDataService.prototype.getUSTopology = function(onDataReady, map) {
 }
 
 
-/**--------------------------- States Geo Date Methods ---------------------------------*/
+
+/**
+ * Gets the latest US population data from ../data/us-population.json.
+ */
+USMapDataService.prototype.getUSPopulationData = function(onDataReady, map) {
+  console.log('USMapDataService::getUSPopulationData::loading ../data/us-population.json...');
+  d3.json('../data/us-population.json', function(error, usPopulation) {
+    if (error) {
+      console.error(error);
+      throw error;
+    }    
+    // update map comp.
+    onDataReady(usPopulation, map);
+  });
+}
+
+
+/**---------------------- USA States Geo Data Methods ----------------------------------*/
 
 /**
  * Gets light 90+kb ../data/us-states.json geo data
@@ -64,7 +81,7 @@ USMapDataService.prototype.getStateCapitals = function(onDataReady, map) {
 }
 
 
-/**------------------------ Counties Geo Data Methods ------------------------------- */
+/**-------------------- USA Counties Geo Data Methods -------------------------------- */
 
 /**
  * Gets US counties FIPS codes and names from ../data/us-counties.json file

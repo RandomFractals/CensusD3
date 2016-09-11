@@ -144,10 +144,10 @@ function USMap(usMapDataService, window, margin) {
   // show loading data message
   this.message.text('loading USA map data...');
 
-  // load us data async with d3 queue
+  // load us geo and pop data async with d3 queue
   var q = d3.queue();
   q.defer(this.usMapDataService.getUSTopology, this.onUSTopologyLoaded, this);
-  q.defer(this.loadUSPopulationData, this);      
+  q.defer(this.usMapDataService.getUSPopulationData, this.onUSPopulationDataLoaded, this);      
   q.defer(this.usMapDataService.getStatesGeoData, this.onStatesGeoDataLoaded, this);
   // TODO: merge with states geo data ???  
   q.defer(this.usMapDataService.getStateCapitals, this.onStateCapitalsLoaded, this);
@@ -165,6 +165,8 @@ function USMap(usMapDataService, window, margin) {
 
 } // end of USMap() constructor
 
+
+/**----------- USA States and Counties Geo Data Load Event Handlers ------------------- */
 
 /**
  * US topology data load complete handler.
@@ -208,7 +210,7 @@ USMap.prototype.onStatesGeoDataLoaded = function(statesGeoData, map) {
 
 
 /**
- * State capitals data load event handler.
+ * State capitals data load complete handler.
  */
 USMap.prototype.onStateCapitalsLoaded = function(statesCapitals, map) {
   map.stateCapitals = statesCapitals;
@@ -220,25 +222,20 @@ USMap.prototype.onStateCapitalsLoaded = function(statesCapitals, map) {
 /**
  * Loads US population data from ../data/us-population.json.
  */
-USMap.prototype.loadUSPopulationData = function(map) {
-  console.log('USMap::loadUSPopulationData::loading ../data/us-population.json...');
-  d3.json('../data/us-population.json', function(usPopulation) {
-    // save us population data
-    map.usPopulation = usPopulation;
+USMap.prototype.onUSPopulationDataLoaded = function(usPopulation, map) {
+  map.usPopulation = usPopulation;
+  console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
+    map.usPopulation.states.length);
 
-    // update app message
-    map.message.html('USA population: <span class="data-text">' + 
-      map.numberFormat(usPopulation.total) + '</span>');
+  // update USA total pop app message
+  map.message.html('USA population: <span class="data-text">' + 
+    map.numberFormat(usPopulation.total) + '</span>');
 
-    // update app data panel
-    map.regionTitle.text('USA');
-    map.populationData.text(
-      map.numberFormat( map.usPopulation.total) );
-    map.houseSeatsData.text(map.houseSeats);
-
-    console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
-      map.usPopulation.states.length);   
-  });
+  // update app data panel
+  map.regionTitle.text('USA');
+  map.populationData.text(
+    map.numberFormat( map.usPopulation.total) );
+  map.houseSeatsData.text(map.houseSeats);
 }
 
 
@@ -254,6 +251,8 @@ USMap.prototype.onWindowResize = function() {
   drawStates(this);
 }
 
+
+/**------------ USA Map Draw/Click/Zoom/Reset Methods -----------------------*/
 
 /**
  * Draws US map with interactive states
@@ -522,7 +521,7 @@ USMap.prototype.onZoom = function() {
 }
 
 
-/** -------------- Global SVG Scale/Transfrom/Click Methods ----------------------*/
+/** -------------- SVG Scale/Transfrom/Click Methods ----------------------*/
 
 /**
  * Scales region paths stroke width and labels on zoom in/out.
