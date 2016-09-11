@@ -8,6 +8,8 @@ function USMapDataService() {
 }
 
 
+/*-------------------------- USA Geo Data Methods --------------------------------------*/
+
 /**
  * Gets 642Kb US topology from ../data/us.json topoJSON file
  * with land, state, and counties boundaries
@@ -28,6 +30,7 @@ USMapDataService.prototype.getUSTopology = function(onDataReady, map) {
 }
 
 
+/**--------------------------- States Geo Date Methods ---------------------------------*/
 
 /**
  * Gets light 90+kb ../data/us-states.json geo data
@@ -43,6 +46,25 @@ USMapDataService.prototype.getStatesGeoData = function(onDataReady, map) {
   });
 }
 
+
+
+/**
+ * Gets state capitals data from ../data/us-state-capitals.csv.
+ */
+USMapDataService.prototype.getStateCapitals = function(onDataReady, map) {
+  // load state capital names and lat/longs; can append more data :)
+  console.log('USMapDataService::getStateCapitals::loading ../data/us-state-capitals.csv...');  
+  d3.csv('../data/us-state-capitals.csv')
+    .row( function(d) { 
+      return {state: d.state, capital: d.capital, 
+        latitude: +d.latitude, longitude: +d.longitude}; }) // + to convert to numbers :)
+    .get( function(error, capitalsData) {
+      onDataReady(capitalsData, map);
+  });
+}
+
+
+/**------------------------ Counties Geo Data Methods ------------------------------- */
 
 /**
  * Gets US counties FIPS codes and names from ../data/us-counties.json file

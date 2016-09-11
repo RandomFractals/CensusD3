@@ -46,7 +46,7 @@ function USMap(usMapDataService, window, margin) {
   this.stateCapitals = [];
 
   // state capitals display toggle
-  this.showStateCapitals = false;
+  this.showStateCapitals = true;
 
   // total USA house seats for elections data viz
   this.houseSeats = 435;
@@ -150,7 +150,7 @@ function USMap(usMapDataService, window, margin) {
   q.defer(this.loadUSPopulationData, this);      
   q.defer(this.usMapDataService.getStatesGeoData, this.onStatesGeoDataLoaded, this);
   // TODO: merge with states geo data ???  
-  q.defer(this.loadStateCapitals, this);
+  q.defer(this.usMapDataService.getStateCapitals, this.onStateCapitalsLoaded, this);
   q.awaitAll( function(error) {
     if (error) {
       console.error(error);
@@ -208,6 +208,16 @@ USMap.prototype.onStatesGeoDataLoaded = function(statesGeoData, map) {
 
 
 /**
+ * State capitals data load event handler.
+ */
+USMap.prototype.onStateCapitalsLoaded = function(statesCapitals, map) {
+  map.stateCapitals = statesCapitals;
+  console.log('USMap::onStateCapitalsLoaded::state capitals count: ' + map.stateCapitals.length);   
+}
+
+
+
+/**
  * Loads US population data from ../data/us-population.json.
  */
 USMap.prototype.loadUSPopulationData = function(map) {
@@ -228,24 +238,6 @@ USMap.prototype.loadUSPopulationData = function(map) {
 
     console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
       map.usPopulation.states.length);   
-  });
-}
-
-
-/**
- * Loads state capitals data from ../data/us-state-capitals.csv.
- */
-USMap.prototype.loadStateCapitals = function(map) {
-  console.log('USMap::loadStateCapitals::loading ../data/us-state-capitals.csv...');
-
-  // load state capital names and lat/longs; can append more data :)
-  d3.csv('../data/us-state-capitals.csv')
-    .row( function(d) { 
-      return {state: d.state, capital: d.capital, 
-        latitude: +d.latitude, longitude: +d.longitude}; })
-    .get( function(error, capitalsData) {
-      map.stateCapitals = capitalsData;
-      console.log('USMap::loadStateCapitals::loaded state capitals: ' + map.stateCapitals.length);      
   });
 }
 
