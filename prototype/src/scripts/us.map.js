@@ -424,16 +424,21 @@ USMap.prototype.onStateClick = function (d, i, region) {
 
 
 /**
- * Updates region data panel for now.
+ * Updates region data panel and msg bar to state data stats + flag.
  * 
  * TODO: move it to us.data.panel.js
  */
 USMap.prototype.updateRegionData = function (d, i){
   console.log('USMap::updateRegionData: ' + d.properties.name);
 
-  // update region flag image src
-  this.regionImage.attr('src', '../images/flags/' +
-    d.properties.name.split(' ').join('_') + '.svg.png');
+  var regionFlag = '../images/flags/' +
+    d.properties.name.split(' ').join('_') + '.svg.png';
+
+  // update region flag image   
+  this.regionImage.attr('src', regionFlag);
+
+  // update msg flag image
+  this.messageImage.attr('src', regionFlag);
 
   // show current state population data for now  
   this.populationData.text(
@@ -442,6 +447,7 @@ USMap.prototype.updateRegionData = function (d, i){
   // show state house seats count
   this.houseSeatsData.text(d.properties.houseSeats);
 }
+
 
 /**
  * Draws selected state counties on state path click.
@@ -515,16 +521,36 @@ USMap.prototype.reset = function() {
         .style('font-size', '12px');
 
   // update app data panel with total US pop data
-  this.regionTitle.text('USA');
-  this.populationData.text(
-    this.numberFormat( this.usPopulation.total) );
-  this.houseSeatsData.text(this.houseSeats);
-
+  this.resetRegionData();
 
   // zoom out
   this.svg.transition()
       .duration(750)
       .call(this.zoom.transform, d3.zoomIdentity);
+}
+
+
+
+/**
+ * Resets region data panel and msg bar to USA stats + flags.
+ * 
+ * TODO: move it to us.data.panel.js
+ */
+USMap.prototype.resetRegionData = function (){
+  console.log('USMap::resetRegionData');
+  var regionFlag = '../images/flags/USA.png';
+
+  // update region flag image   
+  this.regionImage.attr('src', regionFlag);
+
+  // update msg flag image
+  this.messageImage.attr('src', regionFlag);
+
+  // update app data panel with total US pop data
+  this.regionTitle.text('USA');
+  this.populationData.text(
+    this.numberFormat( this.usPopulation.total) );
+  this.houseSeatsData.text(this.houseSeats);
 }
 
 
