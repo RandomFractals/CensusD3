@@ -120,12 +120,11 @@ DataPanel.prototype._updateListData = function (listData){
 /**
  * Updates table data display of graph data.
  */
-DataPanel.prototype._updateTableData = function (listData){
-  console.log('DataPanel::_updateTableData'); //, graphData
-
+DataPanel.prototype._updateTableData = function (graphData){
+  console.log('DataPanel::_updateTableData:dimensions: ' + graphData.dimensions);
+  //console.log( JSON.stringify(graphData.data) );
+  
   // TODO: create sortable columns table of graph data 
-  //this.dataGraph.text('[todo: create data.graph UI component]\n' +
-  //  JSON.stringify(graphData) );
 }
 
 
@@ -133,10 +132,9 @@ DataPanel.prototype._updateTableData = function (listData){
  * Updates data panel graphs.
  */
 DataPanel.prototype._updateGraphs = function (graphData){
-  console.log('DataPanel::_updateGraphData'); //, graphData
+  console.log('DataPanel::_updateGraphs:dimensions: ' + graphData.dimensions);
+  //console.log( JSON.stringify(graphData.data) );
 
   // TODO: create bar, line, area, etc. data graphs for graph data display 
-  //this.dataGraph.text('[todo: create data.graph UI component]\n' +
-  //  JSON.stringify(graphData) );
 }
 
