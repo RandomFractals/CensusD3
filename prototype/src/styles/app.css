@@ -67,12 +67,16 @@ span {
 #message {
   color: #666;
   font-weight: normal;
-  padding: 10px;  
+	margin: 0px;	
+  padding: 0px;  
 }
 
-.info {
+.error {
+	color: #f33;	
 	font-size: 12px;
 }
+
+
 
 /* page content styles */ 
 #content {
@@ -109,7 +113,7 @@ span {
   color: #666;
 	font-size: 12px;
   font-weight: bold;
-  padding: 5px;
+  padding: 0px;
   padding-bottom: 0px;
 }
 
