@@ -50,12 +50,12 @@ USMapDataService.prototype.getUSPopulationData = function(onDataReady, map) {
 /**---------------------- USA States Geo Data Methods ----------------------------------*/
 
 /**
- * Gets light 90+kb ../data/us-states.json geo data
+ * Gets light 90+kb ../data/us-states-geo.json geo data
  * for initial usa states map display.
  */
 USMapDataService.prototype.getStatesGeoData = function(onDataReady, map) {
-  console.log('USMapDataService::getStatesGeoData::loading ../data/us-states.json...');  
-  d3.json('../data/us-states.json', function(statesGeoData) {
+  console.log('USMapDataService::getStatesGeoData::loading ../data/us-states-geo.json...');  
+  d3.json('../data/us-states-geo.json', function(statesGeoData) {
     console.log('USMapDataService::getStatesGeoData::loaded states geo data: ' + 
       statesGeoData.features.length);   
     // update map comp.
