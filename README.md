@@ -26,3 +26,7 @@ and week 1 dev prototype preview on:
 http://censusd3.herokuapp.com/
 
 All kinds of census data and graphs are coming this week!
+
+# Current working dir:) 
+
+https://github.com/RandomFractals/CensusD3/tree/master/prototype
