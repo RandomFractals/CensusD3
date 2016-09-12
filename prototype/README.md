@@ -12,3 +12,7 @@ All kinds of census data and graphs are coming next week!
 
 ![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3WFlags.png?raw=true 
  "latest") 
+
+ See the latest live dev proj. updates on Twitter:
+
+ https://twitter.com/hashtag/censusd3

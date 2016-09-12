@@ -170,7 +170,7 @@ USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {
   map.usTopology = usTopology;
   //console.log(Object.keys(map));
   console.log('USMap::onUSTopologyLoaded::US topology loaded!');
-  //console.log(usTopology);
+  console.log(usTopology);
 
   // get US counties data
   map.usMapDataService.getUSCounties(
