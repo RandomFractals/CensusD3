@@ -17,19 +17,22 @@ function DataPanel(window) {
   this.dataPanel = d3.select('#data');
 
   // data section title ref 
-  this.dataTitle = d3.select('#dataTitle');
+  this.dataTitle = d3.select('#data-title');
 
   // data image ref
-  this.dataImage = d3.select('#dataImage');
+  this.dataImage = d3.select('#data-image');
 
   // data list section ref 
-  this.dataList = d3.select('#dataList');
+  this.dataList = d3.select('#data-list');
 
   // create list data display
   this.list = this.dataList.append('ul');
 
+  // data table section ref 
+  this.dataTable = d3.select('#data-table');
+
   // data graph section ref 
-  this.dataGraph = d3.select('#dataGraph');
+  this.dataGraph = d3.select('#data-graph');
 
   // number format for display
   this.numberFormat = d3.format(',');

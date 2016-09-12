@@ -5,16 +5,16 @@ function StatusBar() {
 
   // app message image ref.
   // TODO: add /images/message/info, warning, error
-  this.messageImage = d3.select('#messageImage');
+  this.messageImage = d3.select('#message-image');
 
   // message title: region name, or info, warning, error 
-  this.messageTitle = d3.select('#messageTitle');
+  this.messageTitle = d3.select('#message-title');
 
   // app status message ref
   this.message = d3.select('#message');
 
   // message number UI ref.
-  this.messageNumber = d3.select('#messageNumber');
+  this.messageNumber = d3.select('#message-number');
 
   // number format for display
   this.numberFormat = d3.format(',');
