@@ -17,13 +17,13 @@ Census Data Mapper 2.0 UX d3.js v.4 proj.? :)
 
 # Current alpha v. Status
 
-See the latest proj. updates and screens on Twitter:
-
-https://twitter.com/hashtag/censusd3
-
-and week 1 dev prototype preview on:
+Preview current alpha v. on heroku:
 
 http://censusd3.herokuapp.com/
+
+See the latest project updates and screen grabs on Twitter:
+
+https://twitter.com/hashtag/censusd3
 
 All kinds of census data and graphs are coming this week!
 
