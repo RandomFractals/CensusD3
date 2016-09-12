@@ -76,17 +76,20 @@ DataPanel.prototype.update = function (title, listData, graphData){
   // update list data display
   this._updateListData(listData);
 
-  // TODO: create data graph for graph data display 
-  //this.dataGraph.text('[todo: create data.graph UI component]\n' +
-  //  JSON.stringify(graphData) );
+  // update table data display of graph data
+  this._updateTableData(graphData);
+
+  // update graphs
+  this._updateGraphs(graphData);
 }
 
+/*----------------- Private Data Panel Update Methods --------------------*/
 
 /**
  * Updates data panel list data.
  */
 DataPanel.prototype._updateListData = function (listData){
-  console.log('DataPanel::updateListData'); //, listData
+  console.log('DataPanel::_updateListData'); //, listData
   // create list data items for display
   var dataItems = [];
   var item;
@@ -109,5 +112,28 @@ DataPanel.prototype._updateListData = function (listData){
     .html( function(d, i) {
       return d.label + ': <span class="data-text">' + d.data + '</span>';
     });
+}
+
+/**
+ * Updates table data display of graph data.
+ */
+DataPanel.prototype._updateTableData = function (listData){
+  console.log('DataPanel::_updateTableData'); //, graphData
+
+  // TODO: create sortable columns table of graph data 
+  //this.dataGraph.text('[todo: create data.graph UI component]\n' +
+  //  JSON.stringify(graphData) );
+}
+
+
+/**
+ * Updates data panel graphs.
+ */
+DataPanel.prototype._updateGraphs = function (graphData){
+  console.log('DataPanel::_updateGraphData'); //, graphData
+
+  // TODO: create bar, line, area, etc. data graphs for graph data display 
+  //this.dataGraph.text('[todo: create data.graph UI component]\n' +
+  //  JSON.stringify(graphData) );
 }
 
