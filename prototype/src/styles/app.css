@@ -52,7 +52,7 @@ span {
 	height: 32px;
 }
 
-/* statusbar styles */
+/* status bar styles */
 #status-bar {
 	background: #f9f9f9;	
 	border: solid 1px #ccc;  
@@ -107,7 +107,7 @@ span {
 	overflow-y: scroll;
 }
 
-/* app text elements + link styles */
+/* data panel styles */
 
 .section-title {
   color: #666;
@@ -122,6 +122,7 @@ span {
   padding: 0px;
 }
 
+/* list styles */
 ul {
 	margin: 5px;
 }
@@ -129,6 +130,23 @@ ul {
 ul li {
 	list-style-type: none;
 	margin: 5px;
+}
+
+/* table styles */
+td, th {
+    padding: 1px 4px;
+}
+
+/* footer styles */
+#footer {
+  background-color: #f9f9f9;
+	border: solid 1px #ccc;  
+	margin: 0px;
+	padding: 5px;		   
+	position: fixed;
+	bottom: 0px;
+	height: 18px;  
+  width: 100%;
 }
 
 .footer, .label {
@@ -145,15 +163,4 @@ ul li {
 .link {
 	font-size: 0.9em;
 	color: #06f;
-}
-
-#footer {
-  background-color: #f9f9f9;
-	border: solid 1px #ccc;  
-	margin: 0px;
-	padding: 5px;		   
-	position: fixed;
-	bottom: 0px;
-	height: 18px;  
-  width: 100%;
 }
