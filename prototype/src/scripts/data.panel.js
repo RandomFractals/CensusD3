@@ -64,7 +64,7 @@ DataPanel.prototype.onWindowResize = function() {
  * or census data type geo data.
  */
 DataPanel.prototype.update = function (title, listData, graphData){
-  console.log('DataPanel::update'); //, listData, graphData);
+  console.log('DataPanel::update'); 
 
   // update data section title
   this.dataTitle.text(title);
@@ -73,6 +73,20 @@ DataPanel.prototype.update = function (title, listData, graphData){
   this.dataImage.attr('src', '../images/flags/' + 
     title.split(' ').join('_') + '.svg.png'); // convert spaces to _
 
+  // update list data display
+  this._updateListData(listData);
+
+  // TODO: create data graph for graph data display 
+  //this.dataGraph.text('[todo: create data.graph UI component]\n' +
+  //  JSON.stringify(graphData) );
+}
+
+
+/**
+ * Updates data panel list data.
+ */
+DataPanel.prototype._updateListData = function (listData){
+  console.log('DataPanel::updateListData'); //, listData
   // create list data items for display
   var dataItems = [];
   var item;
@@ -84,6 +98,7 @@ DataPanel.prototype.update = function (title, listData, graphData){
     dataItems.push(item)
   }
 
+  // display list data
   this.list.selectAll('li').remove();
   this.list.selectAll('li')
     .data(dataItems)
@@ -94,9 +109,5 @@ DataPanel.prototype.update = function (title, listData, graphData){
     .html( function(d, i) {
       return d.label + ': <span class="data-text">' + d.data + '</span>';
     });
-
-  // TODO: create data graph for graph data display 
-  //this.dataGraph.text('[todo: create data.graph UI component]\n' +
-  //  JSON.stringify(graphData) );
 }
 
