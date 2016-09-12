@@ -84,7 +84,7 @@ DataPanel.prototype.update = function (title, listData, graphData){
 
   // save graph data for table and graph types toggle render
   this.graphData = graphData;
-  
+
   // update table data display of graph data
   this._updateTableData(graphData);
 
@@ -130,7 +130,39 @@ DataPanel.prototype._updateTableData = function (graphData){
   console.log('DataPanel::_updateTableData:dimensions: ' + graphData.dimensions);
   //console.log( JSON.stringify(graphData.data) );
   
-  // TODO: create sortable columns table of graph data 
+  // TODO: create sortable columns table of graph 
+  this.dataTable.selectAll('table').remove();
+  var table = this.dataTable.append('table');
+  var thead = table.append('thead');
+  var tbody = table.append('tbody');
+  var columns = graphData.dimensions.split(',');
+
+  // append table header row
+  thead.append('tr')
+       .selectAll('th')
+       .data(columns)
+       .enter()
+       .append('th')
+       .text( function(column) { return column; } );
+
+  // create table data rows 
+  var dataRows = tbody.selectAll('tr')
+      .data(graphData.data)
+      .enter()
+      .append('tr');
+
+  // create table data row cells
+  var dataCells = dataRows.selectAll('td')
+      .data(function(row) {
+        return columns.map(function(column) {
+          return {column: column, value: row[column]};
+        });
+      })
+      .enter()
+      .append('td')
+      .html(function(d) { return d.value; });
+    
+  return table;
 }
 
 
