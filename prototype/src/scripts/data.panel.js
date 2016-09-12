@@ -34,6 +34,9 @@ function DataPanel(window) {
   // data graph section ref 
   this.dataGraph = d3.select('#data-graph');
 
+  // graph data ref for graphs type toggles
+  this.graphData = {};
+
   // number format for display
   this.numberFormat = d3.format(',');
 
@@ -79,6 +82,9 @@ DataPanel.prototype.update = function (title, listData, graphData){
   // update list data display
   this._updateListData(listData);
 
+  // save graph data for table and graph types toggle render
+  this.graphData = graphData;
+  
   // update table data display of graph data
   this._updateTableData(graphData);
 
