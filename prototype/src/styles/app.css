@@ -122,9 +122,10 @@ span {
   padding: 0px;
 }
 
-/* list styles */
+/* list data styles */
 ul {
 	margin: 5px;
+	-webkit-padding-start: 0px;
 }
 
 ul li {
