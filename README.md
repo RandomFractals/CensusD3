@@ -1,6 +1,6 @@
 # CensusD3
 
-Interactive d3 maps & graphs data viz demo of US census data from census.gov
+Interactive d3.js v.4 maps & graphs data viz demo of US census data from census.gov
 
 # USA States/Counties Choropleth Teaser
 
@@ -13,4 +13,16 @@ and lots of interactive and animated graphs with d3.js v.4 or dc.js 2.0 beta (TB
 
 Think http://datamapper.geo.census.gov/map.html but less rigid, more interactive, and user-friendly. 
 
-Census Data Mapper 2.0 UX D3 proj.? :)
+Census Data Mapper 2.0 UX d3.js v.4 proj.? :)
+
+# Current alpha v. Status
+
+See the latest proj. updates and screens on Twitter:
+
+https://twitter.com/hashtag/censusd3
+
+and week 1 dev prototype preview on:
+
+http://censusd3.herokuapp.com/
+
+All kinds of census data and graphs are coming this week!
