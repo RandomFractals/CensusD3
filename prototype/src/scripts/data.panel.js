@@ -29,7 +29,8 @@ function DataPanel(window) {
   this.list = this.dataList.append('ul');
 
   // data table section ref 
-  this.dataTable = d3.select('#data-table');
+  this.dataTable = d3.select('#data-table')
+    .attr('height', this.width.innerHeight / 4);
 
   // data graph section ref 
   this.dataGraph = d3.select('#data-graph');

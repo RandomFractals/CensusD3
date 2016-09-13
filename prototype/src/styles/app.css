@@ -134,6 +134,11 @@ ul li {
 }
 
 /* table styles */
+#data-table {
+	height: 240px;
+	overflow-y: scroll;
+}
+
 td, th {
     padding: 1px 4px;
 }

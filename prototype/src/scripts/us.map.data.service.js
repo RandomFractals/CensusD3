@@ -47,6 +47,7 @@ USMapDataService.prototype.getUSPopulationData = function(onDataReady, map) {
     }) 
     .get( function(error, usPopulation) {
       // update map comp.
+      //console.log(usPopulation);
       onDataReady(usPopulation, map);
   });  
 }
