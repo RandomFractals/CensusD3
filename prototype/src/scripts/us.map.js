@@ -24,11 +24,11 @@ function USMap(usMapDataService, statusBar, dataPanel, window) {
   // map scale for default 720x480 usa map size
   this.scale = 800;
 
-  // us map data service for getting all us states 
+  // USA map data service for getting all USA states 
   // and regions geo data, names and codes for plotting the map 
   this.usMapDataService = usMapDataService;
 
-  // US topology TopoJSON with land, states, and all counties
+  // USA topology TopoJSON with land, states, and all counties
   this.usTopology = {};
 
   // simple states Geo JSON data loaded first
@@ -43,9 +43,9 @@ function USMap(usMapDataService, statusBar, dataPanel, window) {
   this.showAllCounties = true;
 
   // us states population data
-  this.usPopulation = []
+  this.statesPopulation = []
 
-  // major us cities with population info
+  // major USA cities with population info
   this.usCities = [];
 
   // state capitals names and coordinates
@@ -53,6 +53,9 @@ function USMap(usMapDataService, statusBar, dataPanel, window) {
 
   // state capitals display toggle
   this.showStateCapitals = true;
+
+  // total USA pop data count
+  this.totalPopulation = 321418820;
 
   // total USA house seats for elections data viz
   this.houseSeats = 435;
@@ -164,12 +167,12 @@ function USMap(usMapDataService, statusBar, dataPanel, window) {
 /**----------- USA States and Counties Geo Data Load Event Handlers ------------------- */
 
 /**
- * US topology data load complete handler.
+ * USA topology data load complete handler.
  */
 USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {  
   map.usTopology = usTopology;
   //console.log(Object.keys(map));
-  console.log('USMap::onUSTopologyLoaded::US topology loaded!');
+  console.log('USMap::onUSATopologyLoaded::US topology loaded!');
   //console.log(usTopology);
 
   // get US counties data
@@ -183,11 +186,11 @@ USMap.prototype.onUSTopologyLoaded = function(usTopology, map) {
 
 
 /**
- * US counties data load complete handler.
+ * USA counties data load complete handler.
  */
 USMap.prototype.onUSCountiesLoaded = function(stateCounties, map) {
   map.stateCounties = stateCounties;
-  console.log('USMap::onUSCountiesLoaded::US state counties data loaded!');
+  console.log('USMap::onUSACountiesLoaded::US state counties data loaded!');
   //console.log(stateCounties);  
 }
 
@@ -217,10 +220,10 @@ USMap.prototype.onStateCapitalsLoaded = function(statesCapitals, map) {
 /**
  * USA population data load complete handler.
  */
-USMap.prototype.onUSPopulationDataLoaded = function(usPopulation, map) {
-  map.usPopulation = usPopulation;
+USMap.prototype.onUSPopulationDataLoaded = function(statesPopulation, map) {
+  map.statesPopulation = statesPopulation;
   console.log('USMap::loadUSPopulationData::loaded states population data: ' + 
-    map.usPopulation.states.length);
+    map.statesPopulation.length);
 
   // reset region data display to total USA data stats
   map.resetRegionData();
@@ -265,8 +268,8 @@ USMap.prototype.drawStates = function (map){
           return 'state-' + d.id
         })         
         .attr("class", function(d, i) {
-          if ( i < map.usPopulation.states.length) {
-            return 'q' + map.quantize( map.usPopulation.states[i][0] / 40000000 );
+          if ( i < map.statesPopulation.length) {
+            return 'q' + map.quantize( map.statesPopulation[i].population / 40000000 ); // max 4 Cali
           }
           return ''; 
         })
@@ -281,7 +284,7 @@ USMap.prototype.drawStates = function (map){
                 d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
                 '<span class="state-tooltip">' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
-                map.numberFormat( map.usPopulation.states[i][0] ) + 
+                map.numberFormat( map.statesPopulation[i].population ) + 
                 "</span>" 
               )
               .style("left", (d3.event.pageX + 24) + "px")     
@@ -411,16 +414,16 @@ USMap.prototype.updateRegionData = function (d, i){
   // update app status bar with state data
   this.statusBar.update(d.properties.name, // state name 
     'population: ', 
-    this.usPopulation.states[i][0] ); // state pop count
+    this.statesPopulation[i].population ); // state pop count
 
   // update data panel with state pop and house seats for now
   this.dataPanel.update(d.properties.name, { // state name 
       // list data
-      population: this.usPopulation.states[i][0], 
+      population: this.statesPopulation[i].population, 
       house_seats: d.properties.houseSeats
     }, { // graph data
       dimensions: 'state, population',
-      data: this.usPopulation.states // graph all states pop data for now
+      data: this.statesPopulation // graph all states pop data for now
     });   
 }
 
@@ -514,15 +517,15 @@ USMap.prototype.resetRegionData = function () {
   console.log('USMap::resetRegionData');
 
   // update app status bar with us pop info
-  this.statusBar.update('USA', 'population: ', this.usPopulation.total)
+  this.statusBar.update('USA', 'population: ', this.totalPopulation);
 
   // update data panel with total us pop and house seats for now
   this.dataPanel.update('USA', { // list data
-      population: this.usPopulation.total, 
+      population: this.totalPopulation, 
       house_seats: this.houseSeats
     }, { // graph data
       dimensions: 'state, population',
-      data: this.usPopulation.states
+      data: this.statesPopulation
     });  
 }
 
