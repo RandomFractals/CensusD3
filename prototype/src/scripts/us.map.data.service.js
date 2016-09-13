@@ -39,8 +39,8 @@ USMapDataService.prototype.getUSPopulationData = function(onDataReady, map) {
   d3.csv('../data/us-state-population.csv')
     .row( function(d) { 
       return {
-        state: d.state, 
         population: +d.population, // + to convert to numbers :)
+        state: d.state,        
         region: d.region,
         coast: d.coast 
       }; 
