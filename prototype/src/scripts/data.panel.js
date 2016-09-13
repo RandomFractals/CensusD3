@@ -69,7 +69,8 @@ DataPanel.prototype.onWindowResize = function() {
  * data list and data graph with the selection region
  * or census data type geo data.
  */
-DataPanel.prototype.update = function (title, listData, graphData){
+DataPanel.prototype.update = function (title, 
+  listData, tableData, graphData){
   console.log('DataPanel::update'); 
 
   // update data section title
@@ -85,8 +86,8 @@ DataPanel.prototype.update = function (title, listData, graphData){
   // save graph data for table and graph types toggle render
   this.graphData = graphData;
 
-  // update table data display of graph data
-  this._updateTableData(graphData);
+  // update table data display
+  this._updateTableData(tableData);
 
   // update graphs
   this._updateGraphs(graphData);
@@ -124,18 +125,18 @@ DataPanel.prototype._updateListData = function (listData){
 }
 
 /**
- * Updates table data display of graph data.
+ * Updates table data display.
  */
-DataPanel.prototype._updateTableData = function (graphData){
-  console.log('DataPanel::_updateTableData:dimensions: ' + graphData.dimensions);
-  //console.log( JSON.stringify(graphData.data) );
+DataPanel.prototype._updateTableData = function (tableData){
+  console.log('DataPanel::_updateTableData:dimensions: ' + tableData.dimensions);
+  //console.log( JSON.stringify(tableData.data) );
   
-  // TODO: create sortable columns table of graph 
+  // TODO: create sortable columns table 
   this.dataTable.selectAll('table').remove();
   var table = this.dataTable.append('table');
   var thead = table.append('thead');
   var tbody = table.append('tbody');
-  var columns = graphData.dimensions.split(',');
+  var columns = tableData.dimensions.split(',');
 
   // append table header row
   thead.append('tr')
@@ -147,7 +148,7 @@ DataPanel.prototype._updateTableData = function (graphData){
 
   // create table data rows 
   var dataRows = tbody.selectAll('tr')
-      .data(graphData.data)
+      .data(tableData.data)
       .enter()
       .append('tr');
 

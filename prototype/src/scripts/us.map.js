@@ -422,6 +422,9 @@ USMap.prototype.updateRegionData = function (d, i){
       population: this.statesPopulation[i].population, 
       house_seats: d.properties.houseSeats
     }, { // graph data
+      dimensions: 'state, population, region',
+      data: this.statesPopulation // graph all states pop data for now
+    }, { // graph data
       dimensions: 'state, population',
       data: this.statesPopulation // graph all states pop data for now
     });   
@@ -523,6 +526,9 @@ USMap.prototype.resetRegionData = function () {
   this.dataPanel.update('USA', { // list data
       population: this.totalPopulation, 
       house_seats: this.houseSeats
+    }, { // table data
+      dimensions: 'state, population',
+      data: this.statesPopulation
     }, { // graph data
       dimensions: 'state, population',
       data: this.statesPopulation
