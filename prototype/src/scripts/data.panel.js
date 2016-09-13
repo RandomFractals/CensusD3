@@ -138,6 +138,7 @@ DataPanel.prototype._updateTableData = function (tableData){
   var thead = table.append('thead');
   var tbody = table.append('tbody');
   var columns = tableData.dimensions.split(',');
+  var numberFormat = d3.format(',');
 
   // append table header row
   thead.append('tr')
@@ -155,14 +156,21 @@ DataPanel.prototype._updateTableData = function (tableData){
 
   // create table data row cells
   var dataCells = dataRows.selectAll('td')
-      .data(function(row) {
-        return columns.map(function(column) {
-          return {column: column, value: row[column]};
+      .data( function(row) {
+        return columns.map( function(column) {
+          var dataText = row[column];
+          if (column.indexOf('+') >= 0) {
+            // format number value
+            dataText = numberFormat( row[column.substring(1)] );
+          }
+          return {column: column, value: dataText};
         });
       })
       .enter()
       .append('td')
-      .html(function(d) { return d.value; });
+      .html( function(d) {
+        return d.value; 
+      });
     
   return table;
 }
