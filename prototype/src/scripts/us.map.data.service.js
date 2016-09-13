@@ -11,9 +11,9 @@ function USMapDataService() {
 /*-------------------------- USA Geo Data Methods --------------------------------------*/
 
 /**
- * Gets 642Kb US topology from ../data/us.json topoJSON file
+ * Gets 642Kb USA topology from ../data/us.json topoJSON file
  * with land, state, and counties boundaries
- * for zoom to state counties map display.
+ * for zoom to state counties map display on state click.
  */
 USMapDataService.prototype.getUSTopology = function(onDataReady, map) {
 
@@ -32,26 +32,31 @@ USMapDataService.prototype.getUSTopology = function(onDataReady, map) {
 
 
 /**
- * Gets the latest US population data from ../data/us-population.json.
+ * Gets the latest (2015) USA states population data from ../data/us-state-population.csv.
  */
 USMapDataService.prototype.getUSPopulationData = function(onDataReady, map) {
-  console.log('USMapDataService::getUSPopulationData::loading ../data/us-population.json...');
-  d3.json('../data/us-population.json', function(error, usPopulation) {
-    if (error) {
-      console.error(error);
-      throw error;
-    }    
-    // update map comp.
-    onDataReady(usPopulation, map);
-  });
+  console.log('USMapDataService::getUSPopulationData::loading ../data/us-state-population.csv...');
+  d3.csv('../data/us-state-population.csv')
+    .row( function(d) { 
+      return {
+        state: d.state, 
+        population: +d.population, // + to convert to numbers :)
+        region: d.region,
+        coast: d.coast 
+      }; 
+    }) 
+    .get( function(error, usPopulation) {
+      // update map comp.
+      onDataReady(usPopulation, map);
+  });  
 }
 
 
 /**---------------------- USA States Geo Data Methods ----------------------------------*/
 
 /**
- * Gets light 90+kb ../data/us-states-geo.json geo data
- * for initial usa states map display.
+ * Gets light 91Kb ../data/us-states-geo.json geo data
+ * for initial USA states map display.
  */
 USMapDataService.prototype.getStatesGeoData = function(onDataReady, map) {
   console.log('USMapDataService::getStatesGeoData::loading ../data/us-states-geo.json...');  
@@ -84,13 +89,13 @@ USMapDataService.prototype.getStateCapitals = function(onDataReady, map) {
 /**-------------------- USA Counties Geo Data Methods -------------------------------- */
 
 /**
- * Gets US counties FIPS codes and names from ../data/us-counties.json file
+ * Gets USA counties FIPS codes and names from ../data/us-counties.json file
  * for zoom to state counties data load and graphs display later.
  */
 USMapDataService.prototype.getUSCounties = function(usTopology, onDataReady, map) {
 
   // load US counties data
-  console.log('USMapDataService::getUSCounties::loading ../data/us-counties.json...');
+  console.log('USMapDataService::getUSACounties::loading ../data/us-counties.json...');
   d3.json('../data/us-counties.json', function(error, usCounties) {
     if (error) {
       console.error(error);
@@ -125,8 +130,8 @@ USMapDataService.prototype.getUSCounties = function(usTopology, onDataReady, map
       countyCount++;
     }
 
-    console.log('USMapDataService::getUSCounties::loaded counties: ' + countyCount);
-    console.log('USMapDataService::getUSCounties::loaded county states: ' + 
+    console.log('USMapDataService::getUSACounties::loaded counties: ' + countyCount);
+    console.log('USMapDataService::getUSACounties::loaded county states: ' + 
       Object.keys(stateCounties).length );
     //console.log(stateCounties);
 
