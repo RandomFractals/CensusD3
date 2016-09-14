@@ -1,6 +1,6 @@
 # CensusD3
 
-Interactive d3.js v.4 maps & graphs data viz demo of US census data from census.gov
+Interactive d3.js v.4 maps & graphs data viz of US census data from census.gov
 
 # USA States/Counties Choropleth Teaser
 
