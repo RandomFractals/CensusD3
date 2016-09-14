@@ -422,7 +422,7 @@ USMap.prototype.updateRegionData = function (d, i){
       population: this.statesPopulation[i].population, 
       house_seats: d.properties.houseSeats
     }, { // graph data
-      dimensions: 'state,+population,region',
+      dimensions: 'state,+population', //region',
       data: this.statesPopulation // graph all states pop data for now
     }, { // graph data
       dimensions: 'state,+population',
