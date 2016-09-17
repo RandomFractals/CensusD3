@@ -14,6 +14,7 @@ function USMapApp(window) {
 
   // create us map
   this.map = new USMap( new USMapDataService(), // for map geo data
+    new USCensusDataService(), // for census data
     this.statusBar, // for app message updates
     this.dataPanel, // for census data and graphs display
     this.window); // windonw for map sizing on window resize

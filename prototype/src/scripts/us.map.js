@@ -1,7 +1,8 @@
 /**
  * d3 v.4 US map UI component.
  **/ 
-function USMap(usMapDataService, statusBar, dataPanel, window) {
+function USMap(usMapDataService, usCensusDataService,
+  statusBar, dataPanel, window) {
 
   // status bar for app messages display
   this.statusBar = statusBar;
@@ -27,6 +28,9 @@ function USMap(usMapDataService, statusBar, dataPanel, window) {
   // USA map data service for getting all USA states 
   // and regions geo data, names and codes for plotting the map 
   this.usMapDataService = usMapDataService;
+
+  // census data service for getting population data, etc.
+  this.usCensusDataService = usCensusDataService;
 
   // USA topology TopoJSON with land, states, and all counties
   this.usTopology = {};
@@ -145,7 +149,7 @@ function USMap(usMapDataService, statusBar, dataPanel, window) {
   // load us geo and pop data async with d3 queue
   var q = d3.queue();
   q.defer(this.usMapDataService.getUSTopology, this.onUSTopologyLoaded, this);
-  q.defer(this.usMapDataService.getUSPopulationData, this.onUSPopulationDataLoaded, this);      
+  q.defer(this.usCensusDataService.getUSPopulationData, this.onUSPopulationDataLoaded, this);      
   q.defer(this.usMapDataService.getStatesGeoData, this.onStatesGeoDataLoaded, this);
   // TODO: merge with states geo data ???  
   q.defer(this.usMapDataService.getStateCapitals, this.onStateCapitalsLoaded, this);
