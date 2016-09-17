@@ -51,10 +51,37 @@ USCensusDataService.prototype.getStateCountiesPopulation = function(stateId, onD
   var query = 'county:*&in=state:' + stateId;
   console.log('USCensusDataService::getStateCountiesPopulation::loading ' +
     './census/population/' + query);  
-  d3.json('./census/population/' + query, function(stateCountiesPopulation) {
+  d3.json('./census/population/' + query, function(responseData) {
     console.log('USCensusDataService::getStatesPopulation::loaded state counties population: count: ' + 
-      stateCountiesPopulation.length);   
+      responseData.length);
+
+    // format results
+    var statePopData = [];
+    var countyPopData = {};
+    var countyData;
+    var geoNames = [];
+    // Note: response data contains ['POP', 'GEONAME', 'state', 'county'] header record
+    for (var i=1; i < responseData.length; i++) { // skip 1st metadata record
+      countyData = responseData[i];
+      // Note: geoname format: county, state, region, coast
+      geoNames = countyData[1].split(',');
+      countyPopData = {
+        population: countyData[0],
+        county: geoNames[0],
+        regionId: countyData[2],
+        density: countyData[3],
+        stateId: countyData[4],
+        stateName: geoNames[1].substring(1), // strip out leading white space
+        countyId: countyData[5],
+        regionName: geoNames[2].substring(1),
+        coast: geoNames[3].substring(1)
+      };
+      statePopData.push( countyPopData );
+    }
+
+    console.log(statePopData);
+
     // update map comp.
-    //onDataReady(statesGeoData.features, map);
+    //onDataReady(statePopData, map);
   });
 }
