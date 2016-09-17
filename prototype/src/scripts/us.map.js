@@ -246,7 +246,7 @@ USMap.prototype.onWindowResize = function() {
   this.width = this.window.innerWidth;
 
   // TODO: update constructor and redraw to make this work properly
-  drawStates(this);
+  //drawStates(this);
 }
 
 

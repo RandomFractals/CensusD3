@@ -45,24 +45,17 @@ function DataPanel(window) {
   this.dataPanel.attr('height', this.window.innerHeight - this.margin);
 
   // add window resize event handler
-  this.window.addEventListener('resize', this.onWindowResize);
+  var panel = this;
+  this.window.addEventListener('resize', function() {
+    console.log('DataPanel::onWindowResize::height: ' + this.window.innerHeight);
+    // update data panel containter height
+    panel.dataPanel.attr('height', this.window.innerHeight - panel.margin);
+
+    // TODO: redraw graphs when they are added
+    // panel.drawGraph()
+  });
 
 } // end of DataPanel() constructor
-
-
-
-/**
- * Updates data panel and graphs section height on window resize.
- */
-DataPanel.prototype.onWindowResize = function() {
-  console.log('DataPanel::onWindowResize::height: ' + this.window.innerHeight);
-
-  // update data panel containter height
-  this.dataPanel.attr('height', this.window.innerHeight - this.margin);
-
-  // TODO: redraw graphs when they are added
-  // this.drawGraph()
-}
 
 
 /**
