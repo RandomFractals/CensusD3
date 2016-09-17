@@ -45,7 +45,7 @@ router.get('/census/population/:query?', function(request, response, next) {
       });
       dataResponse.on('end', function() {
         var data = JSON.parse(responseData);
-        log('response: ', data);
+        //log('response: ', data);
         response.send(data);
       });      
     }).end();
