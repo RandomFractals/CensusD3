@@ -285,7 +285,7 @@ USMap.prototype.drawStates = function (map){
               .style("opacity", .9);
 
           // display state name in tooltip
-          map.tooltip.html('<img height="18" src="../images/flags/' +
+          map.tooltip.html('<img height="18" src="./images/flags/' +
                 d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
                 '<span class="state-tooltip">' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
