@@ -104,7 +104,7 @@ USCensusDataService.prototype.getStateCountiesPopulation = function(stateId, onD
       statePopData.push( countyPopulation );
     }
 
-    console.log(statePopData);
+    //console.log(statePopData);
 
     // update map comp.
     onDataReady(statePopData, map);
