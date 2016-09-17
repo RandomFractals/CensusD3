@@ -155,11 +155,12 @@ th {
 }
 
 td, th {
-  padding: 1px 4px;
+  padding: 5px;
 	border-width: 1px;	
-	border-color: #ccc;
+	border-color: #ddd;
 	border-collapse: collapse;
 	border-style: solid;		
+  cursor: pointer;	
 }
 
 tr:hover {
