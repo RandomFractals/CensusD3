@@ -133,6 +133,11 @@ DataPanel.prototype._updateTableData = function (tableData){
   var columns = tableData.dimensions.split(',');
   var numberFormat = d3.format(',');
 
+  // create x scale
+  var x = d3.scaleLinear()
+    .domain([0, d3.max(tableData.data, function(d) {return d.population} ) ])
+    .range([0, 100]);
+
   // append table header row
   thead.append('tr')
        .selectAll('th')
@@ -151,18 +156,21 @@ DataPanel.prototype._updateTableData = function (tableData){
   var dataCells = dataRows.selectAll('td')
       .data( function(row) {
         return columns.map( function(column) {
-          var dataText = row[column];
+          var htmlText = row[column];
           if (column.indexOf('+') >= 0) {
-            // format number value
-            dataText = numberFormat( row[column.substring(1)] );
+            var propName = column.substring(1); // strip out +
+            var barWidth = x( row[propName] );
+            // format number and gen horizontal bar html
+            htmlText = numberFormat( row[propName] ) +
+            '<div class="bar" style="width: ' + barWidth + 'px"></div>';
           }
-          return {column: column, value: dataText};
+          return {column: column, html: htmlText};
         });
       })
       .enter()
       .append('td')
       .html( function(d) {
-        return d.value; 
+        return d.html; 
       });
     
   return table;
