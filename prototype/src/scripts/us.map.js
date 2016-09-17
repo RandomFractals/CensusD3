@@ -149,7 +149,8 @@ function USMap(usMapDataService, usCensusDataService,
   // load us geo and pop data async with d3 queue
   var q = d3.queue();
   q.defer(this.usMapDataService.getUSTopology, this.onUSTopologyLoaded, this);
-  q.defer(this.usCensusDataService.getUSPopulationData, this.onUSPopulationDataLoaded, this);      
+  q.defer(this.usCensusDataService.getUSPopulationData, this.onUSPopulationDataLoaded, this);
+  q.defer(this.usCensusDataService.getStatesPopulation, this.onUSPopulationDataLoaded, this);        
   q.defer(this.usMapDataService.getStatesGeoData, this.onStatesGeoDataLoaded, this);
   // TODO: merge with states geo data ???  
   q.defer(this.usMapDataService.getStateCapitals, this.onStateCapitalsLoaded, this);

@@ -29,3 +29,16 @@ USCensusDataService.prototype.getUSPopulationData = function(onDataReady, map) {
   });  
 }
 
+/**
+ * Gets states population data from census data service.
+ */
+USCensusDataService.prototype.getStatesPopulation = function(onDataReady, map) {
+  console.log('USCensusDataService::getStatesPopulation::loading ./census/population/state:*');  
+  d3.json('./census/population/state:*', function(statesPopulation) {
+    console.log('USCensusDataService::getStatesPopulation::loaded states population: count: ' + 
+      statesPopulation.length);   
+    // update map comp.
+    //onDataReady(statesGeoData.features, map);
+  });
+}
+
