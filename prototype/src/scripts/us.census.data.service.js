@@ -35,9 +35,34 @@ USCensusDataService.prototype.getUSPopulationData = function(onDataReady, map) {
  */
 USCensusDataService.prototype.getStatesPopulation = function(onDataReady, map) {
   console.log('USCensusDataService::getStatesPopulation::loading ./census/population/state:*');  
-  d3.json('./census/population/state:*', function(statesPopulation) {
+  d3.json('./census/population/state:*', function(responseData) {
     console.log('USCensusDataService::getStatesPopulation::loaded states population: count: ' + 
-      statesPopulation.length);   
+      responseData.length - 1); // - header record
+
+    // format results
+    var statesPopData = [];
+    var statePopulation = {};
+    var stateData;
+    var geoNames = [];
+    // Note: response data contains ['POP', 'GEONAME', 'REGION', 'DENSITY', 'state'] header record
+    for (var i=1; i < responseData.length - 1; i++) { // skip 1st metadata record & last (Puerto Rico)
+      stateData = responseData[i];
+      // Note: geoname format: county, state, region, coast
+      geoNames = stateData[1].split(',');
+      statePopulation = {
+        population: stateData[0],
+        state: geoNames[0],
+        regionId: stateData[2],
+        density: stateData[3],
+        stateId: stateData[4],
+        regionName: geoNames[2].substring(1),
+        coast: geoNames[3].substring(1)
+      };
+      statesPopData.push( statePopulation );
+    }
+
+    console.log(statesPopData);
+   
     // update map comp.
     //onDataReady(statesGeoData.features, map);
   });
@@ -53,19 +78,19 @@ USCensusDataService.prototype.getStateCountiesPopulation = function(stateId, onD
     './census/population/' + query);  
   d3.json('./census/population/' + query, function(responseData) {
     console.log('USCensusDataService::getStatesPopulation::loaded state counties population: count: ' + 
-      responseData.length);
+      responseData.length - 1); // - header record
 
     // format results
     var statePopData = [];
-    var countyPopData = {};
-    var countyData;
+    var countyPopulation = {};
+    var countyData = [];
     var geoNames = [];
-    // Note: response data contains ['POP', 'GEONAME', 'state', 'county'] header record
+    // Note: response data contains ['POP', 'GEONAME', 'REGION', 'DENSITY', 'state', 'county'] header record
     for (var i=1; i < responseData.length; i++) { // skip 1st metadata record
       countyData = responseData[i];
       // Note: geoname format: county, state, region, coast
       geoNames = countyData[1].split(',');
-      countyPopData = {
+      countyPopulation = {
         population: countyData[0],
         county: geoNames[0],
         regionId: countyData[2],
@@ -76,7 +101,7 @@ USCensusDataService.prototype.getStateCountiesPopulation = function(stateId, onD
         regionName: geoNames[2].substring(1),
         coast: geoNames[3].substring(1)
       };
-      statePopData.push( countyPopData );
+      statePopData.push( countyPopulation );
     }
 
     console.log(statePopData);
