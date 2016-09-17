@@ -22,7 +22,7 @@ router.get('/census/population/:query?', function(request, response, next) {
   var year = 2015;  
   var queryParams = {
     year: year,
-    get: 'POP,GEONAME',
+    get: 'POP,GEONAME,REGION,DENSITY',
     for: query,
     key: CensusDataKey
   }
