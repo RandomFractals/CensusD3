@@ -159,6 +159,10 @@ td, th {
 	border-style: solid;		
 }
 
+tr:hover {
+	background-color: #ffffcc;
+}
+
 /* footer styles */
 #footer {
   background-color: #f9f9f9;
