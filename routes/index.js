@@ -12,7 +12,7 @@ router.get('/census/population/:query?', function(request, response, next) {
   if (request.params.query) {
     query = request.params.query;
   }
-  log('population query: ', query );
+  log('census/population query: ', query );
   var year = 2015;  
   var queryParams = {
     year: year,
@@ -46,7 +46,7 @@ function onCensusDataResponse(response) {
   });
 
   response.on('end', function() {
-    log('response: ', responseData);
+    log('response: ', JSON.parse(responseData) );
   });
 }
 
