@@ -50,7 +50,7 @@ USCensusDataService.prototype.getStatesPopulation = function(onDataReady, map) {
       // Note: geoname format: county, state, region, coast
       geoNames = stateData[1].split(',');
       statePopulation = {
-        population: stateData[0],
+        population: Number(stateData[0]),
         state: geoNames[0],
         regionId: stateData[2],
         density: stateData[3],
@@ -91,7 +91,7 @@ USCensusDataService.prototype.getStateCountiesPopulation = function(stateId, onD
       // Note: geoname format: county, state, region, coast
       geoNames = countyData[1].split(',');
       countyPopulation = {
-        population: countyData[0],
+        population: Number(countyData[0]),
         county: geoNames[0],
         regionId: countyData[2],
         density: countyData[3],
