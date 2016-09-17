@@ -29,6 +29,7 @@ USCensusDataService.prototype.getUSPopulationData = function(onDataReady, map) {
   });  
 }
 
+
 /**
  * Gets states population data from census data service.
  */
@@ -42,3 +43,18 @@ USCensusDataService.prototype.getStatesPopulation = function(onDataReady, map) {
   });
 }
 
+
+/**
+ * Gets state counties population data from census data service.
+ */
+USCensusDataService.prototype.getStateCountiesPopulation = function(stateId, onDataReady, map) {
+  var query = 'county:*&in=state:' + stateId;
+  console.log('USCensusDataService::getStateCountiesPopulation::loading ' +
+    './census/population/' + query);  
+  d3.json('./census/population/' + query, function(stateCountiesPopulation) {
+    console.log('USCensusDataService::getStatesPopulation::loaded state counties population: count: ' + 
+      stateCountiesPopulation.length);   
+    // update map comp.
+    //onDataReady(statesGeoData.features, map);
+  });
+}

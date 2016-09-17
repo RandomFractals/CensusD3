@@ -376,8 +376,12 @@ USMap.prototype.onStateClick = function (d, i, region) {
 
   // save current state selection code
   this.selectedStateCode = d.properties.code;
+  this.selectedStateId = d.id;
   console.log('USMap::onStateClick::selected state: ' + this.selectedStateCode); 
 
+  // get state counties population data
+  this.usCensusDataService.getStateCountiesPopulation(d.id); // state id
+  
   // draw state counties
   this.drawCounties(this.selectedStateCode, this);
 
