@@ -139,8 +139,24 @@ ul li {
 	overflow-y: scroll;
 }
 
+table {
+	border-width: 1px;
+	border-color: #666;
+	border-collapse: collapse;
+	border-style: solid;
+	width: 100%;
+}
+
+th {
+	background-color: #efefef;
+}
+
 td, th {
-    padding: 1px 4px;
+  padding: 1px 4px;
+	border-width: 1px;	
+	border-color: #ccc;
+	border-collapse: collapse;
+	border-style: solid;		
 }
 
 /* footer styles */
