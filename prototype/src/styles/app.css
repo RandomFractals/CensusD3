@@ -167,6 +167,12 @@ tr:hover {
 	background-color: #ffffcc;
 }
 
+.bar {
+	height: 5px;
+	border-color: #ccc;
+	background-color: #39f;
+}
+
 /* footer styles */
 #footer {
   background-color: #f9f9f9;
