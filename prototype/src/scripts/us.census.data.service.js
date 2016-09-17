@@ -61,10 +61,10 @@ USCensusDataService.prototype.getStatesPopulation = function(onDataReady, map) {
       statesPopData.push( statePopulation );
     }
 
-    console.log(statesPopData);
+    //console.log(statesPopData);
    
     // update map comp.
-    //onDataReady(statesGeoData.features, map);
+    onDataReady(statesPopData, map);
   });
 }
 
