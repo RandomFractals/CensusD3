@@ -380,13 +380,17 @@ USMap.prototype.onStateClick = function (d, i, region) {
   console.log('USMap::onStateClick::selected state: ' + this.selectedStateCode); 
 
   // get state counties population data
-  this.usCensusDataService.getStateCountiesPopulation(d.id); // state id
-  
-  // draw state counties
-  this.drawCounties(this.selectedStateCode, this);
+  this.usCensusDataService.getStateCountiesPopulation(d.id, // state id
+    function (populationData, map) {
+      // draw state counties
+      map.drawCounties(map.selectedStateCode, map);
 
-  // show state population data for now
-  this.updateRegionData(d, i);
+      // show state counties data
+      map.updateRegionData(d, i, populationData);
+
+      // show state counties data
+
+    }, this);
 
   // get selected region bounds
   var bounds = this.geoPath.bounds(d),
@@ -417,7 +421,7 @@ USMap.prototype.onStateClick = function (d, i, region) {
  * Updates region data panel and 
  * app msg bar to state data stats + flag.
  */
-USMap.prototype.updateRegionData = function (d, i){
+USMap.prototype.updateRegionData = function (d, i, populationData){
   console.log('USMap::updateRegionData: ' + d.properties.name);
 
   // update app status bar with state data
@@ -430,12 +434,12 @@ USMap.prototype.updateRegionData = function (d, i){
       // list data
       population: this.statesPopulation[i].population, 
       house_seats: d.properties.houseSeats
+    }, { // table data
+      dimensions: 'county,+population', //region',
+      data: populationData 
     }, { // graph data
-      dimensions: 'state,+population', //region',
-      data: this.statesPopulation // graph all states pop data for now
-    }, { // graph data
-      dimensions: 'state,+population',
-      data: this.statesPopulation // graph all states pop data for now
+      dimensions: 'county,+population',
+      data: populationData 
     });   
 }
 
