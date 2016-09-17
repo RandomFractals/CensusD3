@@ -5,12 +5,18 @@ var async = require('async');
 var http = require('http');
 var CensusDataKey = process.env.CENSUS_DATA_API_KEY;
 
-// Expose tweets endpoint for ang2 app
+/**
+ * Gets population data from http://api.census.gov/data service.
+ */
 router.get('/census/population/:query?', function(request, response, next) {
   // inject search query from client
-  var query = 'us';
+  var query = 'us:*';
   if (request.params.query) {
     query = request.params.query;
+  }
+  if (query.indexOf(':') < 0) {
+    // append :*
+    query += ':*';
   }
   log('census/population query: ', query );
   var year = 2015;  
@@ -25,30 +31,27 @@ router.get('/census/population/:query?', function(request, response, next) {
   var requestPath = '/data/' + queryParams.year +
                 '/pep/population' +
                 '?get=' + queryParams.get +
-                '&for=' + queryParams.for + ':*' +
+                '&for=' + queryParams.for +
                 '&key=' + queryParams.key; 
   http.request({
         host: 'api.census.gov',
         method: 'GET',
         path: requestPath
-    }, onCensusDataResponse).end();
+    }, 
+    function (dataResponse) {
+      var responseData = '';
+      dataResponse.on('data', function(chunk) {
+        responseData += chunk;
+      });
+      dataResponse.on('end', function() {
+        var data = JSON.parse(responseData);
+        log('response: ', data);
+        response.send(data);
+      });      
+    }).end();
 
 });
 
-
-/**
- * Processes census data service response.
- */
-function onCensusDataResponse(response) {
-  var responseData = '';
-  response.on('data', function(chunk) {
-    responseData += chunk;
-  });
-
-  response.on('end', function() {
-    log('response: ', JSON.parse(responseData) );
-  });
-}
 
 /**
  * Quick obj log func.
