@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var cors = require('cors');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -9,6 +10,7 @@ var bodyParser = require('body-parser');
 require('dotenv').config();
 
 var app = express();
+app.use(cors());
 var debug = require('debug')('censusd3:server');
 var http = require('http');
 var port = normalizePort(process.env.PORT || '8000');
