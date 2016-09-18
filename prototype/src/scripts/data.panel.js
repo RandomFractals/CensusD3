@@ -38,6 +38,9 @@ function DataPanel(window) {
   // graph data ref for graphs type toggles
   this.graphData = {};
 
+  // table sort column 
+  this.sortColumn = null;
+
   // number format for display
   this.numberFormat = d3.format(',');
 
@@ -81,7 +84,7 @@ DataPanel.prototype.update = function (title,
   this.graphData = graphData;
 
   // update table data display
-  this._updateTableData(tableData);
+  this._updateTableData(tableData, null); // sort column
 
   // update graphs
   this._updateGraphs(graphData);
@@ -121,8 +124,9 @@ DataPanel.prototype._updateListData = function (listData){
 /**
  * Updates table data display.
  */
-DataPanel.prototype._updateTableData = function (tableData){
-  console.log('DataPanel::_updateTableData:dimensions: ' + tableData.dimensions);
+DataPanel.prototype._updateTableData = function (tableData, sortOn){
+  console.log('DataPanel::_updateTableData:dimensions: ' + tableData.dimensions +
+    ' sortOn: ' + sortOn);
   //console.log( JSON.stringify(tableData.data) );
   
   // TODO: create sortable columns table 
@@ -139,21 +143,28 @@ DataPanel.prototype._updateTableData = function (tableData){
     .range([0, 100]);
 
   // append table header row
+  var panel = this;
   thead.append('tr')
        .selectAll('th')
        .data(columns)
        .enter()
        .append('th')
-       .text( function(column) { return column; } );
+       .text( function(column) { return column; } )
+       .on('click', function(d) {
+         return panel._updateTableData(tableData, 
+          d.replace('+', '')); // sort column name - + for numbers
+       });
 
   // create table data rows 
-  var dataRows = tbody.selectAll('tr')
-      .data(tableData.data)
+  var tr = tbody.selectAll('tr')
+      .data( tableData.data.sort( function(a,b){
+        return d3.descending(a.population, b.population);
+      }))
       .enter()
       .append('tr');
 
   // create table data row cells
-  var dataCells = dataRows.selectAll('td')
+  var td = tr.selectAll('td')
       .data( function(row) {
         return columns.map( function(column) {
           var htmlText = row[column];
@@ -172,6 +183,35 @@ DataPanel.prototype._updateTableData = function (tableData){
       .html( function(d) {
         return d.html; 
       });
+
+  // simple strings and numbs sort
+  var sort = function sort(a, b) {
+    if (typeof a == 'number') {
+      return a > b ? 1 : a == b ? 0 : -1;
+    }
+    return a.localeCompare(b); 
+  }
+
+  // update sort  
+  if (sortOn != null) {
+    if (sortOn != panel.sortColumn) {
+      tr.sort( function(a, b) { 
+        return sort(a[sortOn], b[sortOn]); 
+      });
+      panel.sortColumn = sortOn;
+    }
+    else {
+      tr.sort( function(a,b) { 
+        return sort(b[sortOn], a[sortOn]);
+      });
+      panel.sortColumn = null;
+    }
+
+    // update cells
+    td.html( function(d, i) {
+      return d.html;
+    });
+  }
     
   return table;
 }
