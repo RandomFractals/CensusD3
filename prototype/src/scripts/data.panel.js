@@ -149,7 +149,9 @@ DataPanel.prototype._updateTableData = function (tableData, sortOn){
        .data(columns)
        .enter()
        .append('th')
-       .text( function(column) { return column; } )
+       .text( function(column) { 
+         return column.replace('+', ''); // strip out + 
+        })
        .on('click', function(d) {
          return panel._updateTableData(tableData, 
           d.replace('+', '')); // sort column name - + for numbers
