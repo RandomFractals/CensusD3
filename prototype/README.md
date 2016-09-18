@@ -10,7 +10,7 @@ http://censusd3.herokuapp.com/
 
 All kinds of census data and graphs are coming this week!
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3WTableData.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3WithTableBarsAndSort.png?raw=true 
  "latest") 
 
  See the latest live dev proj. updates on Twitter:
