@@ -30,3 +30,13 @@ All kinds of census data and graphs are coming this week!
 # Current working dir:) 
 
 https://github.com/RandomFractals/CensusD3/tree/master/prototype
+
+# CensusD3 App Build
+
+>npm install
+
+# CenusD3 
+
+>npm start
+
+go to http://localhost:8000/ for your local app build preview
