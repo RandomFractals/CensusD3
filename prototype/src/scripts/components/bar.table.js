@@ -102,7 +102,7 @@ BarTable.prototype.redraw = function (tableData, sortOn){
 
   // update sort  
   if (sortOn != null) {
-    if (sortOn != table.sortColumn) {
+    if (sortOn != barTable.sortColumn) {
       tr.sort( function(a, b) { 
         return sort(a[sortOn], b[sortOn]); 
       });
