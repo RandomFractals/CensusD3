@@ -294,7 +294,7 @@ USMap.prototype.drawStates = function (map){
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
                 map.numberFormat(map.statesPopulation[i].population) + 
                 '</span><br /><span class="label">density:</span><span class="data-text">' +
-                map.decimalFormat(map.statesPopulation[i].density) + '/mile'
+                map.decimalFormat(map.statesPopulation[i].density) + ' /mile'
               )
               .style("left", (d3.event.pageX + 24) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
@@ -485,7 +485,7 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
                 map.numberFormat(populationData[i].population) +                 
                 '</span><br /><span class="label">density:</span><span class="data-text">' +
-                map.decimalFormat(populationData[i].density) + '/mile'
+                map.decimalFormat(populationData[i].density) + ' /mile'
               )
               .style("left", (d3.event.pageX + 10) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
