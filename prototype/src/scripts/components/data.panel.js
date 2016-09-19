@@ -106,7 +106,7 @@ DataPanel.prototype.redraw = function (listData){
     .enter()
     .append('li')
     .attr('id', function(d, i) { return d.id; })
-    .attr('class', 'list-tem')
+    .attr('class', 'list-item')
     .html( function(d, i) {
       return d.label + ': <span class="data-text">' + d.data + '</span>';
     });
