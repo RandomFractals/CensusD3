@@ -285,16 +285,17 @@ USMap.prototype.drawStates = function (map){
               .style("opacity", .9);
 
           // display state name in tooltip
-          map.tooltip.html('<img height="18" src="./images/flags/' +
+          map.tooltip.html( '<img height="18" src="./images/flags/' +
                 d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
                 '<span class="state-tooltip">' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
-                map.numberFormat( map.statesPopulation[i].population ) + 
-                "</span>" 
+                map.numberFormat(map.statesPopulation[i].population) + 
+                '</span><br /><span class="label">density:</span><span class="data-text">' +
+                map.numberFormat(map.statesPopulation[i].density)
               )
               .style("left", (d3.event.pageX + 24) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
-              .style('height', '36px');         
+              .style('height', '48px');         
         })
         .on('click', function(d, i) {
           console.log('click: ' + d.properties.code);          
