@@ -59,6 +59,6 @@ but it's public as of now and I plan to keep it that way.
 
 Most likely I will adopt whatever d3.js and M. Bostock license is using.
 
-Feel free to log issues and ping me wigh pull requests 
+Feel free to log issues and ping me with pull requests 
 for the alpha v. fixes/feature requests, if you find this of some use,
 and decide to fork this quicky demo app repo for your next.
