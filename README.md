@@ -39,4 +39,24 @@ https://github.com/RandomFractals/CensusD3/tree/master/prototype
 
 >npm start
 
-go to http://localhost:8000/ for your local app build preview
+go to http://localhost:8000/ for your local app build 
+
+# .env and census data api key
+
+Please sign up for your own Census data API key here:
+
+# http://api.census.gov/data/key_signup.html
+
+and then copy it to your own .env, if you decide to fork this repo:
+
+# Census data API KEY
+CENSUS_DATA_API_KEY=
+
+be nice and drop me note if you decide to use this proto for your next.
+
+I have not decide on the license type of this public data viz just yet. 
+
+I'll do that this week.
+
+Feel free to log issues and ping me wigh pull requests 
+for the alpha v. fixes if you decide to fork this quicky demo app.
