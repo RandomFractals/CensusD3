@@ -17,7 +17,7 @@ Census Data Mapper 2.0 UX d3.js v.4 proj.? :)
 
 # Current alpha v. Status
 
-Preview current v.12 alpha on heroku:
+Preview current v. 0.0.12 alpha on heroku:
 
 http://censusd3.herokuapp.com/
 
