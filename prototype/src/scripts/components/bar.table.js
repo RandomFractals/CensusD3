@@ -35,7 +35,6 @@ BarTable.prototype.redraw = function (tableData, sortOn){
     ' sortOn: ' + sortOn);
   //console.log( JSON.stringify(tableData.data) );
   
-  // TODO: create sortable columns table 
   this.dataTable.selectAll('table').remove();
   var table = this.dataTable.append('table');
   var thead = table.append('thead');
