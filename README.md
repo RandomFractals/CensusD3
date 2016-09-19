@@ -47,7 +47,7 @@ Please sign up for your own Census data API key here:
 
 # http://api.census.gov/data/key_signup.html
 
-and then copy it to your own .env, if you decide to fork this repo
+and then copy it to your own .env if you decide to fork this repo
 
 # In Sum
 
