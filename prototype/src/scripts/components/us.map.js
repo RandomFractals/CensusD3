@@ -284,7 +284,7 @@ USMap.prototype.drawStates = function (map){
               .duration(200)      
               .style("opacity", .9);
 
-          // display state name in tooltip
+          // display state stats tooltip
           map.tooltip.html( '<img height="18" src="./images/flags/' +
                 d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
                 '<span class="state-tooltip">' + d.properties.name + 
@@ -476,11 +476,14 @@ USMap.prototype.drawCounties = function (stateCode, map){
               .duration(200)      
               .style("opacity", .9);
 
-          // display state name in tooltip
-          map.tooltip.text( d.properties.state + ': ' + d.properties.name )
+          // display county stats tooltip
+          map.tooltip.html( d.properties.state + ': ' + d.properties.name + 
+                '</span><br /><span class="label">population:</span><span class="data-text">' + 
+                '</span><br /><span class="label">density:</span><span class="data-text">'
+              )
               .style("left", (d3.event.pageX + 10) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
-              .style('height', '16px');
+              .style('height', '48px');
 
           //d3.event.stopPropagation();         
         })
