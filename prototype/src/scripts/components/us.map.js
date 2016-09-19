@@ -68,8 +68,11 @@ function USMap(usMapDataService, usCensusDataService,
   // and county regions geo data load
   this.selectedStateCode = '';
 
-  // number format for display
+  // number format for ints
   this.numberFormat = d3.format(',');
+
+  // number format for decimals
+  this.decimalFormat = d3.format('.1f');
 
   // add window resize event handler
   this.window.addEventListener('resize', this.onWindowResize);
@@ -291,7 +294,7 @@ USMap.prototype.drawStates = function (map){
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
                 map.numberFormat(map.statesPopulation[i].population) + 
                 '</span><br /><span class="label">density:</span><span class="data-text">' +
-                map.numberFormat(map.statesPopulation[i].density)
+                map.decimalFormat(map.statesPopulation[i].density)
               )
               .style("left", (d3.event.pageX + 24) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
@@ -482,7 +485,7 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
                 map.numberFormat(populationData[i].population) +                 
                 '</span><br /><span class="label">density:</span><span class="data-text">' +
-                map.numberFormat(populationData[i].density)
+                map.decimalFormat(populationData[i].density)
               )
               .style("left", (d3.event.pageX + 10) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
