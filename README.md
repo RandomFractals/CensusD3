@@ -1,4 +1,4 @@
-# CensusD3
+# census d3
 
 Interactive d3.js v.4 maps & graphs data viz of US census data from census.gov
 
