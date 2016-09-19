@@ -57,7 +57,7 @@ I have not decided on the license type of this public data viz just yet,
 because it's still supper rough after only 2 weeks of dev,
 but it's public as of now and I plan to keep it that way.
 
-Most likey I will adopt whatever d3.js and M. Bostock license is using.
+Most likely I will adopt whatever d3.js and M. Bostock license is using.
 
 Feel free to log issues and ping me wigh pull requests 
 for the alpha v. fixes/feature requests, if you find this of some use,
