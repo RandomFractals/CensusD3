@@ -478,7 +478,7 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
         .attr('class', function(d, i) {
           console.log(d.properties);
           console.log(populationData[i]);
-          return 'county c' + colorize( populationData[i].density );
+          return 'county c' + Math.round( colorize( populationData[i].density ) );
         })
         .attr('id', function(d) {
           return 'county-' + d.properties.id;
