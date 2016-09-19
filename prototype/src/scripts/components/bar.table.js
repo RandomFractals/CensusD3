@@ -49,7 +49,7 @@ BarTable.prototype.redraw = function (tableData, sortOn){
     .range([0, 100]);
 
   // append table header row
-  var panel = this;  
+  var barTable = this;  
   thead.append('tr')
        .selectAll('th')
        .data(columns)
@@ -59,7 +59,7 @@ BarTable.prototype.redraw = function (tableData, sortOn){
          return column.replace('+', ''); // strip out + 
         })
        .on('click', function(d) {
-         return panel._updateTableData(tableData, 
+         return barTable.redraw(tableData, 
           d.replace('+', '')); // sort column name - + for number columns
        });
 
@@ -75,15 +75,15 @@ BarTable.prototype.redraw = function (tableData, sortOn){
   var td = tr.selectAll('td')
       .data( function(row) {
         return columns.map( function(column) {
-          var htmlText = row[column];
+          var html = row[column];
           if (column.indexOf('+') >= 0) {
-            var propName = column.substring(1); // strip out +
-            var barWidth = x( row[propName] );
-            // format number and gen horizontal bar html
-            htmlText = numberFormat( row[propName] ) +
+            var propertyName = column.substring(1); // strip out +
+            var barWidth = x( row[propertyName] );
+            // format number property data and gen. horizontal bar html
+            html = numberFormat( row[propertyName] ) +
             '<div class="bar" style="width: ' + barWidth + 'px"></div>';
           }
-          return {column: column, html: htmlText};
+          return {column: column, html: html};
         });
       })
       .enter()
@@ -102,11 +102,11 @@ BarTable.prototype.redraw = function (tableData, sortOn){
 
   // update sort  
   if (sortOn != null) {
-    if (sortOn != panel.sortColumn) {
+    if (sortOn != table.sortColumn) {
       tr.sort( function(a, b) { 
         return sort(a[sortOn], b[sortOn]); 
       });
-      panel.sortColumn = sortOn;
+      barTable.sortColumn = sortOn;
     }
     else {
       tr.sort( function(a,b) { 
