@@ -109,7 +109,7 @@ span {
 
 /* data panel styles */
 
-.section-title {
+.data-title {
   color: #666;
 	font-size: 12px;
   font-weight: bold;
@@ -165,12 +165,6 @@ td, th {
 
 tr:hover {
 	background-color: #ffffcc;
-}
-
-.bar {
-	height: 5px;
-	border-color: #ccc;
-	background-color: #39f;
 }
 
 /* footer styles */

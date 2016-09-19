@@ -274,7 +274,7 @@ USMap.prototype.drawStates = function (map){
         })         
         .attr("class", function(d, i) {
           if ( i < map.statesPopulation.length) {
-            return 'q' + map.quantize( map.statesPopulation[i].population / 40000000 ); // max 4 Cali
+            return 's' + map.quantize( map.statesPopulation[i].population / 40000000 ); // max 4 Cali
           }
           return ''; 
         })
@@ -338,7 +338,7 @@ USMap.prototype.drawStateCapitals = function(map) {
           return map.projection( [d.longitude, d.latitude] )[1]; 
         })
         .attr('r', 4)
-        .attr('class', 'city')
+        .attr('class', 'capital city')
         .attr('id', function(d) {
           return 'city-' + d.capital
         })
