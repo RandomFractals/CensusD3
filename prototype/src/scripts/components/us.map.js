@@ -457,9 +457,15 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
   console.log('USMap::drawCounties::' + stateCode + 
     ' counties: ' + Object.keys(this.stateCounties[stateCode].counties).length );
 
+  // get state counties topology to draw
   var stateCountiesTopology = 
     this.usMapDataService.getStateCountiesTopology(
       this.usTopology, this.stateCounties, stateCode);
+
+  // create counties colorize var
+  var colorize = d3.scaleLinear()
+    .domain([0, d3.max(populationData, function(d) {return d.density} ) ])
+    .range([0, 8]);
 
   // draw selected state counties
   //console.log(this.usTopology.objects.counties);
@@ -469,7 +475,9 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
             //this.usTopology.objects.counties).features ) // to show all counties
         .enter().append('path')
         .attr('d', this.geoPath)
-        .attr('class', 'county')
+        .attr('class', function(d, i) {
+          return 'county c' + colorize(d); 
+        })
         .attr('id', function(d) {
           return 'county-' + d.properties.id;
         })
