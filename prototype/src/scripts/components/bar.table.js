@@ -34,7 +34,8 @@ BarTable.prototype.redraw = function (tableData, sortOn){
   console.log('BarTable::redraw: ' + tableData.dimensions +
     ' sortOn: ' + sortOn);
   //console.log( JSON.stringify(tableData.data) );
-  
+
+  // create data table elements
   this.dataTable.selectAll('table').remove();
   var table = this.dataTable.append('table');
   var thead = table.append('thead');
@@ -42,13 +43,13 @@ BarTable.prototype.redraw = function (tableData, sortOn){
   var columns = tableData.dimensions.split(',');
   var numberFormat = d3.format(',');
 
-  // create x scale
+  // create pop data bar x scale
   var x = d3.scaleLinear()
     .domain([0, d3.max(tableData.data, function(d) {return d.population} ) ])
     .range([0, 100]);
 
   // append table header row
-  var panel = this;
+  var panel = this;  
   thead.append('tr')
        .selectAll('th')
        .data(columns)
@@ -59,7 +60,7 @@ BarTable.prototype.redraw = function (tableData, sortOn){
         })
        .on('click', function(d) {
          return panel._updateTableData(tableData, 
-          d.replace('+', '')); // sort column name - + for numbers
+          d.replace('+', '')); // sort column name - + for number columns
        });
 
   // create table data rows 
