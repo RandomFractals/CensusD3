@@ -4,9 +4,9 @@ Interactive d3.js v.4 maps & graphs data viz of US census data from census.gov
 
 # USA States/Counties Choropleth Teaser
 
-There will be lots of these kind of intensity maps, but highly interactive 
-broken down by state, county, and zip regions, 
-and lots of interactive and animated graphs with d3.js v.4 or dc.js 2.0 beta (TBD)
+There will be lots of these kind of choropleth (intensity) maps, 
+but highly interactive and broken down by state, county, and zip regions, 
+with plenty of census data bars, lines, and histogram graphs using d3.js v.4.
 
 ![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3WithCountyData.png?raw=true 
  "latest") 
@@ -17,7 +17,7 @@ Census Data Mapper 2.0 UX d3.js v.4 proj.? :)
 
 # Current alpha v. Status
 
-Preview current alpha v. on heroku:
+Preview current v.12 alpha on heroku:
 
 http://censusd3.herokuapp.com/
 
