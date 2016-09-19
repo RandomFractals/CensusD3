@@ -477,7 +477,8 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
               .style("opacity", .9);
 
           // display county stats tooltip
-          map.tooltip.html( d.properties.state + ': ' + d.properties.name + 
+          map.tooltip.html('<span class="state-tooltip">' +             
+                d.properties.state + ': ' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
                 map.numberFormat(populationData[i].population) +                 
                 '</span><br /><span class="label">density:</span><span class="data-text">' +
@@ -485,7 +486,7 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
               )
               .style("left", (d3.event.pageX + 10) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
-              .style('height', '48px');
+              .style('height', '42px');
 
           //d3.event.stopPropagation();         
         })
