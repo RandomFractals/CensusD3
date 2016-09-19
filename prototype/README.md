@@ -8,7 +8,7 @@ http://censusd3.herokuapp.com/
 
 More data and graphs are coming this week!
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3WithTableBarsAndSort.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3PopDensity2.png?raw=true 
  "latest") 
 
  See the latest live dev project updates on Twitter:
