@@ -31,11 +31,11 @@ All kinds of census data and graphs are coming this week!
 
 https://github.com/RandomFractals/CensusD3/tree/master/prototype
 
-# CensusD3 App Build
+# Census d3.js v.4 app build
 
 >npm install
 
-# CenusD3 
+# Census d3.js v.4 app run
 
 >npm start
 
