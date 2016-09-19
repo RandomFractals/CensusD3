@@ -384,7 +384,7 @@ USMap.prototype.onStateClick = function (d, i, region) {
   this.usCensusDataService.getStateCountiesPopulation(d.id, // state id
     function (populationData, map) {
       // draw state counties
-      map.drawCounties(map.selectedStateCode, map);
+      map.drawCounties(map.selectedStateCode, populationData, map);
 
       // show state counties data
       map.updateRegionData(d, i, populationData);
@@ -448,7 +448,7 @@ USMap.prototype.updateRegionData = function (d, i, populationData){
 /**
  * Draws selected state counties on state path click.
  */
-USMap.prototype.drawCounties = function (stateCode, map){  
+USMap.prototype.drawCounties = function (stateCode, populationData, map){  
 
   // create state county paths
   console.log('USMap::drawCounties::' + stateCode + 
@@ -479,7 +479,9 @@ USMap.prototype.drawCounties = function (stateCode, map){
           // display county stats tooltip
           map.tooltip.html( d.properties.state + ': ' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
-                '</span><br /><span class="label">density:</span><span class="data-text">'
+                map.numberFormat(populationData[i].population) +                 
+                '</span><br /><span class="label">density:</span><span class="data-text">' +
+                map.numberFormat(populationData[i].density)
               )
               .style("left", (d3.event.pageX + 10) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
