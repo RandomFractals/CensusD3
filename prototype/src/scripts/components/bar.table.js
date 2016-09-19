@@ -112,7 +112,7 @@ BarTable.prototype.redraw = function (tableData, sortOn){
       tr.sort( function(a,b) { 
         return sort(b[sortOn], a[sortOn]);
       });
-      panel.sortColumn = null;
+      barTable.sortColumn = null;
     }
 
     // update cells
