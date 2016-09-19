@@ -8,7 +8,7 @@ There will be lots of these kind of choropleth (intensity) maps,
 but highly interactive and broken down by state, county, and zip regions, 
 with plenty of census data bars, lines, and histogram graphs using d3.js v.4.
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3WithCountyData.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3PopDensity2.png?raw=true 
  "latest") 
 
 Think http://datamapper.geo.census.gov/map.html but less rigid, more interactive, and user-friendly. 
