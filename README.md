@@ -39,7 +39,7 @@ https://github.com/RandomFractals/CensusD3/tree/master/prototype
 
 >npm start
 
-go to http://localhost:8000/ for your local app build 
+go to http://localhost:8000/ to preview your local app build 
 
 # .env and census data api key
 
@@ -51,11 +51,14 @@ and then copy it to your own .env, if you decide to fork this repo
 
 # In Sum
 
-be nice and drop me note if you decide to use this proto for your next.
+Be nice and drop me a note, if you decide to use this proto for your next.
 
-I have not decided on the license type of this public data viz just yet. 
+I have not decided on the license type of this public data viz just yet,
+because it's still supper rought after only 2 weeks of dev,
+but it's public as of now and I plan to keep it that way.
 
-I'll do that this week.
+Most likey I will adopt whatever d3.js and M. Bostock license is using.
 
 Feel free to log issues and ping me wigh pull requests 
-for the alpha v. fixes, if you decide to fork this quicky demo app.
+for the alpha v. fixes/feature requests, if you find this of some use,
+and decide to fork this quicky demo app repo for your next.
