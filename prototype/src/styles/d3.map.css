@@ -92,7 +92,7 @@ div.tooltip {
 /* county path styles */
 .county {
   fill: #fff;
-  fill-opacity: .1;
+  fill-opacity: .9;
   stroke: #666;
   stroke-width: .2px;
 }
