@@ -23,14 +23,13 @@ function StatusBar() {
 
 
 /**
- * Updates app status bar image, title, message text and stats display.
+ * Updates app status bar image, code, title, message text and stats display.
  */
-StatusBar.prototype.update = function (title, messageText, data){
+StatusBar.prototype.update = function (code, title, messageText, data){
   console.log('StatusBar::update');
 
   // update status bar flag image   
-  this.messageImage.attr('src', '../images/flags/' + 
-    title.split(' ').join('_') + '.svg.png'); // convert spaces to _
+  this.messageImage.attr('src', '../images/flags/' + code + '.png');
 
   // update msg title
   this.messageTitle.text(title);
