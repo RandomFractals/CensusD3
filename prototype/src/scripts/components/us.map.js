@@ -455,8 +455,8 @@ USMap.prototype.updateRegionData = function (d, i, populationData){
 USMap.prototype.drawCounties = function (stateCode, populationData, map){  
 
   // create state county paths
-  console.log('USMap::drawCounties::' + stateCode + 
-    ' counties: ' + Object.keys(this.stateCounties[stateCode].counties).length );
+  console.log('USMap::drawCounties::', stateCode, 'counties:',
+    Object.keys(this.stateCounties[stateCode].counties).length );
 
   // get state counties topology to draw
   var stateCountiesTopology = 
