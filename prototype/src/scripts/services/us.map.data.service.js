@@ -158,9 +158,9 @@ USMapDataService.prototype.getStateCountiesTopology =
     }
   }
 
-  console.log('USMapDataService::getStateCountiesTopology::got ' + 
-    stateCode + ' ' + stateCounties[stateCode].topology.geometries.length +
-    ' counties topology!');
+  console.log('USMapDataService::getStateCountiesTopology::got', 
+    stateCode, stateCounties[stateCode].topology.geometries.length,
+    'counties topology!');
   //console.log(stateCounties[stateCode].topology);
 
   return stateCounties[stateCode].topology;
