@@ -490,7 +490,9 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
               .style("opacity", .9);
 
           // display county stats tooltip
-          map.tooltip.html('<span class="state-tooltip">' +             
+          map.tooltip.html('<img height="18" src="./images/flags/' + 
+                d.properties.state + '.png" /> '+
+                '<span class="state-tooltip">' +             
                 d.properties.state + ': ' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
                 map.numberFormat(populationData[i].population) +                 
