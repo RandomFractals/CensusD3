@@ -74,7 +74,7 @@ USCensusDataService.prototype.getStatesPopulation = function(onDataReady, map) {
  */
 USCensusDataService.prototype.getStateCountiesPopulation = function(stateId, onDataReady, map) {
   var query = 'county:*&in=state:' + stateId;
-  console.log('USCensusDataService::getStateCountiesPopulation::loading ' +
+  console.log('USCensusDataService::getStateCountiesPopulation:loading ' +
     './census/population/' + query);  
   d3.json('./census/population/' + query, function(responseData) {
     console.log('USCensusDataService::getStatesPopulation::loaded state counties population: count: ' + 
@@ -104,7 +104,7 @@ USCensusDataService.prototype.getStateCountiesPopulation = function(stateId, onD
       statePopData.push( countyPopulation );
     }
 
-    //console.log(statePopData);
+    console.log('USCensusDataService::getStateCountiesPopulation:loaded ', stateId, '', statePopData.length, ' counties');
 
     // update map comp.
     onDataReady(statePopData, map);
