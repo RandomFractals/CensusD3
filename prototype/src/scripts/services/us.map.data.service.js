@@ -133,7 +133,7 @@ USMapDataService.prototype.getStateCountiesTopology =
 
   // create state counties geometry collection
   var countyKeys = Object.keys(stateCounties[stateCode].counties);
-  console.log('USMapDataService::getStateCountiesTopology::creating ' + stateCode +
+  console.log('USMapDataService::getStateCountiesTopology::getting ' + stateCode +
     ' counties topology...'); // for: ' + countyKeys);
   //console.log(stateCounties[stateCode].counties);  
   //console.log(usTopology.objects.counties.geometries);
@@ -158,8 +158,9 @@ USMapDataService.prototype.getStateCountiesTopology =
     }
   }
 
-  console.log('USMapDataService::getStateCountiesTopology::created ' + 
-    stateCode + ' counties topology!');
+  console.log('USMapDataService::getStateCountiesTopology::got ' + 
+    stateCode + ' ' + stateCounties[stateCode].topology.geometries.length +
+    ' counties topology!');
   //console.log(stateCounties[stateCode].topology);
 
   return stateCounties[stateCode].topology;
