@@ -288,8 +288,8 @@ USMap.prototype.drawStates = function (map){
               .style("opacity", .9);
 
           // display state stats tooltip
-          map.tooltip.html( '<img height="18" src="./images/flags/' +
-                d.properties.name.split(' ').join('_') + '.svg.png" /> ' + 
+          map.tooltip.html( '<img height="18" src="./images/flags/' + 
+                d.properties.code + '.png" /> ' + 
                 '<span class="state-tooltip">' + d.properties.name + 
                 '</span><br /><span class="label">population:</span><span class="data-text">' + 
                 map.numberFormat(map.statesPopulation[i].population) + 
