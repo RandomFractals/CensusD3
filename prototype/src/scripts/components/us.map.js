@@ -434,7 +434,8 @@ USMap.prototype.updateRegionData = function (d, i, populationData){
     this.statesPopulation[i].population ); // state pop count
 
   // update data panel with state pop and house seats for now
-  this.dataPanel.update(d.properties.name, { // state name 
+  this.dataPanel.update(d.properties.code, // state code, i.e. IL
+    d.properties.name, { // state name 
       // list data
       population: this.statesPopulation[i].population, 
       house_seats: d.properties.houseSeats
@@ -555,7 +556,7 @@ USMap.prototype.resetRegionData = function () {
   this.statusBar.update('USA', 'USA', 'population: ', this.totalPopulation);
 
   // update data panel with total us pop and house seats for now
-  this.dataPanel.update('USA', { // list data
+  this.dataPanel.update('USA', 'USA', { // list data
       population: this.totalPopulation, 
       house_seats: this.houseSeats
     }, { // table data

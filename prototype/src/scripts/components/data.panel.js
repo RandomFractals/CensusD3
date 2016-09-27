@@ -59,7 +59,7 @@ function DataPanel(window) {
  * data list and data graph with the selection region
  * or census data type geo data.
  */
-DataPanel.prototype.update = function (title, 
+DataPanel.prototype.update = function (code, title, 
   listData, tableData, graphData){
   console.log('DataPanel::update'); 
 
@@ -67,8 +67,7 @@ DataPanel.prototype.update = function (title,
   this.dataTitle.text(title);
 
   // update data section image   
-  this.dataImage.attr('src', '../images/flags/' + 
-    title.split(' ').join('_') + '.svg.png'); // convert spaces to _
+  this.dataImage.attr('src', '../images/flags/' + code + '.png'); 
 
   // update list data display
   this.redraw(listData);
