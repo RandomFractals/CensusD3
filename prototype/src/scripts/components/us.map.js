@@ -501,7 +501,7 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
               )
               .style("left", (d3.event.pageX + 10) + "px")     
               .style("top", (d3.event.pageY - 28) + "px")
-              .style('height', '42px');
+              .style('height', '48px');
 
           //d3.event.stopPropagation();         
         })
