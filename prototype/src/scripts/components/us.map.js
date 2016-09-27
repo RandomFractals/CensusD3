@@ -468,7 +468,6 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
     .range([0, 8]);
 
   // draw selected state counties
-  //console.log(this.usTopology.objects.counties);
   this.g.selectAll('.county').remove()
         .data( 
           topojson.feature(this.usTopology, stateCountiesTopology).features ) 
@@ -476,8 +475,8 @@ USMap.prototype.drawCounties = function (stateCode, populationData, map){
         .enter().append('path')
         .attr('d', this.geoPath)
         .attr('class', function(d, i) {
-          console.log(d.properties);
-          console.log(populationData[i]);
+          console.log('USMap::drawCounties:topoObj: ', d.properties);
+          console.log('USMap::drawCounties:popData: ', populationData[i]);
           return 'county c' + Math.round( colorize( populationData[i].density ) );
         })
         .attr('id', function(d) {

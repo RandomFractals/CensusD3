@@ -111,7 +111,7 @@ USMapDataService.prototype.getUSCounties = function(usTopology, onDataReady, map
     console.log('USMapDataService::getUSACounties::loaded counties: ' + countyCount);
     console.log('USMapDataService::getUSACounties::loaded county states: ' + 
       Object.keys(stateCounties).length );
-    //console.log(stateCounties);
+    console.log(stateCounties);
 
     // update map comp.
     onDataReady(stateCounties, map);
