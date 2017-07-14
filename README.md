@@ -25,7 +25,9 @@ See the latest project updates and screen grabs on Twitter:
 
 https://twitter.com/hashtag/censusd3
 
-All kinds of census data and graphs are coming this week!
+All kinds of census data and graphs can/will be added eventually :)
+
+This project is currently on hold.
 
 # Current working dir:) 
 
