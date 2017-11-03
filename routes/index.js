@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var async = require('async');
-var http = require('http');
+var https= require('https');
 var CensusDataKey = process.env.CENSUS_DATA_API_KEY;
 
 /**
@@ -33,7 +33,7 @@ router.get('/census/population/:query?', function(request, response, next) {
                 '?get=' + queryParams.get +
                 '&for=' + queryParams.for +
                 '&key=' + queryParams.key; 
-  http.request({
+  https.request({
         host: 'api.census.gov',
         method: 'GET',
         path: requestPath
