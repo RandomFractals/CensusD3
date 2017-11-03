@@ -6,7 +6,7 @@ You can preview this alpha census d3 map data prototype on heroku:
 
 http://censusd3.herokuapp.com/
 
-More data and graphs are coming this week!
+I'll add more data and some graphs eventually :)
 
 ![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/censusd3PopDensity2.png?raw=true 
  "latest") 
