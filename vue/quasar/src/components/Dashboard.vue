@@ -52,7 +52,14 @@
       if using subRoutes
     -->
     <!-- app content -->
-    <div class="layout-padding logo-container non-selectable no-pointer-events">
+    <div class="layout-padding">
+      <div class="row">
+      <div class="col-8 primary-content">TODO: USA Map</div>
+      <div class="col-auto primary-content">TODO: Population Table</div>
+      </div>
+      <div class="row">
+        <div class="col-auto chart">TODO: Population Chart</div>
+      </div>
     </div>
 
     <!-- footer -->
@@ -69,6 +76,16 @@
     </q-toolbar>
   </q-layout>
 </template>
+
+<style>
+.primary-content {
+  height: 360px;
+}
+
+.chart {
+  height: 180px;
+}
+</style>
 
 <script>
 import {
@@ -216,6 +233,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-</style>
