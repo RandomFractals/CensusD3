@@ -1,30 +1,30 @@
 <template>
-  <q-layout
-    ref="layout"
+  <q-layout ref="layout"
     view="lHh Lpr fff"
-    :left-class="{'bg-grey-2': true}"
-  >
-    <q-toolbar slot="header" class="glossy">
-      <q-btn
-        flat
-        @click="$refs.layout.toggleLeft()"
-      >
+    :left-class="{'bg-grey-2': true}">
+
+    <!-- app toolbar -->
+    <q-toolbar slot="header">
+      <q-btn flat @click="$refs.layout.toggleLeft()">
         <q-icon name="menu" />
       </q-btn>
-
       <q-toolbar-title>
         Census Vue
-        <div slot="subtitle">powered by Quasar v{{$q.version}}</div>
+        <div slot="subtitle">powered by
+          <a class="text-cyan-11" 
+            href="http://quasar-framework.org/" target="_blank"
+            title="quasar-framework">Quasar v{{$q.version}}</a>
+        </div>
       </q-toolbar-title>
     </q-toolbar>
 
+    <!-- left side panel -->
     <div slot="left">
       <!--
         Use <q-side-link> component
         instead of <q-item> for
         internal vue-router navigation
       -->
-
       <q-list no-border link inset-delimiter>
         <q-list-header>Essential Links</q-list-header>
         <q-item @click="launch('http://quasar-framework.org')">
@@ -51,8 +51,22 @@
       <router-view /> component
       if using subRoutes
     -->
+    <!-- app content -->
     <div class="layout-padding logo-container non-selectable no-pointer-events">
     </div>
+
+    <!-- footer -->
+    <q-toolbar slot="footer" color="light">
+      <small>
+	      <span class="text-faded">data:</span>
+        <a href="http://api.census.gov/data.html" target="_blank"
+          title="http://api.census.gov/data.html">api.census.gov</a>      
+	      <span class="text-faded">| code:</span>
+        <a href="https://github.com/RandomFractals/CensusD3/tree/master/vue/quasar" target="_blank"
+          title="census vue project on github">census-vue</a>
+        <span class="text-faded">&copy;Random Fractals Inc. 2017</span>
+      </small>
+    </q-toolbar>
   </q-layout>
 </template>
 
