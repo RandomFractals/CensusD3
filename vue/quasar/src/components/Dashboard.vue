@@ -13,8 +13,8 @@
       </q-btn>
 
       <q-toolbar-title>
-        Quasar App
-        <div slot="subtitle">Running on Quasar v{{$q.version}}</div>
+        Census Vue
+        <div slot="subtitle">powered by Quasar v{{$q.version}}</div>
       </q-toolbar-title>
     </q-toolbar>
 
@@ -52,9 +52,6 @@
       if using subRoutes
     -->
     <div class="layout-padding logo-container non-selectable no-pointer-events">
-      <div class="logo" :style="position">
-        <img src="~assets/quasar-logo-full.svg">
-      </div>
     </div>
   </q-layout>
 </template>
@@ -207,15 +204,4 @@ export default {
 </script>
 
 <style lang="stylus">
-.logo-container
-  width 255px
-  height 242px
-  perspective 800px
-  position absolute
-  top 50%
-  left 50%
-  transform translateX(-50%) translateY(-50%)
-.logo
-  position absolute
-  transform-style preserve-3d
 </style>

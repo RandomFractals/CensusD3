@@ -53,11 +53,10 @@
 
     <router-view />
 
-    <!-- Footer
+    <!-- Footer -->
     <q-toolbar slot="footer">
       ...
     </q-toolbar>
-    -->
   </q-layout>
 </template>
 
