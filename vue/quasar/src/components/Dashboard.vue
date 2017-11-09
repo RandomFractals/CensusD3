@@ -54,11 +54,17 @@
     <!-- app content -->
     <div class="layout-padding">
       <div class="row">
-      <div class="col-8 primary-content">TODO: USA Map</div>
-      <div class="col-auto primary-content">TODO: Population Table</div>
+      <div class="col-8 primary-content">
+        <usa-map  />        
+      </div>
+      <div class="col-auto primary-content">
+        <population-table />
+      </div>
       </div>
       <div class="row">
-        <div class="col-auto chart">TODO: Population Chart</div>
+        <div class="col-auto chart">
+          <population-chart />
+        </div>
       </div>
     </div>
 
@@ -104,6 +110,10 @@ import {
   QItemMain
 } from 'quasar'
 
+import USAMap from './USAMap.vue'
+import PopulationTable from './PopulationTable.vue'
+import PopulationChart from './PopulationChart.vue'
+
 const
   { viewport } = dom,
   { position } = event,
@@ -134,7 +144,10 @@ export default {
     QListHeader,
     QItem,
     QItemSide,
-    QItemMain
+    QItemMain,
+    usaMap: USAMap,
+    PopulationTable: PopulationTable,
+    PopulationChart: PopulationChart
   },
   data () {
     return {
