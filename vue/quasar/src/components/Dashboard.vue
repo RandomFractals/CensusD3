@@ -52,17 +52,17 @@
       if using subRoutes
     -->
     <!-- app content -->
-    <div class="layout-padding">
+    <div class="sm-gutter">
       <div class="row">
-      <div class="col-8 primary-content">
+      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 primary-content">
         <usa-map  />        
       </div>
-      <div class="col-auto primary-content">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 primary-content">
         <population-table />
       </div>
       </div>
       <div class="row">
-        <div class="col-auto chart">
+        <div class="col-12 chart">
           <population-chart />
         </div>
       </div>
@@ -89,7 +89,7 @@
 }
 
 .chart {
-  height: 180px;
+  height: 240px;
 }
 </style>
 

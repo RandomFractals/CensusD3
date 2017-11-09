@@ -11,11 +11,23 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 // require(`quasar/dist/quasar.ie.${__THEME}.css`)
 
 import Vue from 'vue'
-import Quasar from 'quasar'
+import Quasar, {
+  QCard,
+  QCardTitle,
+  QCardSeparator,
+  QCardMain} from 'quasar'
 import router from './router'
 
 Vue.config.productionTip = false
-Vue.use(Quasar) // Install Quasar Framework
+// register global quasar components
+Vue.use(Quasar, {
+  components: {
+    QCard,
+    QCardTitle,
+    QCardSeparator,
+    QCardMain
+  }
+})
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')
