@@ -1,6 +1,6 @@
-# Quasar App
+# Census Vue Dashboard App
 
-> A Quasar project
+> A Quasar/Vue project
 
 ## Build Setup
 

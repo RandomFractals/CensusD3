@@ -1,10 +1,10 @@
 {
-  "name": "quasar-app",
-  "productName": "Quasar App",
+  "name": "census-vue",
+  "productName": "Census Vue",
   "version": "0.0.1",
   "private": true,
-  "description": "A Quasar App",
-  "author": "Your Name <your@email.com>",
+  "description": "USA Population Census Vue Dashboard",
+  "author": "Random Fractals Inc.",
   "scripts": {
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
