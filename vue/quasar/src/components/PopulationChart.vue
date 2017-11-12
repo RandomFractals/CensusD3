@@ -1,7 +1,7 @@
 <template>
   <q-card class="chart" style="width: 100%">
     <q-card-title>
-      population
+      {{title}}
     </q-card-title>
     <q-card-separator />
     <q-card-main>
@@ -13,7 +13,9 @@
 <script>
 export default {
   data () {
-    return {}
+    return {
+      title: 'USA population'
+    }
   }
 }
 </script>
