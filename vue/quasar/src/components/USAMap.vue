@@ -22,6 +22,13 @@ export default {
     'v-tilelayer': Vue2Leaflet.TileLayer
   },
 
+  props: {
+    populationData: {
+      type: Array | Object,
+      required: true
+    }
+  },
+
   data () {
     return {
       title: 'USA map',

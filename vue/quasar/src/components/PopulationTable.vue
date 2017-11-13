@@ -37,8 +37,16 @@
 import QDataTable from 'quasar'
 
 export default {
+  name: 'population-table',
   components: {
     QDataTable: QDataTable
+  },
+
+  props: {
+    populationData: {
+      type: Array | Object,
+      required: true
+    }
   },
 
   methods: {

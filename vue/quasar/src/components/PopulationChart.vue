@@ -26,14 +26,18 @@ export default {
     BarChart
   },
 
-  props: {},
+  props: {
+    populationData: {
+      type: Array | Object,
+      required: true
+    }
+  },
 
   data () {
     return {
       title: 'USA population',
-      height: 120,
+      height: 240,
       loaded: false,
-      populationData: [],
       labels: [],
       showError: false,
       errorMessage: 'Error loading population data'

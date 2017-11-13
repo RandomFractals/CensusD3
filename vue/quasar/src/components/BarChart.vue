@@ -59,8 +59,8 @@ export default {
 <style>
 .chart {
   background: #fefefe;
-  border-radius: 5px;
+  border-radius: 2px;
   box-shadow: 0px 2px 15px rgba(25, 25, 25, 0.27);
-  margin:  25px 0;
+  margin:  0px;
 }
 </style>

@@ -4,7 +4,7 @@
     :left-class="{'bg-grey-2': true}">
 
     <!-- app toolbar -->
-    <q-toolbar slot="header">
+    <q-toolbar slot="header" class="app-toolbar">
       <q-btn flat @click="$refs.layout.toggleLeft()">
         <q-icon name="menu" />
       </q-btn>
@@ -52,24 +52,24 @@
       if using subRoutes
     -->
     <!-- app content -->
-    <div class="sm-gutter">
+    <div class="app-content sm-gutter">
       <div class="row">
-      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
-        <usa-map  />        
-      </div>
-      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 table-card">
-        <population-table />
-      </div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
+          <usa-map ref="map" :population-data="populationData" />
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 table-card">
+          <population-table ref="dataTable" :population-data="populationData" />
+        </div>
       </div>
       <div class="row">
         <div class="col-12 chart-card">
-          <population-chart />
+          <population-chart ref="populationChart" :population-data="populationData" />
         </div>
       </div>
     </div>
 
     <!-- footer -->
-    <q-toolbar slot="footer" color="light">
+    <q-toolbar slot="footer" color="light" class="app-footer">
       <small>
 	      <span class="text-faded">data:</span>
         <a href="http://api.census.gov/data.html" target="_blank"
@@ -84,12 +84,46 @@
 </template>
 
 <style>
+/* app container styles */
+.app-toolbar {
+  padding: 0px;
+  min-height: 40px;
+}
+.app-content {
+  margin: 5px;
+}
+.app-footer {
+  min-height: 30px;
+  padding: 0px 5px 0px 10px;
+}
+
+/* app card styles */
 .map-card, .table-card {
   height: 360px;
+  padding: 0px;
+}
+
+.table-card {
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .chart-card {
-  height: 240px;
+  height: 320px;
+}
+
+/* override q-card styles to slim them down */
+.q-card {
+  padding: 0px;
+  margin: 0px;
+}
+.q-card-title {
+  padding: 0px;
+  padding-left: 5px;
+  font-size: 16px;
+}
+.q-card-container {
+  padding: 0px;
 }
 </style>
 
@@ -113,6 +147,8 @@ import {
 import USAMap from './USAMap.vue'
 import PopulationTable from './PopulationTable.vue'
 import PopulationChart from './PopulationChart.vue'
+
+import axios from 'axios'
 
 const
   { viewport } = dom,
@@ -151,6 +187,10 @@ export default {
   },
   data () {
     return {
+      populationData: [],
+      loaded: false,
+      showError: false,
+      errorMessage: 'Error loading population data',
       orienting: window.DeviceOrientationEvent && !this.$q.platform.is.desktop,
       rotating: window.DeviceMotionEvent && !this.$q.platform.is.desktop,
       moveX: 0,
@@ -175,6 +215,9 @@ export default {
     launch (url) {
       openURL(url)
     },
+
+    // TODO: retrofit these for proper device rotation event handling
+    // and responsive UI layout and components sizing later
     move (evt) {
       const
         {width, height} = viewport(),
@@ -218,8 +261,46 @@ export default {
         this.rotateX = evt.beta * 0.7
         this.rotateY = evt.gamma * -0.7
       }
+    },
+
+    /**
+     * Resets dashboard data load and error message display view state.
+     */
+    resetState () {
+      this.loaded = false
+      this.showError = false
+    },
+
+    /**
+     * Gets USA population data.
+     */
+    getPopulationData () {
+      this.resetState()
+
+      // get USA pop data for all states
+      axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
+        .then(response => {
+          console.log('dashboard::getPopulationData:', response.data)
+          // strip out header row
+          let popData = response.data.slice(1)
+          this.populationData = popData.map(regionData => regionData[0]) // pop count
+          this.labels = popData.map(
+            regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
+          this.loaded = true
+        })
+        .catch(err => {
+          // show pop data error message
+          this.errorMessage = err.response.data.error
+          this.showError = true
+        })
     }
   },
+
+  /**
+   * Adds view change event handlers,
+   * and gets initial USA pop data
+   * to display on app load for now.
+   */
   mounted () {
     this.$nextTick(() => {
       if (this.orienting) {
@@ -232,7 +313,11 @@ export default {
         document.addEventListener('mousemove', this.move)
       }
     })
+
+    // get initial USA pop data for now
+    this.getPopulationData()
   },
+
   beforeDestroy () {
     if (this.orienting) {
       window.removeEventListener('deviceorientation', this.orient, false)
