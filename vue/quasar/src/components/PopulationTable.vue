@@ -1,7 +1,7 @@
 <template>
   <q-card class="table-card">
     <q-card-title>
-      {{title}}
+      {{region}} population: {{population}}
     </q-card-title>
     <q-card-separator />
     <q-card-main>
@@ -57,7 +57,8 @@ export default {
 
   data () {
     return {
-      title: 'USA population',
+      region: 'USA',
+      population: 0,
       table: [{region: 'test', population: 0}],
       config: {
         title: 'Population',
@@ -96,6 +97,8 @@ export default {
 
   created () {
     this.dataHandler = state => {
+      this.region = state.region
+      this.population = state.totalPopulation
       console.log('table data', state)
     }
     this.$q.events.$on('census:population', this.dataHandler)
@@ -109,7 +112,6 @@ export default {
   beforeDestroy () {
     this.$q.events.$off('census:population', this.dataHandler)
   }
-
 }
 </script>
 

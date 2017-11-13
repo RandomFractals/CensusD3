@@ -1,7 +1,7 @@
 <template>
   <q-card class="chart" style="width: 100%">
     <q-card-title>
-      {{title}}
+      {{region}} population: {{population}}
     </q-card-title>
     <q-card-separator />
     <q-card-main>
@@ -26,16 +26,10 @@ export default {
     BarChart
   },
 
-  props: {
-    populationData: {
-      type: Array | Object,
-      required: true
-    }
-  },
-
   data () {
     return {
-      title: 'USA population',
+      region: 'USA',
+      population: 0,
       height: 240,
       loaded: false,
       labels: [],
@@ -46,6 +40,10 @@ export default {
 
   created () {
     this.dataHandler = state => {
+      this.region = state.region
+      this.population = state.totalPopulation
+      this.populationData = state.populationData
+      this.labels = state.labels
       console.log('chart data', state)
     }
     this.$q.events.$on('census:population', this.dataHandler)

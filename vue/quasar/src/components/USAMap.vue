@@ -1,7 +1,7 @@
 <template>
   <q-card class="map-card">
     <q-card-title>
-      {{title}}
+      {{region}} population: {{population}}
     </q-card-title>
     <q-card-separator />
     <q-card-main style="height: 80%">
@@ -22,16 +22,11 @@ export default {
     'v-tilelayer': Vue2Leaflet.TileLayer
   },
 
-  props: {
-    populationData: {
-      type: Array | Object,
-      required: true
-    }
-  },
-
   data () {
     return {
-      title: 'USA map',
+      region: 'USA',
+      population: 0,
+      populationData: [],
       zoom: 4,
       center: [37.8, -96],
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -41,6 +36,10 @@ export default {
 
   created () {
     this.dataHandler = state => {
+      this.region = state.region
+      this.population = state.totalPopulation
+      this.populationData = state.populationData
+      this.labels = state.labels
       console.log('map data', state)
     }
     this.$q.events.$on('census:population', this.dataHandler)

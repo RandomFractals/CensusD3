@@ -290,6 +290,8 @@ export default {
           this.loaded = true
           // push new census data to global quasar event bus
           Events.$emit('census:population', {
+            region: 'USA', // for now
+            totalPopulation: 1,
             populationData: this.populationData,
             labels: this.labels
           })
