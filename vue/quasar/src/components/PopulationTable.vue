@@ -34,7 +34,7 @@
 
 <script>
 
-import QDataTable from 'quasar'
+import {QDataTable} from 'quasar'
 
 export default {
   name: 'population-table',
@@ -94,11 +94,20 @@ export default {
     }
   },
 
+  created () {
+    this.dataHandler = state => {
+      console.log('table data', state)
+    }
+    this.$q.events.$on('census:population', this.dataHandler)
+    console.log('table created')
+  },
+
   mounted () {
     console.log('table mounted')
   },
 
   beforeDestroy () {
+    this.$q.events.$off('census:population', this.dataHandler)
   }
 
 }

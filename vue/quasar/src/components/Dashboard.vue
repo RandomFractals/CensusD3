@@ -141,7 +141,8 @@ import {
   QListHeader,
   QItem,
   QItemSide,
-  QItemMain
+  QItemMain,
+  Events
 } from 'quasar'
 
 import USAMap from './USAMap.vue'
@@ -287,6 +288,11 @@ export default {
           this.labels = popData.map(
             regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
           this.loaded = true
+          // push new census data to global quasar event bus
+          Events.$emit('census:population', {
+            populationData: this.populationData,
+            labels: this.labels
+          })
         })
         .catch(err => {
           // show pop data error message
@@ -296,12 +302,21 @@ export default {
     }
   },
 
+  created () {
+    this.appHandler = state => {
+      console.log('App became', state)
+    }
+    this.$q.events.$on('app:visibility', this.appHandler)
+    console.log('dashboard created')
+  },
+
   /**
    * Adds view change event handlers,
    * and gets initial USA pop data
    * to display on app load for now.
    */
   mounted () {
+    console.log('dashboard mounted')
     this.$nextTick(() => {
       if (this.orienting) {
         window.addEventListener('deviceorientation', this.orient, false)
@@ -313,7 +328,6 @@ export default {
         document.addEventListener('mousemove', this.move)
       }
     })
-
     // get initial USA pop data for now
     this.getPopulationData()
   },
@@ -328,6 +342,7 @@ export default {
     else {
       document.removeEventListener('mousemove', this.move)
     }
+    this.$q.events.$off('app:visibility', this.appHandler)
   }
 }
 </script>

@@ -37,8 +37,23 @@ export default {
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }
-  }
-}
+  },
+
+  created () {
+    this.dataHandler = state => {
+      console.log('map data', state)
+    }
+    this.$q.events.$on('census:population', this.dataHandler)
+    console.log('map created')
+  },
+
+  mounted () {
+    console.log('map mounted')
+  },
+
+  beforeDestroy () {
+    this.$q.events.$off('census:population', this.dataHandler)
+  }}
 </script>
 
 <style>

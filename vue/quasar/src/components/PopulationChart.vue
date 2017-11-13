@@ -44,8 +44,22 @@ export default {
     }
   },
 
+  created () {
+    this.dataHandler = state => {
+      console.log('chart data', state)
+    }
+    this.$q.events.$on('census:population', this.dataHandler)
+    console.log('chart created')
+  },
+
   mounted () {
+    // TODO: remove this after global get pop data hookup is fully wired
     this.getPopulationData()
+    console.log('chart mounted')
+  },
+
+  beforeDestroy () {
+    this.$q.events.$off('census:population', this.dataHandler)
   },
 
   methods: {
@@ -53,6 +67,7 @@ export default {
       this.loaded = false
       this.showError = false
     },
+    // TODO: remove this after global get pop data hookup is fully wired
     getPopulationData () {
       this.resetState()
       axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
