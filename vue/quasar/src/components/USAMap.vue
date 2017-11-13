@@ -1,5 +1,5 @@
 <template>
-  <q-card class="primary-content">
+  <q-card class="map-card">
     <q-card-title>
       {{title}}
     </q-card-title>

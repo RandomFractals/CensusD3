@@ -54,15 +54,15 @@
     <!-- app content -->
     <div class="sm-gutter">
       <div class="row">
-      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 primary-content">
+      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
         <usa-map  />        
       </div>
-      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 primary-content">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 table-card">
         <population-table />
       </div>
       </div>
       <div class="row">
-        <div class="col-12 chart">
+        <div class="col-12 chart-card">
           <population-chart />
         </div>
       </div>
@@ -84,11 +84,11 @@
 </template>
 
 <style>
-.primary-content {
+.map-card, .table-card {
   height: 360px;
 }
 
-.chart {
+.chart-card {
   height: 240px;
 }
 </style>
