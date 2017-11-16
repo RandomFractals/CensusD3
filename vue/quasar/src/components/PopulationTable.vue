@@ -99,6 +99,8 @@ export default {
     this.dataHandler = state => {
       this.region = state.region
       this.population = state.totalPopulation
+      this.populationData = state.populationData
+      this.regions = state.regions
       console.log('table data', state)
     }
     this.$q.events.$on('census:population', this.dataHandler)

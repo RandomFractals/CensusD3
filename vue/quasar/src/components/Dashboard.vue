@@ -188,7 +188,7 @@ export default {
   },
   data () {
     return {
-      populationData: [],
+      populationData: {},
       loaded: false,
       showError: false,
       errorMessage: 'Error loading population data',
@@ -284,16 +284,16 @@ export default {
           console.log('dashboard::getPopulationData:', response.data)
           // strip out header row
           let popData = response.data.slice(1)
-          this.populationData = popData.map(regionData => regionData[0]) // pop count
-          this.labels = popData.map(
+          this.populationData = popData.map(regionData => Number(regionData[0])) // pop count
+          this.regions = popData.map(
             regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
           this.loaded = true
           // push new census data to global quasar event bus
           Events.$emit('census:population', {
             region: 'USA', // for now
-            totalPopulation: 1,
             populationData: this.populationData,
-            labels: this.labels
+            totalPopulation: this.populationData.reduce((a, b) => a + b, 0),
+            regions: this.regions
           })
         })
         .catch(err => {

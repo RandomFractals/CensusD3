@@ -10,7 +10,7 @@
       </div>
       <bar-chart chart-id="population-chart" v-if="loaded"
         :chart-data="populationData"
-        :chart-labels="labels"
+        :chart-labels="regions"
         :height="height" />
     </q-card-main>
   </q-card>
@@ -32,7 +32,7 @@ export default {
       population: 0,
       height: 240,
       loaded: false,
-      labels: [],
+      regions: [],
       showError: false,
       errorMessage: 'Error loading population data'
     }
@@ -43,7 +43,7 @@ export default {
       this.region = state.region
       this.population = state.totalPopulation
       this.populationData = state.populationData
-      this.labels = state.labels
+      this.regions = state.regions
       console.log('chart data', state)
     }
     this.$q.events.$on('census:population', this.dataHandler)
@@ -74,7 +74,7 @@ export default {
           // strip out header row
           let popData = response.data.slice(1)
           this.populationData = popData.map(regionData => regionData[0]) // pop count
-          this.labels = popData.map(
+          this.regions = popData.map(
             regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
           this.loaded = true
         })
