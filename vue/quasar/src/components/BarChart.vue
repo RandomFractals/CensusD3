@@ -28,7 +28,8 @@ export default {
           xAxes: [ {
             gridLines: {
               display: false
-            }
+            },
+            barThickness: 5
           }]
         },
         legend: {
