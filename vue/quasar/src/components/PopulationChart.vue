@@ -1,7 +1,7 @@
 <template>
   <q-card class="chart" style="width: 100%">
     <q-card-title>
-      {{region}} population: {{population}}
+      {{region}} population: {{population | formatNumber}}
     </q-card-title>
     <q-card-separator />
     <q-card-main>

@@ -17,6 +17,7 @@ import Quasar, {
   QCardSeparator,
   QCardMain} from 'quasar'
 import router from './router'
+import numeral from 'numeral'
 
 Vue.config.productionTip = false
 // register global quasar components
@@ -27,6 +28,10 @@ Vue.use(Quasar, {
     QCardSeparator,
     QCardMain
   }
+})
+
+Vue.filter('formatNumber', function (value) {
+  return numeral(value).format('0,0')
 })
 
 if (__THEME === 'mat') {
