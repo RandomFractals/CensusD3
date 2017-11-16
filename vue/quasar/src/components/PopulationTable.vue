@@ -1,6 +1,7 @@
 <template>
   <q-card class="table-card">
     <q-card-title>
+      <img :src="regionIconSrc" height="18" />
       {{region}} population: {{population | formatNumber}}
     </q-card-title>
     <q-card-separator />
@@ -92,6 +93,12 @@ export default {
           width: '100px'
         }
       ]
+    }
+  },
+
+  computed: {
+    regionIconSrc: function () {
+      return 'http://censusd3.herokuapp.com/images/flags/' + this.region + '.png'
     }
   },
 

@@ -1,6 +1,7 @@
 <template>
   <q-card class="map-card">
     <q-card-title>
+      <img :src="regionIconSrc" height="18" />
       {{region}} population: {{population | formatNumber}}
     </q-card-title>
     <q-card-separator />
@@ -31,6 +32,12 @@ export default {
       center: [37.8, -96],
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }
+  },
+
+  computed: {
+    regionIconSrc: function () {
+      return 'http://censusd3.herokuapp.com/images/flags/' + this.region + '.png'
     }
   },
 

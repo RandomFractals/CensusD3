@@ -1,6 +1,7 @@
 <template>
   <q-card class="chart" style="width: 100%">
     <q-card-title>
+      <img :src="regionIconSrc" height="18" />
       {{region}} population: {{population | formatNumber}}
     </q-card-title>
     <q-card-separator />
@@ -35,6 +36,12 @@ export default {
       regions: [],
       showError: false,
       errorMessage: 'Error loading population data'
+    }
+  },
+
+  computed: {
+    regionIconSrc: function () {
+      return 'http://censusd3.herokuapp.com/images/flags/' + this.region + '.png'
     }
   },
 
