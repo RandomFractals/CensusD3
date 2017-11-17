@@ -57,6 +57,8 @@ export default {
     return {
       selectedRegion: {},
       populationData: [],
+      sortColumn: 'regionName',
+      sortAscending: true,
       config: {
         title: 'Population',
         noHeader: false,
@@ -135,10 +137,21 @@ export default {
       console.log('clicked on a row', row)
     },
 
+    /**
+     * Sorts population data array by the specified sort property/column and order.
+     */
     sortData (sortBy) {
       console.log(`table:sortData: property=${sortBy}`)
-      this.populationData = this.populationData.sort((a, b) => a[sortBy] > b[sortBy])
-      console.log(this.populationData)
+      if (this.sortColumn === sortBy) {
+        this.populationData = this.populationData.reverse()
+        this.sortAscending = !this.sortAscending
+      }
+      else {
+        // sort by new column
+        this.populationData = this.populationData.sort((a, b) => a[sortBy] > b[sortBy])
+        this.sortColumn = sortBy
+        this.sortAscending = true
+      }
     }
   }
 
