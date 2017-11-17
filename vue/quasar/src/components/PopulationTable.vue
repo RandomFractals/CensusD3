@@ -2,7 +2,8 @@
   <q-card class="table-card">
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
-      {{region}} population: {{population | formatNumber}}
+      <span class="card-title">{{selectedRegion.name}} population:</span>
+      <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
     </q-card-title>
     <q-card-separator />
     <q-card-main>
@@ -43,13 +44,6 @@ export default {
     QDataTable: QDataTable
   },
 
-  props: {
-    populationData: {
-      type: Array | Object,
-      required: true
-    }
-  },
-
   methods: {
     rowClick (row) {
       console.log('clicked on a row', row)
@@ -58,9 +52,8 @@ export default {
 
   data () {
     return {
-      region: 'USA',
-      population: 0,
-      table: [{region: 'test', population: 0}],
+      selectedRegion: {},
+      populationData: [],
       config: {
         title: 'Population',
         noHeader: false,
@@ -98,16 +91,17 @@ export default {
 
   computed: {
     regionIconSrc: function () {
-      return 'http://censusd3.herokuapp.com/images/flags/' + this.region + '.png'
+      return 'http://censusd3.herokuapp.com/images/flags/' + this.selectedRegion.name + '.png'
     }
   },
 
+  /**
+   * Adds global quasar event bus data handlers.
+   */
   created () {
     this.dataHandler = state => {
-      this.region = state.region
-      this.population = state.totalPopulation
+      this.selectedRegion = state.selectedRegion
       this.populationData = state.populationData
-      this.regions = state.regions
       console.log('table data', state)
     }
     this.$q.events.$on('census:population', this.dataHandler)
@@ -118,6 +112,9 @@ export default {
     console.log('table mounted')
   },
 
+  /**
+   * Removes global quasar event bus data handlers.
+   */
   beforeDestroy () {
     this.$q.events.$off('census:population', this.dataHandler)
   }

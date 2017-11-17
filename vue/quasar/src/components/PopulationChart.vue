@@ -2,17 +2,18 @@
   <q-card class="chart" style="width: 100%">
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
-      {{region}} population: {{population | formatNumber}}
+      <span class="card-title">{{selectedRegion.name}} population:</span>
+      <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
     </q-card-title>
     <q-card-separator />
     <q-card-main>
       <div class="error-message" v-if="showError">
        {{ errorMessage }}
       </div>
-      <bar-chart chart-id="population-chart" v-if="loaded"
-        :chart-data="populationData"
-        :chart-labels="regions"
-        :height="height" />
+      <bar-chart ref="chart" chart-id="population-chart" v-if="loaded"
+        :chart-data="chartData"
+        :chart-labels="chartLabels"
+        :height="chartHeight" />
     </q-card-main>
   </q-card>
 </template>
@@ -29,11 +30,12 @@ export default {
 
   data () {
     return {
-      region: 'USA',
-      population: 0,
-      height: 240,
+      selectedRegion: {},
+      populationData: [],
+      chartData: [],
+      chartLabels: [],
       loaded: false,
-      regions: [],
+      chartHeight: 240,
       showError: false,
       errorMessage: 'Error loading population data'
     }
@@ -41,16 +43,18 @@ export default {
 
   computed: {
     regionIconSrc: function () {
-      return 'http://censusd3.herokuapp.com/images/flags/' + this.region + '.png'
+      return 'http://censusd3.herokuapp.com/images/flags/' + this.selectedRegion.name + '.png'
     }
   },
 
   created () {
     this.dataHandler = state => {
-      this.region = state.region
-      this.population = state.totalPopulation
+      this.selectedRegion = state.selectedRegion
       this.populationData = state.populationData
+      // this.chartData = this.populationData.map(regionData => regionData.population)
+      // this.chartLabels = this.populationData.map(regionData => regionData.regionName)
       this.regions = state.regions
+      // this.redraw()
       console.log('chart data', state)
     }
     this.$q.events.$on('census:population', this.dataHandler)
@@ -80,8 +84,8 @@ export default {
           console.log('getPopulationData:', response.data)
           // strip out header row
           let popData = response.data.slice(1)
-          this.populationData = popData.map(regionData => regionData[0]) // pop count
-          this.regions = popData.map(
+          this.chartData = popData.map(regionData => regionData[0]) // pop count
+          this.chartLabels = popData.map(
             regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
           this.loaded = true
         })

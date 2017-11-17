@@ -1,18 +1,20 @@
 <script>
-import {Bar} from 'vue-chartjs'
+import {Bar, mixins} from 'vue-chartjs'
 
 export default {
   extends: Bar,
+  mixins: [mixins.reactiveProp],
   props: {
     chartData: {
       type: Array | Object,
-      required: false
+      required: true
     },
     chartLabels: {
       type: Array,
-      required: true
+      required: false
     }
   },
+
   data () {
     return {
       options: {
@@ -40,19 +42,26 @@ export default {
       }
     }
   },
+
   mounted () {
-    this.renderChart({
-      labels: this.chartLabels,
-      datasets: [{
-        label: 'population',
-        borderColor: '#249EBF',
-        pointBackgroundColor: 'white',
-        borderWidth: 1,
-        pointBorderColor: '#249EBF',
-        backgroundColor: 'transparent',
-        data: this.chartData
-      }]
-    }, this.options)
+    this.redraw()
+  },
+
+  methods: {
+    redraw () {
+      this.renderChart({
+        labels: this.chartLabels,
+        datasets: [{
+          label: 'population',
+          borderColor: '#249EBF',
+          pointBackgroundColor: 'white',
+          borderWidth: 1,
+          pointBorderColor: '#249EBF',
+          backgroundColor: 'transparent',
+          data: this.chartData
+        }]
+      }, this.options)
+    }
   }
 }
 </script>

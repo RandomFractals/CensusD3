@@ -2,7 +2,8 @@
   <q-card class="map-card">
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
-      {{region}} population: {{population | formatNumber}}
+      <span class="card-title">{{selectedRegion.name}} population:</span>
+      <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
     </q-card-title>
     <q-card-separator />
     <q-card-main style="height: 80%">
@@ -25,8 +26,7 @@ export default {
 
   data () {
     return {
-      region: 'USA',
-      population: 0,
+      selectedRegion: {},
       populationData: [],
       zoom: 4,
       center: [37.8, -96],
@@ -37,16 +37,14 @@ export default {
 
   computed: {
     regionIconSrc: function () {
-      return 'http://censusd3.herokuapp.com/images/flags/' + this.region + '.png'
+      return 'http://censusd3.herokuapp.com/images/flags/' + this.selectedRegion.name + '.png'
     }
   },
 
   created () {
     this.dataHandler = state => {
-      this.region = state.region
-      this.population = state.totalPopulation
+      this.selectedRegion = state.selectedRegion
       this.populationData = state.populationData
-      this.labels = state.labels
       console.log('map data', state)
     }
     this.$q.events.$on('census:population', this.dataHandler)

@@ -188,7 +188,8 @@ export default {
   },
   data () {
     return {
-      populationData: {},
+      selectedRegion: {},
+      populationData: [],
       loaded: false,
       showError: false,
       errorMessage: 'Error loading population data',
@@ -200,6 +201,7 @@ export default {
       rotateX: 0
     }
   },
+
   computed: {
     position () {
       const transform = `rotateX(${this.rotateX}deg) rotateY(${this.rotateY}deg)`
@@ -212,6 +214,7 @@ export default {
       }
     }
   },
+
   methods: {
     launch (url) {
       openURL(url)
@@ -273,9 +276,9 @@ export default {
     },
 
     /**
-     * Gets USA population data.
+     * Gets USA or state population data.
      */
-    getPopulationData () {
+    getPopulationData (region = 'USA') {
       this.resetState()
 
       // get USA pop data for all states
@@ -284,16 +287,26 @@ export default {
           console.log('dashboard::getPopulationData:', response.data)
           // strip out header row
           let popData = response.data.slice(1)
-          this.populationData = popData.map(regionData => Number(regionData[0])) // pop count
-          this.regions = popData.map(
-            regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
+          // create selected region population data object
+          this.selectedRegion = {
+            name: region,
+            population: popData.map(regionData => Number(regionData[0]))
+              .reduce((a, b) => a + b, 0) // total count
+          }
+          // create population data for sub-regions (states or counties)
+          this.populationData = popData.map(function (regionData) {
+            return { // creation simple region pop data object
+              regionName: regionData[1].substr(0, regionData[1].indexOf(',')), // region name without state
+              regionId: regionData[4],
+              population: Number(regionData[0]), // population count column data
+              density: Number(regionData[3]) // density column data
+            }
+          })
           this.loaded = true
           // push new census data to global quasar event bus
           Events.$emit('census:population', {
-            region: 'USA', // for now
-            populationData: this.populationData,
-            totalPopulation: this.populationData.reduce((a, b) => a + b, 0),
-            regions: this.regions
+            selectedRegion: this.selectedRegion,
+            populationData: this.populationData
           })
         })
         .catch(err => {
