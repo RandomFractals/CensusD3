@@ -149,7 +149,11 @@ export default {
         // sort by new column
         switch (sortBy) {
           case 'regionName': // string sort
-            this.populationData = this.populationData.sort((a, b) => a[sortBy] > b[sortBy])
+            this.populationData = this.populationData.sort(function (a, b) {
+              if (a[sortBy] < b[sortBy]) { return -1 }
+              if (a[sortBy] > b[sortBy]) { return 1 }
+              return 0
+            })
             break
           default: // number sort
             this.populationData = this.populationData.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
