@@ -7,7 +7,7 @@
     </q-card-title>
     <q-card-separator />
     <q-card-main>
-      <table class="q-table responsive">
+      <table class="q-table standard striped bordered compact highlight vertical-separator">
         <thead>
           <tr>
             <th>State</th>
