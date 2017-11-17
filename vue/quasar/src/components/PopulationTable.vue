@@ -16,7 +16,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="region in populationData" :key="region.regionId">
+          <tr v-for="region in populationData" :key="region.regionId"
+            @click="selectRegion(region.regionId)">
             <td data-th="State">{{region.regionName}}</td>
             <td data-th="Population">{{region.population | formatNumber}}</td>
             <td data-th="Density">{{region.density | formatDecimal}}</td>
@@ -36,18 +37,12 @@
 
 <script>
 
-import {QDataTable} from 'quasar'
+import {QDataTable, Events} from 'quasar'
 
 export default {
   name: 'population-table',
   components: {
     QDataTable: QDataTable
-  },
-
-  methods: {
-    rowClick (row) {
-      console.log('clicked on a row', row)
-    }
   },
 
   data () {
@@ -91,7 +86,7 @@ export default {
 
   computed: {
     regionIconSrc: function () {
-      return 'http://censusd3.herokuapp.com/images/flags/' + this.selectedRegion.name + '.png'
+      return `http://censusd3.herokuapp.com/images/flags/${this.selectedRegion.name}.png`
     }
   },
 
@@ -117,7 +112,22 @@ export default {
    */
   beforeDestroy () {
     this.$q.events.$off('census:population', this.dataHandler)
+  },
+
+  methods: {
+    selectRegion (regionId) {
+      console.log(`table:selectRegion: regionId=${regionId}`)
+      // notify app about region selection change
+      Events.$emit('census:regionChange', {
+        selectedRegion: regionId
+      })
+    },
+
+    rowClick (row) {
+      console.log('clicked on a row', row)
+    }
   }
+
 }
 </script>
 

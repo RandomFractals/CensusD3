@@ -43,7 +43,7 @@ export default {
 
   computed: {
     regionIconSrc: function () {
-      return 'http://censusd3.herokuapp.com/images/flags/' + this.selectedRegion.name + '.png'
+      return `http://censusd3.herokuapp.com/images/flags/${this.selectedRegion.name}.png`
     }
   },
 
