@@ -6,13 +6,13 @@
       <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
     </q-card-title>
     <q-card-separator />
-    <q-card-main>
+    <q-card-main class="data-table">
       <table class="q-table standard striped bordered compact highlight vertical-separator">
         <thead>
           <tr>
-            <th>State</th>
-            <th>Population</th>
-            <th>Density</th>
+            <th @click="sortData('regionName')">State</th>
+            <th @click="sortData('population')">Population</th>
+            <th @click="sortData('density')">Density</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +34,14 @@
     </q-card-main>
   </q-card>
 </template>
+
+<style>
+.data-table {
+  height: 320px;
+  margin: 5px 0px 0px 5px;
+  overflow-y: scroll;
+}
+</style>
 
 <script>
 
@@ -125,6 +133,12 @@ export default {
 
     rowClick (row) {
       console.log('clicked on a row', row)
+    },
+
+    sortData (sortBy) {
+      console.log(`table:sortData: property=${sortBy}`)
+      this.populationData = this.populationData.sort((a, b) => a[sortBy] > b[sortBy])
+      console.log(this.populationData)
     }
   }
 
