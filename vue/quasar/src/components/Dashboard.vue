@@ -285,17 +285,20 @@ export default {
       axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
         .then(response => {
           console.log('dashboard::getPopulationData:', response.data)
+
           // strip out header row
           let popData = response.data.slice(1)
+
           // create selected region population data object
           this.selectedRegion = {
             name: region,
             population: popData.map(regionData => Number(regionData[0]))
               .reduce((a, b) => a + b, 0) // total count
           }
+
           // create population data for sub-regions (states or counties)
           this.populationData = popData.map(function (regionData) {
-            return { // creation simple region pop data object
+            return { // create simple region pop data object
               regionName: regionData[1].substr(0, regionData[1].indexOf(',')), // region name without state
               regionId: regionData[4],
               population: Number(regionData[0]), // population count column data
@@ -303,6 +306,7 @@ export default {
             }
           })
           this.loaded = true
+
           // push new census data to global quasar event bus
           Events.$emit('census:population', {
             selectedRegion: this.selectedRegion,
@@ -317,7 +321,11 @@ export default {
     }
   },
 
+  /**
+   * Adds app visibility handler.
+   */
   created () {
+    // create and add quasar app visibility handler
     this.appHandler = state => {
       console.log('App became', state)
     }
@@ -347,6 +355,9 @@ export default {
     this.getPopulationData()
   },
 
+  /**
+   * Removes app handlers.
+   */
   beforeDestroy () {
     if (this.orienting) {
       window.removeEventListener('deviceorientation', this.orient, false)
