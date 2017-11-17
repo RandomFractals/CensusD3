@@ -30,8 +30,13 @@ Vue.use(Quasar, {
   }
 })
 
+// add global number formatters
 Vue.filter('formatNumber', function (value) {
   return numeral(value).format('0,0')
+})
+
+Vue.filter('formatDecimal', function (value) {
+  return numeral(value).format('0,0.00')
 })
 
 if (__THEME === 'mat') {

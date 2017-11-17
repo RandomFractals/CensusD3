@@ -16,10 +16,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td data-th="State">State</td>
-            <td data-th="Population">0</td>
-            <td data-th="Density">0</td>
+          <tr v-for="region in populationData" :key="region.regionId">
+            <td data-th="State">{{region.regionName}}</td>
+            <td data-th="Population">{{region.population | formatNumber}}</td>
+            <td data-th="Density">{{region.density | formatDecimal}}</td>
           </tr>
         </tbody>
       </table>
