@@ -141,17 +141,24 @@ export default {
      * Sorts population data array by the specified sort property/column and order.
      */
     sortData (sortBy) {
-      console.log(`table:sortData: property=${sortBy}`)
       if (this.sortColumn === sortBy) {
         this.populationData = this.populationData.reverse()
         this.sortAscending = !this.sortAscending
       }
       else {
         // sort by new column
-        this.populationData = this.populationData.sort((a, b) => a[sortBy] > b[sortBy])
+        switch (sortBy) {
+          case 'regionName': // string sort
+            this.populationData = this.populationData.sort((a, b) => a[sortBy] > b[sortBy])
+            break
+          default: // number sort
+            this.populationData = this.populationData.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
+            break
+        }
         this.sortColumn = sortBy
         this.sortAscending = true
       }
+      console.log(`table:sortData: property=${sortBy} ascending=${this.sortAscending}`)
     }
   }
 
