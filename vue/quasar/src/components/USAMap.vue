@@ -70,16 +70,16 @@ export default {
     }
     this.$q.events.$on('census:population', this.onPopulationUpdate)
 
-    // load USA states geojson for choropleth topology display
+    // load USA states geojson for the states choropleth topology display
     axios.get('https://censusd3.herokuapp.com/data/us-states-geo.json')
       .then(response => {
-        // console.log('geoJson', response.data)
+        // console.log('map geo json', response.data)
         this.topology = response.data
         // console.log('loaded map geo json', this.geoJson.features)
       })
       .catch(err => {
         this.showTopology = false
-        console.log('geoJson', err.response.data.error)
+        console.log('map geo json load error', err.response.data.error)
       })
     console.log('map created')
   },

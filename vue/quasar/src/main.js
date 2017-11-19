@@ -20,6 +20,7 @@ import router from './router'
 import numeral from 'numeral'
 
 Vue.config.productionTip = false
+
 // register global quasar components
 Vue.use(Quasar, {
   components: {
@@ -47,6 +48,7 @@ import 'quasar-extras/material-icons'
 // import 'quasar-extras/fontawesome'
 // import 'quasar-extras/animate'
 
+// create Quasar Vue SPA
 Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({

@@ -58,12 +58,12 @@
           <usa-map ref="map" :map-data="populationData" />
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 table-card">
-          <population-table ref="dataTable" :population-data="populationData" />
+          <population-table ref="dataTable" :table-data="populationData" />
         </div>
       </div>
       <div class="row">
         <div class="col-12 chart-card">
-          <population-chart ref="populationChart" :population-data="populationData" />
+          <population-chart ref="populationChart" :chart-data="populationData" />
         </div>
       </div>
     </div>
@@ -183,9 +183,10 @@ export default {
     QItemSide,
     QItemMain,
     usaMap: USAMap,
-    PopulationTable: PopulationTable,
-    PopulationChart: PopulationChart
+    PopulationTable,
+    PopulationChart
   },
+
   data () {
     return {
       selectedRegion: {},
@@ -221,7 +222,7 @@ export default {
     },
 
     // TODO: retrofit these for proper device rotation event handling
-    // and responsive UI layout and components sizing later
+    // and responsive UI layout and components sizing updates later
     move (evt) {
       const
         {width, height} = viewport(),
@@ -281,15 +282,16 @@ export default {
     getPopulationData (region = 'USA') {
       this.resetState()
 
-      // get USA pop data for all states
+      // get USA population data for all states
       axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
         .then(response => {
-          console.log('dashboard::getPopulationData:', response.data)
+          console.log('dashboard::getPopulationData:regions:', response.data.length)
 
-          // strip out header row
-          let popData = response.data.slice(1)
+          // strip out header row and Puerto Rico data (last row)
+          let popData = response.data.slice(1, 51)
 
           // create selected region population data object
+          // for total USA population count display
           this.selectedRegion = {
             name: region,
             population: popData.map(regionData => Number(regionData[0]))
@@ -298,23 +300,24 @@ export default {
 
           // create population data for sub-regions (states or counties)
           this.populationData = popData.map(function (regionData) {
-            return { // create simple region pop data object
+            return { // create simple region population data object
               regionName: regionData[1].substr(0, regionData[1].indexOf(',')), // region name without state
-              regionId: regionData[4],
+              regionId: regionData[4], // numeric region code
               population: Number(regionData[0]), // population count column data
               density: Number(regionData[3]) // density column data
             }
           })
           this.loaded = true
+          console.log('census:population:data:', this.populationData)
 
-          // push new census data to global quasar event bus
+          // push new census data to the global quasar app event bus
           Events.$emit('census:population', {
             selectedRegion: this.selectedRegion,
             populationData: this.populationData
           })
         })
         .catch(err => {
-          // show pop data error message
+          // show data error message
           this.errorMessage = err.response.data.error
           this.showError = true
         })
@@ -322,20 +325,20 @@ export default {
   },
 
   /**
-   * Adds app visibility handler.
+   * Adds app view visibility handler.
    */
   created () {
     // create and add quasar app visibility handler
-    this.appHandler = state => {
-      console.log('App became', state)
+    this.onAppViewUpdate = appViewState => {
+      console.log('App became', appViewState)
     }
-    this.$q.events.$on('app:visibility', this.appHandler)
+    this.$q.events.$on('app:visibility', this.onAppViewUpdate)
     console.log('dashboard created')
   },
 
   /**
-   * Adds view change event handlers,
-   * and gets initial USA pop data
+   * Adds app view change event handlers,
+   * and gets initial USA population data
    * to display on app load for now.
    */
   mounted () {
@@ -351,12 +354,13 @@ export default {
         document.addEventListener('mousemove', this.move)
       }
     })
-    // get initial USA pop data for now
+
+    // get initial USA population data for now
     this.getPopulationData()
   },
 
   /**
-   * Removes app handlers.
+   * Removes app view event handlers.
    */
   beforeDestroy () {
     if (this.orienting) {
@@ -368,7 +372,7 @@ export default {
     else {
       document.removeEventListener('mousemove', this.move)
     }
-    this.$q.events.$off('app:visibility', this.appHandler)
+    this.$q.events.$off('app:visibility', this.onAppViewUpdate)
   }
 }
 </script>

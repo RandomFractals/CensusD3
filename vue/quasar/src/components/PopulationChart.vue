@@ -81,9 +81,9 @@ export default {
       this.resetState()
       axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
         .then(response => {
-          console.log('getPopulationData:', response.data)
+          // console.log('getPopulationData:', response.data)
           // strip out header row
-          let popData = response.data.slice(1)
+          let popData = response.data.slice(1, 51)
           this.chartData = popData.map(regionData => regionData[0]) // pop count
           this.chartLabels = popData.map(
             regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
