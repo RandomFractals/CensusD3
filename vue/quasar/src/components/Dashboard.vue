@@ -141,15 +141,12 @@ import {
   QListHeader,
   QItem,
   QItemSide,
-  QItemMain,
-  Events
+  QItemMain
 } from 'quasar'
 
 import USAMap from './USAMap.vue'
 import PopulationTable from './PopulationTable.vue'
 import PopulationChart from './PopulationChart.vue'
-
-import axios from 'axios'
 
 const
   { viewport } = dom,
@@ -269,58 +266,11 @@ export default {
     },
 
     /**
-     * Resets dashboard data load and error message display view state.
+     * Resets view and error message display view state.
      */
     resetState () {
       this.loaded = false
       this.showError = false
-    },
-
-    /**
-     * Gets USA or state population data.
-     */
-    getPopulationData (region = 'USA') {
-      this.resetState()
-
-      // get USA population data for all states
-      axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
-        .then(response => {
-          console.log('dashboard::getPopulationData:regions:', response.data.length)
-
-          // strip out header row and Puerto Rico data (last row)
-          let popData = response.data.slice(1, 51)
-
-          // create selected region population data object
-          // for the total USA population count display
-          this.selectedRegion = {
-            regionName: region,
-            population: popData.map(regionData => Number(regionData[0]))
-              .reduce((a, b) => a + b, 0) // total count
-          }
-
-          // create population data for sub-regions (states or counties)
-          this.populationData = popData.map(function (regionData) {
-            return { // create simple region population data object
-              regionName: regionData[1].substr(0, regionData[1].indexOf(',')), // region name without state
-              regionId: regionData[4], // numeric region code
-              population: Number(regionData[0]), // population count column data
-              density: Number(regionData[3]) // density column data
-            }
-          })
-          this.loaded = true
-          console.log('dashboard:census:population:data:', this.populationData)
-
-          // push new census data to the global quasar app event bus
-          Events.$emit('census:population', {
-            selectedRegion: this.selectedRegion,
-            populationData: this.populationData
-          })
-        })
-        .catch(err => {
-          // show data error message
-          this.errorMessage = err.response.data.error
-          this.showError = true
-        })
     }
   },
 
@@ -364,7 +314,7 @@ export default {
     })
 
     // get initial USA population data for now
-    this.getPopulationData()
+    this.$census.getPopulationData('USA')
   },
 
   /**

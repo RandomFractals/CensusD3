@@ -16,8 +16,11 @@ import Quasar, {
   QCardTitle,
   QCardSeparator,
   QCardMain} from 'quasar'
+
 import router from './router'
 import numeral from 'numeral'
+
+import Census from './plugins/Census'
 
 Vue.config.productionTip = false
 
@@ -30,6 +33,9 @@ Vue.use(Quasar, {
     QCardMain
   }
 })
+
+// add our custom census plugin
+Vue.use(Census)
 
 // add global number formatters
 Vue.filter('formatNumber', function (value) {
