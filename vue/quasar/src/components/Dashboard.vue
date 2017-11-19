@@ -55,7 +55,7 @@
     <div class="app-content sm-gutter">
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
-          <usa-map ref="map" :population-data="populationData" />
+          <usa-map ref="map" :map-data="populationData" />
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 table-card">
           <population-table ref="dataTable" :population-data="populationData" />

@@ -51,8 +51,8 @@ export default {
     this.dataHandler = state => {
       this.selectedRegion = state.selectedRegion
       this.populationData = state.populationData
-      // this.chartData = this.populationData.map(regionData => regionData.population)
-      // this.chartLabels = this.populationData.map(regionData => regionData.regionName)
+      this.chartData = state.populationData.map(regionData => regionData.population)
+      this.chartLabels = state.populationData.map(regionData => regionData.regionName)
       this.regions = state.regions
       // this.redraw()
       console.log('chart data', state)
