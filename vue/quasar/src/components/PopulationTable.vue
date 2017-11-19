@@ -64,13 +64,21 @@ export default {
    * Adds table data and view event handlers.
    */
   created () {
-    // create and add population data update event handler
+    // add population data update event handler
     this.onPopulationUpdate = eventData => {
       this.selectedRegion = eventData.selectedRegion
       this.tableData = eventData.populationData
       console.log('table data updated') // , eventData)
     }
     this.$q.events.$on('census:population', this.onPopulationUpdate)
+
+    // add region selection change event handler
+    this.onRegionSelectionChange = regionData => {
+      this.selectedRegion = regionData
+      console.log('table:selectedRegion:', regionData.regionName)
+    }
+    this.$q.events.$on('census:region', this.onRegionSelectionChange)
+
     console.log('table created')
   },
 
@@ -82,7 +90,8 @@ export default {
    * Removes table data and view update handlers.
    */
   beforeDestroy () {
-    this.$q.events.$off('census:population', this.dataHandler)
+    this.$q.events.$off('census:population', this.onPopulationUpdate)
+    this.$q.events.$off('census:region', this.onRegionSelectionChange)
   },
 
   methods: {
@@ -92,9 +101,8 @@ export default {
      */
     rowClick (rowIndex) {
       console.log(`table:rowClick: rowIndex=${rowIndex}`)
-      this.selectedRegion = this.tableData[rowIndex]
-      // notify other app components about region selection change
-      Events.$emit('census:region', this.selectedRegion)
+      // notify app components about region selection change
+      Events.$emit('census:region', this.tableData[rowIndex])
     },
 
     /**

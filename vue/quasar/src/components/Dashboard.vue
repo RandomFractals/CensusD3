@@ -55,7 +55,7 @@
     <div class="app-content sm-gutter">
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
-          <usa-map ref="map" :map-data="populationData" />
+          <usa-map ref="map" :map-data="populationData" :selectedRegion="selectedRegion" />
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 table-card">
           <population-table ref="dataTable" :table-data="populationData" />
@@ -189,7 +189,7 @@ export default {
 
   data () {
     return {
-      selectedRegion: {},
+      selectedRegion: {regionName: 'USA', population: 320832714},
       populationData: [],
       loaded: false,
       showError: false,
@@ -328,7 +328,7 @@ export default {
    * Adds app view visibility handler.
    */
   created () {
-    // create and add quasar app visibility handler
+    // add quasar app visibility handler
     this.onAppViewUpdate = appViewState => {
       console.log('app:visibility:', appViewState)
     }

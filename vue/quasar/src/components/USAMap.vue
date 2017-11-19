@@ -62,7 +62,7 @@ export default {
    * Adds map data and view update handlers.
    */
   created () {
-    // create and add population data update event handler
+    // add population data update event handler
     this.onPopulationUpdate = eventData => {
       this.selectedRegion = eventData.selectedRegion
       this.mapData = eventData.populationData
@@ -70,17 +70,16 @@ export default {
     }
     this.$q.events.$on('census:population', this.onPopulationUpdate)
 
-    // load USA states geojson for the states choropleth topology display
-    axios.get('https://censusd3.herokuapp.com/data/us-states-geo.json')
-      .then(response => {
-        // console.log('map geo json', response.data)
-        this.topology = response.data
-        // console.log('loaded map geo json', this.geoJson.features)
-      })
-      .catch(err => {
-        this.showTopology = false
-        console.log('map geo json load error', err.response.data.error)
-      })
+    // add region selection change event handler
+    this.onRegionSelectionChange = regionData => {
+      this.selectedRegion = regionData
+      console.log('map:selectedRegion:', regionData.regionName)
+    }
+    this.$q.events.$on('census:region', this.onRegionSelectionChange)
+
+    // get USA states geo json for the choropleth map topology display
+    this.getMapGeoJson()
+
     console.log('map created')
   },
 
@@ -93,7 +92,28 @@ export default {
    */
   beforeDestroy () {
     this.$q.events.$off('census:population', this.onPopulationUpdate)
-  }}
+    this.$q.events.$off('census:region', this.onRegionSelectionChange)
+  },
+
+  methods: {
+
+    /**
+     * Gets initial USA states topology for the states choropleth display.
+     */
+    getMapGeoJson () {
+      axios.get('https://censusd3.herokuapp.com/data/us-states-geo.json')
+        .then(response => {
+          // console.log('map geo json', response.data)
+          this.topology = response.data
+          // console.log('loaded map geo json', this.geoJson.features)
+        })
+        .catch(err => {
+          this.showTopology = false
+          console.log('map geo json load error', err.response.data.error)
+        })
+    }
+  }
+}
 </script>
 
 <style>
