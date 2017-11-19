@@ -291,9 +291,9 @@ export default {
           let popData = response.data.slice(1, 51)
 
           // create selected region population data object
-          // for total USA population count display
+          // for the total USA population count display
           this.selectedRegion = {
-            name: region,
+            regionName: region,
             population: popData.map(regionData => Number(regionData[0]))
               .reduce((a, b) => a + b, 0) // total count
           }
@@ -308,7 +308,7 @@ export default {
             }
           })
           this.loaded = true
-          console.log('census:population:data:', this.populationData)
+          console.log('dashboard:census:population:data:', this.populationData)
 
           // push new census data to the global quasar app event bus
           Events.$emit('census:population', {
@@ -330,9 +330,17 @@ export default {
   created () {
     // create and add quasar app visibility handler
     this.onAppViewUpdate = appViewState => {
-      console.log('App became', appViewState)
+      console.log('app:visibility:', appViewState)
     }
     this.$q.events.$on('app:visibility', this.onAppViewUpdate)
+
+    // add region selection change event handler
+    this.onRegionSelectionChange = regionData => {
+      this.selectedRegion = regionData
+      console.log('dashboard:selectedRegion:', regionData)
+    }
+    this.$q.events.$on('census:region', this.onRegionSelectionChange)
+
     console.log('dashboard created')
   },
 
@@ -372,7 +380,10 @@ export default {
     else {
       document.removeEventListener('mousemove', this.move)
     }
+
+    // remove app view and census data event handlers
     this.$q.events.$off('app:visibility', this.onAppViewUpdate)
+    this.$q.events.$off('census:region', this.onRegionSelectionChange)
   }
 }
 </script>

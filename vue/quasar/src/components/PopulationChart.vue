@@ -2,7 +2,7 @@
   <q-card class="chart" style="width: 100%">
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
-      <span class="card-title">{{selectedRegion.name}} population:</span>
+      <span class="card-title">{{selectedRegion.regionName}} population:</span>
       <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
     </q-card-title>
     <q-card-separator />
@@ -43,7 +43,7 @@ export default {
 
   computed: {
     regionIconSrc: function () {
-      return `http://censusd3.herokuapp.com/images/flags/${this.selectedRegion.name}.png`
+      return `http://censusd3.herokuapp.com/images/flags/${this.selectedRegion.regionName}.png`
     }
   },
 

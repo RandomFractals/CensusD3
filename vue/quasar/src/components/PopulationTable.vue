@@ -2,7 +2,7 @@
   <q-card class="table-card">
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
-      <span class="card-title">{{selectedRegion.name}} population:</span>
+      <span class="card-title">{{selectedRegion.regionName}} population:</span>
       <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
     </q-card-title>
     <q-card-separator />
@@ -10,27 +10,22 @@
       <table class="q-table standard striped bordered compact highlight vertical-separator">
         <thead>
           <tr>
-            <th @click="sortData('regionName')">State</th>
-            <th @click="sortData('population')">Population</th>
-            <th @click="sortData('density')">Density</th>
+            <th @click="sortTableData('regionName')">{{regionLabel}}</th>
+            <th @click="sortTableData('population')">Population</th>
+            <th @click="sortTableData('density')">Density</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="region in populationData" :key="region.regionId"
-            @click="selectRegion(region.regionId)">
+          <tr v-for="(region, index) in tableData" 
+            :key="region.regionId"
+            :data-index="index"
+            @click="rowClick(index)">
             <td data-th="State">{{region.regionName}}</td>
             <td data-th="Population">{{region.population | formatNumber}}</td>
             <td data-th="Density">{{region.density | formatDecimal}}</td>
           </tr>
         </tbody>
       </table>
-      <!--
-      <q-data-table :data="table" 
-        :config="config" 
-        :columns="columns"
-        @rowClick="rowClick">
-        -->
-      </q-data-table>
     </q-card-main>
   </q-card>
 </template>
@@ -45,71 +40,37 @@
 
 <script>
 
-import {QDataTable, Events} from 'quasar'
+import {Events} from 'quasar'
 
 export default {
   name: 'population-table',
-  components: {
-    QDataTable: QDataTable
-  },
-
   data () {
     return {
       selectedRegion: {},
-      populationData: [],
+      tableData: [],
       sortColumn: 'regionName',
       sortAscending: true,
-      config: {
-        title: 'Population',
-        noHeader: false,
-        refresh: false,
-        columnPicker: false,
-        // (optional)
-        // Styling the body of the data table;
-        // "minHeight", "maxHeight" or "height" are important
-        bodyStyle: {
-          maxHeight: '500px'
-        },
-        rowHeight: '50px',
-        responsive: true
-      },
-      columns: [
-        {
-          label: 'Region',
-          field: 'region',
-          filter: true,
-          sort: true,
-          type: 'string',
-          width: '100px'
-        },
-        {
-          label: 'Population',
-          field: 'population',
-          filter: false,
-          sort: true,
-          type: 'number',
-          width: '100px'
-        }
-      ]
+      regionLabel: 'State'
     }
   },
 
   computed: {
     regionIconSrc: function () {
-      return `http://censusd3.herokuapp.com/images/flags/${this.selectedRegion.name}.png`
+      return `http://censusd3.herokuapp.com/images/flags/${this.selectedRegion.regionName}.png`
     }
   },
 
   /**
-   * Adds global quasar event bus data handlers.
+   * Adds table data and view event handlers.
    */
   created () {
-    this.dataHandler = state => {
-      this.selectedRegion = state.selectedRegion
-      this.populationData = state.populationData
-      console.log('table data', state)
+    // create and add population data update event handler
+    this.onPopulationUpdate = eventData => {
+      this.selectedRegion = eventData.selectedRegion
+      this.tableData = eventData.populationData
+      console.log('table data updated') // , eventData)
     }
-    this.$q.events.$on('census:population', this.dataHandler)
+    this.$q.events.$on('census:population', this.onPopulationUpdate)
     console.log('table created')
   },
 
@@ -118,45 +79,44 @@ export default {
   },
 
   /**
-   * Removes global quasar event bus data handlers.
+   * Removes table data and view update handlers.
    */
   beforeDestroy () {
     this.$q.events.$off('census:population', this.dataHandler)
   },
 
   methods: {
-    selectRegion (regionId) {
-      console.log(`table:selectRegion: regionId=${regionId}`)
-      // notify app about region selection change
-      Events.$emit('census:regionChange', {
-        selectedRegion: regionId
-      })
-    },
 
-    rowClick (row) {
-      console.log('clicked on a row', row)
+    /**
+     * Table row click event handler.
+     */
+    rowClick (rowIndex) {
+      console.log(`table:rowClick: rowIndex=${rowIndex}`)
+      this.selectedRegion = this.tableData[rowIndex]
+      // notify other app components about region selection change
+      Events.$emit('census:region', this.selectedRegion)
     },
 
     /**
-     * Sorts population data array by the specified sort property/column and order.
+     * Sorts table data by the specified sort property/column and order.
      */
-    sortData (sortBy) {
+    sortTableData (sortBy) {
       if (this.sortColumn === sortBy) {
-        this.populationData = this.populationData.reverse()
+        this.tableData = this.tableData.reverse()
         this.sortAscending = !this.sortAscending
       }
       else {
         // sort by new column
         switch (sortBy) {
           case 'regionName': // string sort
-            this.populationData = this.populationData.sort(function (a, b) {
+            this.tableData = this.tableData.sort(function (a, b) {
               if (a[sortBy] < b[sortBy]) { return -1 }
               if (a[sortBy] > b[sortBy]) { return 1 }
               return 0
             })
             break
           default: // number sort
-            this.populationData = this.populationData.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
+            this.tableData = this.tableData.sort((a, b) => Number(a[sortBy]) - Number(b[sortBy]))
             break
         }
         this.sortColumn = sortBy
