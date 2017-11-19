@@ -7,7 +7,7 @@
     </q-card-title>
     <q-card-separator />
     <q-card-main style="height: 80%">
-      <v-map style="height: 100%" :zoom="zoom" :center="center">
+      <v-map ref="map" style="height: 100%" :zoom="zoom" :center="center">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
         <v-geojson-layer v-if="showTopology" 
           :geojson="topology" :options="topologyOptions"></v-geojson-layer>
@@ -57,6 +57,9 @@ function onLayerClick ({target}) {
   // notify app components about region selection change
   Events.$emit('census:region', this.mapData.find(
     x => x.regionId === target.feature.id)) // region id from geo json
+
+  // zoom to region
+  this.$refs.map.mapObject.fitBounds(target.getBounds())
 }
 
 export default {
