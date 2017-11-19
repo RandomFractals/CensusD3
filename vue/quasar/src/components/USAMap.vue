@@ -19,6 +19,45 @@
 <script>
 import axios from 'axios'
 import Vue2Leaflet from 'vue2-leaflet'
+import {Events} from 'quasar'
+
+/**
+ * Map layer mouse out event handler.
+ */
+function onLayerMouseOver ({ target }) {
+  target.setStyle({
+    weight: 3,
+    color: '#666',
+    dashArray: ''
+  })
+  /*
+  if (!L.Browser.ie && !L.Browser.opera) {
+    target.bringToFront()
+  }
+  */
+  // let region = target.feature.properties
+}
+
+/**
+ * Map layer mouse out event handler.
+ */
+function onLayerMouseOut ({ target }) {
+  target.setStyle({
+    weight: 2,
+    color: '#FFF',
+    dashArray: ''
+  })
+}
+
+/**
+ * Map layer mouse click event handler.
+ */
+function onLayerClick ({target}) {
+  console.log('map click:', target.feature.properties.name) // region name from geo json
+  // notify app components about region selection change
+  Events.$emit('census:region', this.mapData.find(
+    x => x.regionId === target.feature.id)) // region id from geo json
+}
 
 export default {
   name: 'usa-map',
@@ -47,6 +86,13 @@ export default {
             fillColor: '#00bfff',
             fillOpacity: 0.4
           }
+        },
+        onEachFeature: (feature, layer) => {
+          layer.on({
+            mouseover: onLayerMouseOver.bind(this),
+            mouseout: onLayerMouseOut.bind(this),
+            click: onLayerClick.bind(this)
+          })
         }
       }
     }
