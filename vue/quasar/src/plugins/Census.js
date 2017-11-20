@@ -28,7 +28,7 @@ export default {
             console.log('census::getPopulation:regions:', response.data.length)
 
             // strip out header row and Puerto Rico data (last row)
-            let popData = response.data.slice(1, 51)
+            let popData = response.data.slice(1, 52)
 
             // create selected region population data object
             // for the total USA population count display
