@@ -1,0 +1,257 @@
+[
+{"id":"01", 
+  "name":"Alabama", 
+  "code":"AL",
+  "houseSeats": "7"  
+},
+{"id":"02",
+  "name":"Alaska", 
+  "code":"AK", 
+  "houseSeats": "1"
+},
+{"id":"04",
+  "name":"Arizona", 
+  "code":"AZ", 
+  "houseSeats": "9"
+},
+{"id":"05",
+  "name":"Arkansas", 
+  "code":"AR", 
+  "houseSeats": "4"
+},
+{"id":"06",
+  "name":"California", 
+  "code":"CA", 
+  "houseSeats": "53"
+},
+{"id":"08",
+  "name":"Colorado", 
+  "code":"CO",
+  "houseSeats": "7"  
+},
+{"id":"09",
+  "name":"Connecticut", 
+  "code":"CT", 
+  "houseSeats": "5"
+},
+{"id":"10",
+  "name":"Delaware", 
+  "code":"DE",
+  "houseSeats": "7"  
+},
+{"id":"11",
+  "name":"District of Columbia", 
+  "code":"DC",
+  "houseSeats": "7"  
+},
+{"id":"12",
+  "name":"Florida", 
+  "code":"FL", 
+  "houseSeats": "27"
+},
+{"id":"13",
+  "name":"Georgia", 
+  "code":"GA", 
+  "houseSeats": "14"
+},
+{"id":"15",
+  "name":"Hawaii", 
+  "code":"HI", 
+  "houseSeats": "2"
+},
+{"id":"16",
+  "name":"Idaho", 
+  "code":"ID", 
+  "houseSeats": "2"
+},
+{"id":"17",
+  "name":"Illinois", 
+  "code":"IL", 
+  "houseSeats": "18"
+},
+{"id":"18",
+  "name":"Indiana", 
+  "code":"IN", 
+  "houseSeats": "9"
+},
+{"id":"19",
+  "name":"Iowa", 
+  "code":"IA", 
+  "houseSeats": "4"
+},
+{"id":"20",
+  "name":"Kansas", 
+  "code":"KS", 
+  "houseSeats": "4"
+},
+{"id":"21",
+  "name":"Kentucky", 
+  "code":"KY", 
+  "houseSeats": "6"
+},
+{"id":"22",
+  "name":"Louisiana", 
+  "code":"LA", 
+  "houseSeats": "6"
+},
+{"id":"23",
+  "name":"Maine", 
+  "code":"ME", 
+  "houseSeats": "2"
+},
+{"id":"24",
+  "name":"Maryland", 
+  "code":"MD", 
+  "houseSeats": "8"
+},
+{"id":"25",
+  "name":"Massachusetts", 
+  "code":"MA", 
+  "houseSeats": "9"
+},
+{"id":"26",
+  "name":"Michigan", 
+  "code":"MI", 
+  "houseSeats": "14"
+},
+{"id":"27",
+  "name":"Minnesota", 
+  "code":"MN", 
+  "houseSeats": "8"
+},
+{"id":"28",
+  "name":"Mississippi", 
+  "code":"MS", 
+  "houseSeats": "4"
+},
+{"id":"29",
+  "name":"Missouri", 
+  "code":"MO", 
+  "houseSeats": "8"
+},
+{"id":"30",
+  "name":"Montana", 
+  "code":"MT", 
+  "houseSeats": "1"
+},
+{"id":"31",
+  "name":"Nebraska", 
+  "code":"NE", 
+  "houseSeats": "3"
+},
+{"id":"32",
+  "name":"Nevada", 
+  "code":"NV", 
+  "houseSeats": "4"
+},
+{"id":"33",
+  "name":"New Hampshire", 
+  "code":"NH", 
+  "houseSeats": "2"
+},
+{"id":"34",
+  "name":"New Jersey", 
+  "code":"NJ", 
+  "houseSeats": "12"
+},
+{"id":"35",
+  "name":"New Mexico", 
+  "code":"NM", 
+  "houseSeats": "3"
+},
+{"id":"36",
+  "name":"New York", 
+  "code":"NY", 
+  "houseSeats": "27"
+},
+{"id":"37",
+  "name":"North Carolina", 
+  "code":"NC", 
+  "houseSeats": "13"
+},
+{"id":"38",
+  "name":"North Dakota", 
+  "code":"ND", 
+  "houseSeats": "1"
+},
+{"id":"39",
+  "name":"Ohio", 
+  "code":"OH", 
+  "houseSeats": "16"
+},
+{"id":"40",
+  "name":"Oklahoma", 
+  "code":"OK", 
+  "houseSeats": "5"
+},
+{"id":"41",
+  "name":"Oregon", 
+  "code":"OR", 
+  "houseSeats": "5"
+},
+{"id":"42",
+  "name":"Pennsylvania", 
+  "code":"PA", 
+  "houseSeats": "18"
+},
+{"id":"44",
+  "name":"Rhode Island", 
+  "code":"RI", 
+  "houseSeats": "2"
+},
+{"id":"45",
+  "name":"South Carolina", 
+  "code":"SC",
+  "houseSeats": "7"  
+},
+{"id":"46",
+  "name":"South Dakota", 
+  "code":"SD", 
+  "houseSeats": "1"
+},
+{"id":"47",
+  "name":"Tennessee", 
+  "code":"TN", 
+  "houseSeats": "9"
+},
+{"id":"48",
+  "name":"Texas", 
+  "code":"TX", 
+  "houseSeats": "36"
+},
+{"id":"49",
+  "name":"Utah", 
+  "code":"UT", 
+  "houseSeats": "4"
+},
+{"id":"50",
+  "name":"Vermont", 
+  "code":"VT", 
+  "houseSeats": "1"
+},
+{"id":"51",
+  "name":"Virginia", 
+  "code":"VA", 
+  "houseSeats": "11"
+},
+{"id":"53",
+  "name":"Washington", 
+  "code":"WA", 
+  "houseSeats": "10"
+},
+{"id":"54",
+  "name":"West Virginia", 
+  "code":"WV", 
+  "houseSeats": "3"
+},
+{"id":"55",
+  "name":"Wisconsin", 
+  "code":"WI", 
+  "houseSeats": "8"
+},
+{"id":"56",
+  "name":"Wyoming", 
+  "code":"WY", 
+  "houseSeats": "1"
+}
+]

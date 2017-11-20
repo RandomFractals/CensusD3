@@ -1,18 +1,30 @@
 import axios from 'axios'
 import {Events} from 'quasar'
+import {usaStates} from '../data/us-states.js'
 
 export default {
   install: (Vue) => {
     Vue.prototype.$census = {
 
+      // states map
+      states: usaStates,
+
       /**
-      * Gets USA or state population data.
-      */
-      getPopulationData (region = 'USA') {
+       * Gets country/state flag image src url.
+       * @param {*} regionId Numeric region id.
+       */
+      getRegionImageUrl (regionId = '00') { // for usa
+        return `http://censusd3.herokuapp.com/images/flags/${this.states[regionId].code}.png`
+      },
+
+      /**
+       * Gets USA or state population data.
+       */
+      getPopulation (region = 'USA') {
         // get USA population data for all states
         axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
           .then(response => {
-            console.log('census::getPopulationData:regions:', response.data.length)
+            console.log('census::getPopulation:regions:', response.data.length)
 
             // strip out header row and Puerto Rico data (last row)
             let popData = response.data.slice(1, 51)
@@ -45,7 +57,7 @@ export default {
           .catch(err => {
             Events.$emit('census:population:error', err.response) // .data.error)
           })
-      }
+      } // end of getPopulation()
     }
   }
 }

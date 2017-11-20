@@ -313,8 +313,8 @@ export default {
       }
     })
 
-    // get initial USA population data for now
-    this.$census.getPopulationData('USA')
+    // get initial USA states population data for now
+    this.$census.getPopulation('USA')
   },
 
   /**
