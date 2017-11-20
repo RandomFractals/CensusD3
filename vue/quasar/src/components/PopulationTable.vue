@@ -67,6 +67,9 @@
   margin: 5px 0px 0px 5px;
   overflow-y: scroll;
 }
+th {
+  background-color: #efefef;
+}
 th, td {
   cursor: pointer;
   font-size: 12px;
