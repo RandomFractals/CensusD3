@@ -45,6 +45,7 @@
   font-size: 12px;
 }
 .data-table {
+  height: 290px;
   margin: 5px 0px 0px 5px;
   overflow-y: scroll;
 }
