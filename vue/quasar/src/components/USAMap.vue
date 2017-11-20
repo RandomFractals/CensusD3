@@ -6,7 +6,7 @@
       <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
     </q-card-title>
     <q-card-separator />
-    <q-card-main style="height: 80%">
+    <q-card-main class="map-container">
       <v-map ref="map" style="height: 100%" :zoom="zoom" :center="center">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
         <v-geojson-layer v-if="showTopology" 
@@ -15,6 +15,13 @@
     </q-card-main>
   </q-card>  
 </template>
+
+<style>
+.map-container {
+  height: 327px;
+  padding: 1px;
+}
+</style>
 
 <script>
 import axios from 'axios'
