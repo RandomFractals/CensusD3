@@ -170,7 +170,7 @@ export default {
      */
     getStatesGeoData () {
       console.log('map:getStatesGeoData...')
-      axios.get('https://censusd3.herokuapp.com/data/us-states-geo.json')
+      axios.get(`${this.$census.serviceHost}/data/us-states-geo.json`)
         .then(response => {
           // console.log('map geo json', response.data)
           this.topology = response.data

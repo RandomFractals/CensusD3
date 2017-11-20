@@ -6,15 +6,16 @@ export default {
   install: (Vue) => {
     Vue.prototype.$census = {
 
-      // states map
-      states: usaStates,
+      // custom Census data service properites
+      states: usaStates, // states map for state code lookups
+      serviceHost: 'https://censusd3.herokuapp.com', // using old d3 proj. node for app data
 
       /**
        * Gets country/state flag image src url.
        * @param {*} regionId Numeric region id.
        */
       getRegionImageUrl (regionId = '00') { // for usa
-        return `http://censusd3.herokuapp.com/images/flags/${this.states[regionId].code}.png`
+        return `${this.serviceHost}/images/flags/${this.states[regionId].code}.png`
       },
 
       /**
@@ -22,7 +23,7 @@ export default {
        */
       getPopulation (region = 'USA') {
         // get USA population data for all states
-        axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
+        axios.get(`${this.serviceHost}/census/population/state:*`)
           .then(response => {
             console.log('census::getPopulation:regions:', response.data.length)
 

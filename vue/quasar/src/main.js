@@ -39,7 +39,7 @@ Vue.use(Quasar, {
   }
 })
 
-// add our custom census plugin
+// add our custom census data service plugin
 Vue.use(Census)
 
 // add global number formatters
