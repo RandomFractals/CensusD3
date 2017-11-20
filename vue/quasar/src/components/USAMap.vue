@@ -147,6 +147,14 @@ export default {
     this.onPopulationUpdate = eventData => {
       this.selectedRegion = eventData.selectedRegion
       this.mapData = eventData.populationData
+
+      // update map layers fill color for proper choropleth display
+      this.mapData.map(region => {
+        let regionLayer = this.mapLayers[region.regionId]
+        regionLayer.setStyle({
+          fillColor: this.getLayerFillColor(region.density)
+        })
+      })
       console.log('map data updated') // , eventData)
     }
     this.$q.events.$on('census:population', this.onPopulationUpdate)
@@ -228,6 +236,19 @@ export default {
           // this.showTopology = false
           console.log('map:getUSACountiesGeoData:error', err.response.data.error)
         })
+    },
+
+    /**
+     * Gets map layer fill color for the specified region population density.
+     */
+    getLayerFillColor (d) {
+      return d > 1000 ? '#800026'
+        : d > 500 ? '#BD0026'
+          : d > 200 ? '#E31A1C'
+            : d > 100 ? '#FC4E2A'
+              : d > 50 ? '#FD8D3C'
+                : d > 20 ? '#FEB24C'
+                  : d > 10 ? '#FED976' : '#FFEDA0'
     }
 
   }
