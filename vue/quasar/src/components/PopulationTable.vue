@@ -36,6 +36,9 @@
   margin: 5px 0px 0px 5px;
   overflow-y: scroll;
 }
+th, td {
+  cursor: pointer;
+}
 </style>
 
 <script>
