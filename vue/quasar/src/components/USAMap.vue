@@ -78,6 +78,7 @@ export default {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       selectedRegion: {},
       mapData: [],
+      mapLayers: {},
       topology: null,
       showTopology: true,
       topologyOptions: {
@@ -91,6 +92,9 @@ export default {
           }
         },
         onEachFeature: (feature, layer) => {
+          // save region map layer for zoom to later
+          this.mapLayers[feature.id] = layer
+          // add mouse events
           layer.on({
             mouseover: onLayerMouseOver.bind(this),
             mouseout: onLayerMouseOut.bind(this),
@@ -122,6 +126,9 @@ export default {
     // add region selection change event handler
     this.onRegionSelectionChange = regionData => {
       this.selectedRegion = regionData
+      // zoom to selected region
+      this.$refs.map.mapObject.fitBounds(
+        this.mapLayers[this.selectedRegion.regionId]._bounds)
       console.log('map:selectedRegion:', regionData.regionName)
     }
     this.$q.events.$on('census:region', this.onRegionSelectionChange)
