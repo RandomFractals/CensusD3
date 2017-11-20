@@ -145,11 +145,10 @@ export default {
       console.log('map:selectedRegion:', regionData.regionName)
     }
     this.$q.events.$on('census:region', this.onRegionSelectionChange)
-
-    // get USA states geo json for the choropleth map topology display
-    this.getMapGeoJson()
-
     console.log('map created')
+
+    // get USA states geo json for the states choropleth map topology display
+    this.getStatesGeoData()
   },
 
   mounted () {
@@ -169,16 +168,17 @@ export default {
     /**
      * Gets initial USA states topology for the states choropleth display.
      */
-    getMapGeoJson () {
+    getStatesGeoData () {
+      console.log('map:getStatesGeoData...')
       axios.get('https://censusd3.herokuapp.com/data/us-states-geo.json')
         .then(response => {
           // console.log('map geo json', response.data)
           this.topology = response.data
-          // console.log('loaded map geo json', this.geoJson.features)
+          console.log('map:getStatesGeoData:regions:', this.topology.features.length)
         })
         .catch(err => {
           this.showTopology = false
-          console.log('map geo json load error', err.response.data.error)
+          console.log('map:getStatesGeoData:error', err.response.data.error)
         })
     }
   }
