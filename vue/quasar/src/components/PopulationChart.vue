@@ -69,7 +69,8 @@ export default {
       this.selectedRegion = regionData
       console.log('chart:selectedRegion:', regionData.regionName)
     }
-    this.$q.events.$on('census:region', this.onRegionSelectionChange)
+    // enable this when chart drill-down is fixed
+    // this.$q.events.$on('census:region', this.onRegionSelectionChange)
 
     console.log('chart created')
   },
