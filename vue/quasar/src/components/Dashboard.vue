@@ -189,7 +189,12 @@ export default {
 
   data () {
     return {
-      selectedRegion: {regionName: 'USA', population: 320832714},
+      selectedRegion: {
+        regionName: 'USA',
+        regionType: 'country',
+        population: 320832714,
+        density: 87.4 // per squar mile according to 2015 census data
+      },
       populationData: [],
       loaded: false,
       showError: false,

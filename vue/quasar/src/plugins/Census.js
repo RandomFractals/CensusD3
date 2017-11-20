@@ -36,6 +36,11 @@ export default {
               population: popData.map(regionData => Number(regionData[0]))
                 .reduce((a, b) => a + b, 0) // total count
             }
+            if (region === 'USA') {
+              // hardcode these for now
+              selectedRegion['regionType'] = 'country'
+              selectedRegion['density'] = 87.4 // per squar mile according to 2015 census data
+            }
 
             // create population data for sub-regions (states or counties)
             let populationData = popData.map(function (regionData) {
