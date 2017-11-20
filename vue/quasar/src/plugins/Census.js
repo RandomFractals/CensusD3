@@ -42,6 +42,7 @@ export default {
               return { // create simple region population data object
                 regionName: regionData[1].substr(0, regionData[1].indexOf(',')), // region name without state
                 regionId: regionData[4], // numeric region code
+                regionType: 'state', // top-level region type for now
                 population: Number(regionData[0]), // population count column data
                 density: Number(regionData[3]) // density column data
               }
