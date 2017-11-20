@@ -38,11 +38,7 @@ import {Events} from 'quasar'
  * Map layer mouse out event handler.
  */
 function onLayerMouseOver ({ target }) {
-  target.setStyle({
-    weight: 3,
-    color: 'red',
-    dashArray: '0'
-  })
+  target.setStyle(this.hoverLayerStyle)
   /*
   if (!L.Browser.ie && !L.Browser.opera) {
     target.bringToFront()
@@ -55,11 +51,9 @@ function onLayerMouseOver ({ target }) {
  * Map layer mouse out event handler.
  */
 function onLayerMouseOut ({ target }) {
-  target.setStyle({
-    weight: 2,
-    color: '#FFF',
-    dashArray: '0'
-  })
+  if (target !== this.selectedLayer) {
+    target.setStyle(this.layerStyle)
+  }
 }
 
 /**
@@ -92,8 +86,28 @@ export default {
       selectedRegion: {},
       mapData: [],
       mapLayers: {},
+      selectedLayer: null,
       topology: null,
       showTopology: true,
+      layerStyle: {
+        weight: 2,
+        color: '#ECEFF1',
+        opacity: 0.5,
+        dashArray: 0,
+        fillOpacity: 0.4
+      },
+      hoverLayerStyle: {
+        weight: 3,
+        color: 'red',
+        dashArray: '0'
+      },
+      selectedLayerStyle: {
+        weight: 3,
+        color: '#ff002b',
+        opacity: 0.6,
+        dashArray: 0,
+        fillOpacity: 0.6
+      },
       topologyOptions: {
         style: function () {
           return {
@@ -140,9 +154,7 @@ export default {
     // add region selection change event handler
     this.onRegionSelectionChange = regionData => {
       this.selectedRegion = regionData
-      // zoom to selected region
-      this.$refs.map.mapObject.fitBounds(
-        this.mapLayers[this.selectedRegion.regionId]._bounds)
+      this.zoomToSelectedRegion()
       console.log('map:selectedRegion:', regionData.regionName)
     }
     this.$q.events.$on('census:region', this.onRegionSelectionChange)
@@ -165,6 +177,21 @@ export default {
   },
 
   methods: {
+
+    /**
+     * Zooms the map to the selected region layer
+     * and toggles map layer selection styles.
+     */
+    zoomToSelectedRegion () {
+      // zoom to selected region
+      if (this.selectedLayer !== null) {
+        // reset previously selected map layer style
+        this.selectedLayer.setStyle(this.layerStyle)
+      }
+      this.selectedLayer = this.mapLayers[this.selectedRegion.regionId]
+      this.selectedLayer.setStyle(this.selectedLayerStyle)
+      this.$refs.map.mapObject.fitBounds(this.selectedLayer.getBounds())
+    },
 
     /**
      * Gets initial USA states topology for the states choropleth display.
