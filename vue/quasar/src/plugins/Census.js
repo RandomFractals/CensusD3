@@ -52,7 +52,7 @@ export default {
                 density: Number(regionData[3]) // density column data
               }
             })
-            console.log('census:population:data:', populationData)
+            console.log('census:population:data:', populationData.length)
 
             // push new census data to the global quasar app event bus
             Events.$emit('census:population', {

@@ -54,16 +54,15 @@ export default {
    * Adds chart data and view event handlers.
    */
   created () {
-    this.dataHandler = state => {
-      this.selectedRegion = state.selectedRegion
-      this.populationData = state.populationData
-      this.chartData = state.populationData.map(regionData => regionData.population)
-      this.chartLabels = state.populationData.map(regionData => regionData.regionName)
-      this.regions = state.regions
+    this.onPopulationUpdate = eventData => {
+      this.selectedRegion = eventData.selectedRegion
+      this.populationData = eventData.populationData
+      this.chartData = this.populationData.map(regionData => regionData.population)
+      this.chartLabels = this.populationData.map(regionData => regionData.regionName)
       // this.redraw()
-      console.log('chart data', state)
+      console.log('chart data updated')
     }
-    this.$q.events.$on('census:population', this.dataHandler)
+    this.$q.events.$on('census:population', this.onPopulationUpdate)
 
     // add region selection change event handler
     this.onRegionSelectionChange = regionData => {
@@ -79,7 +78,7 @@ export default {
    * Removes chart data and view update handlers.
    */
   beforeDestroy () {
-    this.$q.events.$off('census:population', this.dataHandler)
+    this.$q.events.$off('census:population', this.onPopulationUpdate)
     this.$q.events.$off('census:region', this.onRegionSelectionChange)
   },
 
