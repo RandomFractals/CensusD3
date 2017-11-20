@@ -26,7 +26,10 @@
         internal vue-router navigation
       -->
       <q-list no-border link inset-delimiter>
-        <q-list-header>Essential Links</q-list-header>
+        <q-list-header>
+          <img src="statics/quasar-logo.png" height="24" />
+          Quasar Framework Links
+        </q-list-header>
         <q-item @click="launch('http://quasar-framework.org')">
           <q-item-side icon="school" />
           <q-item-main label="Docs" sublabel="quasar-framework.org" />
