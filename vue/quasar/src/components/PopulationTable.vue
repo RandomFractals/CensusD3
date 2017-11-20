@@ -2,12 +2,21 @@
   <q-card class="table-card">
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
-      <span class="card-title">{{selectedRegion.regionName}} population:</span>
-      <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
+      <span class="card-title">{{selectedRegion.regionName}}</span>
     </q-card-title>
     <q-card-separator />
+    <div class="card-subtitle">
+      <span class="text-faded">population:</span>
+      <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
+    </div>
+    <div class="card-subtitle">
+      <span class="text-faded">density:</span>
+      <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
+      <span class="text-small">p/mi²</span>
+    </div>    
     <q-card-main class="data-table">
-      <table class="q-table standard striped bordered compact highlight vertical-separator">
+      <table id="data-table" style="width: 100%"
+        class="q-table standard bordered compact highlight vertical-separator">
         <thead>
           <tr>
             <th @click="sortTableData('regionName')">{{regionLabel}}</th>
@@ -31,13 +40,17 @@
 </template>
 
 <style>
+.card-subtitle {
+  padding-left: 5px;
+  font-size: 12px;
+}
 .data-table {
-  height: 320px;
   margin: 5px 0px 0px 5px;
   overflow-y: scroll;
 }
 th, td {
   cursor: pointer;
+  font-size: 12px;
 }
 </style>
 
