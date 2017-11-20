@@ -1,19 +1,26 @@
 <template>
   <q-card class="table-card">
+    <!-- table card header -->
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
       <span class="card-title">{{selectedRegion.regionName}}</span>
     </q-card-title>
     <q-card-separator />
-    <div class="card-subtitle">
-      <span class="text-faded">population:</span>
-      <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
-    </div>
-    <div class="card-subtitle">
-      <span class="text-faded">density:</span>
-      <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
-      <span class="text-small">p/mi²</span>
-    </div>    
+    <!-- table card subheader -->
+    <q-collapsible icon="people"
+      :label="selectedRegion.population | formatNumber">
+      <!--
+      <div class="card-subtitle">
+        <span class="text-faded">population:</span>
+        <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
+      </div>
+      -->
+      <div class="card-subtitle">
+        <span class="text-faded">density:</span>
+        <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
+        <span class="text-small">p/mi²</span>
+      </div>    
+    <!-- table data content -->
     <q-card-main class="data-table">
       <table id="data-table" style="width: 100%"
         class="q-table standard bordered compact highlight vertical-separator">
@@ -36,16 +43,27 @@
         </tbody>
       </table>
     </q-card-main>
+    </q-collapsible>
   </q-card>
 </template>
 
 <style>
+.q-item {
+  min-height: 24px;
+  padding: 0px 5px 0px 5px;
+}
+.q-item-side {
+  min-width: 24px;
+}
+.q-collapsible-sub-item {
+  padding: 0px;
+}
 .card-subtitle {
   padding-left: 5px;
   font-size: 12px;
 }
 .data-table {
-  height: 290px;
+  height: 280px;
   margin: 5px 0px 0px 5px;
   overflow-y: scroll;
 }
