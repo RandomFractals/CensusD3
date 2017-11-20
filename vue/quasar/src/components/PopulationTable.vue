@@ -7,7 +7,7 @@
     </q-card-title>
     <q-card-separator />
     <!-- table card subheader -->
-    <q-collapsible icon="people"
+    <q-collapsible icon="people" opened
       :label="selectedRegion.population | formatNumber">
       <!--
       <div class="card-subtitle">
