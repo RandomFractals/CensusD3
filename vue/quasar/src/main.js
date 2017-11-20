@@ -16,7 +16,9 @@ import Quasar, {
   QCardTitle,
   QCardSeparator,
   QCardMain,
-  QCollapsible} from 'quasar'
+  QCollapsible,
+  QSelect
+} from 'quasar'
 
 import router from './router'
 import numeral from 'numeral'
@@ -32,7 +34,8 @@ Vue.use(Quasar, {
     QCardTitle,
     QCardSeparator,
     QCardMain,
-    QCollapsible
+    QCollapsible,
+    QSelect
   }
 })
 
