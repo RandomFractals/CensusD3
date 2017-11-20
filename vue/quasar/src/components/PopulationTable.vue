@@ -27,8 +27,8 @@
         <thead>
           <tr>
             <th @click="sortTableData('regionName')">{{regionLabel}}</th>
-            <th @click="sortTableData('population')">Population</th>
-            <th @click="sortTableData('density')">Density</th>
+            <th @click="sortTableData('population')">population</th>
+            <th @click="sortTableData('density')">density</th>
           </tr>
         </thead>
         <tbody>
@@ -88,7 +88,7 @@ export default {
       tableData: [],
       sortColumn: 'regionName',
       sortAscending: true,
-      regionLabel: 'State'
+      regionLabel: 'state'
     }
   },
 
