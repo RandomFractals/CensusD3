@@ -2,6 +2,11 @@
 
 > A Quasar/Vue project
 
+# Latest v. screenshot:
+
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueWithStatesChoropleth.png?raw=true 
+ "latest") 
+
 ## Build Setup
 
 ``` bash
