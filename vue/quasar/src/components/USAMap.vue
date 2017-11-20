@@ -175,12 +175,33 @@ export default {
           // console.log('map geo json', response.data)
           this.topology = response.data
           console.log('map:getStatesGeoData:regions:', this.topology.features.length)
+
+          // trigger load of USA counties topology for state counties map zoom
+          this.getUSACountiesGeoData()
         })
         .catch(err => {
           this.showTopology = false
           console.log('map:getStatesGeoData:error', err.response.data.error)
         })
+    },
+
+    /**
+     * Gets all USA counties topology for the state counties choropleth display.
+     */
+    getUSACountiesGeoData () {
+      console.log('map:getUSACountiesGeoData...')
+      axios.get(`${this.$census.serviceHost}/data/us.json`)
+        .then(response => {
+          // console.log('map geo json', response.data)
+          // this.topology = response.data
+          console.log('map:getUSACountiesGeoData:regions:', this.topology.features.length)
+        })
+        .catch(err => {
+          // this.showTopology = false
+          console.log('map:getUSACountiesGeoData:error', err.response.data.error)
+        })
     }
+
   }
 }
 </script>
