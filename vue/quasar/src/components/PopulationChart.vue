@@ -2,8 +2,11 @@
   <q-card class="chart" style="width: 100%">
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
-      <span class="card-title">{{selectedRegion.regionName}} population:</span>
-      <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
+      <span class="card-title">{{selectedRegion.regionName}}</span>
+      <span class="card-subtitle">
+        <span class="text-faded">population:</span>
+        <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
+      </span>      
     </q-card-title>
     <q-card-separator />
     <q-card-main>

@@ -2,8 +2,14 @@
   <q-card class="map-card">
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
-      <span class="card-title">{{selectedRegion.regionName}} population:</span>
-      <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
+      <span class="card-title">{{selectedRegion.regionName}}</span>
+      <span class="card-subtitle">
+        <span class="text-faded">population:</span>
+        <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
+        <span class="text-faded"> | density:</span>
+        <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
+        <span class="text-faded">p/mi²</span>
+      </span>
     </q-card-title>
     <q-card-separator />
     <q-card-main class="map-container">
