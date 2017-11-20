@@ -40,8 +40,8 @@ import {Events} from 'quasar'
 function onLayerMouseOver ({ target }) {
   target.setStyle({
     weight: 3,
-    color: '#666',
-    dashArray: ''
+    color: 'red',
+    dashArray: '0'
   })
   /*
   if (!L.Browser.ie && !L.Browser.opera) {
@@ -58,7 +58,7 @@ function onLayerMouseOut ({ target }) {
   target.setStyle({
     weight: 2,
     color: '#FFF',
-    dashArray: ''
+    dashArray: '0'
   })
 }
 
@@ -100,6 +100,7 @@ export default {
             weight: 2,
             color: '#ECEFF1',
             opacity: 0.5,
+            dashArray: 0,
             fillColor: '#00bfff',
             fillOpacity: 0.4
           }
