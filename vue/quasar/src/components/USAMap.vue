@@ -65,8 +65,10 @@ function onLayerClick ({target}) {
   Events.$emit('census:region', this.mapData.find(
     x => x.regionId === target.feature.id)) // region id from geo json
 
-  // zoom to region
-  this.$refs.map.mapObject.fitBounds(target.getBounds())
+  if (target !== this.selectedLayer) {
+    // zoom to region
+    this.$refs.map.mapObject.fitBounds(target.getBounds())
+  }
 }
 
 export default {
