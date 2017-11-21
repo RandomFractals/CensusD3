@@ -6,9 +6,6 @@
       <span class="card-subtitle">
         <span class="text-faded">population:</span>
         <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
-        <span class="text-faded"> | density:</span>
-        <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
-        <span class="text-faded">p/mi²</span>
       </span>
       <q-btn small flat slot="right" class="map-button" icon="zoom_out_map" @click="zoomOut()" />
     </q-card-title>
@@ -97,6 +94,7 @@ export default {
       selectedLayer: null,
       topology: null,
       showTopology: true,
+      colorBy: 'density',
       layerStyle: {
         weight: 2,
         color: '#ECEFF1',
