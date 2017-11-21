@@ -117,7 +117,7 @@ export default {
             color: '#ECEFF1',
             opacity: 0.5,
             dashArray: 0,
-            fillColor: '#00bfff',
+            fillColor: '#eee',
             fillOpacity: 0.4
           }
         },
