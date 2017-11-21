@@ -10,6 +10,11 @@ export default {
       states: usaStates, // states map for state code lookups
       serviceHost: 'https://censusd3.herokuapp.com', // using old d3 proj. node for app data
 
+      // census data service/bus events
+      events: {
+        POPULATION: 'census.population' // population data update event
+      },
+
       /**
        * Gets country/state flag image src url.
        * @param {*} regionId Numeric region id.
@@ -55,8 +60,8 @@ export default {
             })
             console.log('census:population:data:', populationData.length)
 
-            // push new census data to the global quasar app event bus
-            Events.$emit('census:population', {
+            // push new census population data to the global quasar app event bus
+            Events.$emit(this.events.POPULATION, {
               selectedRegion: selectedRegion,
               populationData: populationData
             })

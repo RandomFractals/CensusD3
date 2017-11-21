@@ -159,7 +159,7 @@ export default {
       })
       console.log('map data updated') // , eventData)
     }
-    this.$q.events.$on('census:population', this.onPopulationUpdate)
+    this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
 
     // add region selection change event handler
     this.onRegionSelectionChange = regionData => {

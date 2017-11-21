@@ -108,7 +108,7 @@ export default {
       this.tableData = eventData.populationData
       console.log('table data updated') // , eventData)
     }
-    this.$q.events.$on('census:population', this.onPopulationUpdate)
+    this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
 
     // add region selection change event handler
     this.onRegionSelectionChange = regionData => {
