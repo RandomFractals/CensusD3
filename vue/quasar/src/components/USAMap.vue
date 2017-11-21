@@ -13,7 +13,7 @@
     </q-card-title>
     <q-card-separator />
     <q-card-main class="map-container">
-      <v-map ref="map" style="height: 100%" :zoom="zoom" :center="center">
+      <v-map ref="map" style="height: 100%" :zoom="zoom" :center="mapCenter">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
         <v-geojson-layer v-if="showTopology" 
           :geojson="topology" :options="topologyOptions"></v-geojson-layer>
@@ -81,7 +81,7 @@ export default {
 
   data () {
     return {
-      center: [37.8, -96],
+      mapCenter: [37.8, -96],
       zoom: 4,
       tilesUrl: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -200,8 +200,16 @@ export default {
         this.selectedLayer.setStyle(this.layerStyle)
       }
       this.selectedLayer = this.mapLayers[this.selectedRegion.regionId]
-      this.selectedLayer.setStyle(this.selectedLayerStyle)
-      this.$refs.map.mapObject.fitBounds(this.selectedLayer.getBounds())
+      if (this.selectedLayer !== undefined) {
+        // update map layer styles to zoom in
+        this.selectedLayer.setStyle(this.selectedLayerStyle)
+        this.$refs.map.mapObject.fitBounds(this.selectedLayer.getBounds())
+      }
+      else {
+        // reset selected layer and zoom to the whole USA map view
+        this.selectedLayer = null
+        this.$refs.map.mapObject.flyTo(this.mapCenter, this.zoom)
+      }
     },
 
     /**

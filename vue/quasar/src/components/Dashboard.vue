@@ -9,7 +9,7 @@
         <q-icon name="menu" />
       </q-btn>
       <q-toolbar-title>
-        Census Vue
+        <q-btn small flat class="app-title" @click="appTitleClick()">USA Census Vue</q-btn>
         <div slot="subtitle">powered by
           <a class="text-cyan-11" 
             href="http://quasar-framework.org/" target="_blank"
@@ -92,6 +92,9 @@
   padding: 0px;
   min-height: 40px;
 }
+.app-title {
+  padding: 2px;
+}
 .app-content {
   margin: 5px;
 }
@@ -144,7 +147,8 @@ import {
   QListHeader,
   QItem,
   QItemSide,
-  QItemMain
+  QItemMain,
+  Events
 } from 'quasar'
 
 import USAMap from './USAMap.vue'
@@ -189,12 +193,15 @@ export default {
 
   data () {
     return {
-      selectedRegion: {
+      // hardcoded USA population data for initial app load
+      usaData: {
+        regionId: '00',
         regionName: 'USA',
         regionType: 'country',
         population: 320832714,
         density: 87.4 // per squar mile according to 2015 census data
       },
+      selectedRegion: this.usaData,
       populationData: [],
       loaded: false,
       showError: false,
@@ -222,8 +229,27 @@ export default {
   },
 
   methods: {
+
+    /**
+     * Launch url util for the app footer and quasar framework menu links.
+     */
     launch (url) {
       openURL(url)
+    },
+
+    /**
+     * Resets view and error message display view state.
+     */
+    resetState () {
+      this.loaded = false
+      this.showError = false
+    },
+
+    /**
+     * Reloads USA population census data display.
+     */
+    appTitleClick () {
+      Events.$emit(this.$census.events.REGION, this.usaData)
     },
 
     // TODO: retrofit these for proper device rotation event handling
@@ -271,16 +297,9 @@ export default {
         this.rotateX = evt.beta * 0.7
         this.rotateY = evt.gamma * -0.7
       }
-    },
-
-    /**
-     * Resets view and error message display view state.
-     */
-    resetState () {
-      this.loaded = false
-      this.showError = false
     }
-  },
+
+  }, // end of methods
 
   /**
    * Adds app view visibility handler.
