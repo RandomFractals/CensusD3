@@ -297,7 +297,7 @@ export default {
       this.selectedRegion = regionData
       console.log('dashboard:selectedRegion:', regionData)
     }
-    this.$q.events.$on('census:region', this.onRegionSelectionChange)
+    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
 
     console.log('dashboard created')
   },
@@ -308,7 +308,6 @@ export default {
    * to display on app load for now.
    */
   mounted () {
-    console.log('dashboard mounted')
     this.$nextTick(() => {
       if (this.orienting) {
         window.addEventListener('deviceorientation', this.orient, false)
@@ -320,6 +319,7 @@ export default {
         document.addEventListener('mousemove', this.move)
       }
     })
+    console.log('dashboard mounted')
 
     // get initial USA states population data for now
     this.$census.getPopulation('USA')
@@ -341,7 +341,7 @@ export default {
 
     // remove app view and census data event handlers
     this.$q.events.$off('app:visibility', this.onAppViewUpdate)
-    this.$q.events.$off('census:region', this.onRegionSelectionChange)
+    this.$q.events.$off(this.$census.events.REGION, this.onRegionSelectionChange)
   }
 }
 </script>

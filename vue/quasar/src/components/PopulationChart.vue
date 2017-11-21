@@ -70,7 +70,7 @@ export default {
       console.log('chart:selectedRegion:', regionData.regionName)
     }
     // enable this when chart drill-down is fixed
-    // this.$q.events.$on('census:region', this.onRegionSelectionChange)
+    // this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
 
     console.log('chart created')
   },
@@ -79,8 +79,8 @@ export default {
    * Removes chart data and view update handlers.
    */
   beforeDestroy () {
-    this.$q.events.$off('census:population', this.onPopulationUpdate)
-    this.$q.events.$off('census:region', this.onRegionSelectionChange)
+    this.$q.events.$off(this.$census.events.POPULATION, this.onPopulationUpdate)
+    this.$q.events.$off(this.$census.events.REGION, this.onRegionSelectionChange)
   },
 
   mounted () {

@@ -115,7 +115,7 @@ export default {
       this.selectedRegion = regionData
       console.log('table:selectedRegion:', regionData.regionName)
     }
-    this.$q.events.$on('census:region', this.onRegionSelectionChange)
+    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
 
     console.log('table created')
   },
@@ -128,8 +128,8 @@ export default {
    * Removes table data and view update handlers.
    */
   beforeDestroy () {
-    this.$q.events.$off('census:population', this.onPopulationUpdate)
-    this.$q.events.$off('census:region', this.onRegionSelectionChange)
+    this.$q.events.$off(this.$census.events.POPULATION, this.onPopulationUpdate)
+    this.$q.events.$off(this.$census.events.REGION, this.onRegionSelectionChange)
   },
 
   methods: {
@@ -140,7 +140,7 @@ export default {
     rowClick (rowIndex) {
       console.log(`table:rowClick: rowIndex=${rowIndex}`)
       // notify app components about region selection change
-      Events.$emit('census:region', this.tableData[rowIndex])
+      Events.$emit(this.$census.events.REGION, this.tableData[rowIndex])
     },
 
     /**

@@ -12,7 +12,8 @@ export default {
 
       // census data service/bus events
       events: {
-        POPULATION: 'census.population' // population data update event
+        POPULATION: 'census:population', // population data update event
+        REGION: 'census:regionChange' // new region selection event
       },
 
       /**

@@ -62,7 +62,7 @@ function onLayerMouseOut ({ target }) {
 function onLayerClick ({target}) {
   console.log('map click:', target.feature.properties.name) // region name from geo json
   // notify app components about region selection change
-  Events.$emit('census:region', this.mapData.find(
+  Events.$emit(this.$census.events.REGION, this.mapData.find(
     x => x.regionId === target.feature.id)) // region id from geo json
 
   if (target !== this.selectedLayer) {
@@ -167,7 +167,8 @@ export default {
       this.zoomToSelectedRegion()
       console.log('map:selectedRegion:', regionData.regionName)
     }
-    this.$q.events.$on('census:region', this.onRegionSelectionChange)
+    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
+
     console.log('map created')
 
     // get USA states geo json for the states choropleth map topology display
@@ -182,8 +183,8 @@ export default {
    * Removes map data and view update handlers.
    */
   beforeDestroy () {
-    this.$q.events.$off('census:population', this.onPopulationUpdate)
-    this.$q.events.$off('census:region', this.onRegionSelectionChange)
+    this.$q.events.$off(this.$census.events.POPULATION, this.onPopulationUpdate)
+    this.$q.events.$off(this.$census.events.REGION, this.onRegionSelectionChange)
   },
 
   methods: {
