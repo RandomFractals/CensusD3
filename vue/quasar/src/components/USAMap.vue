@@ -10,7 +10,7 @@
         <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
         <span class="text-faded">p/mi²</span>
       </span>
-      <q-btn small flat slot="right" icon="zoom_out_map" @click="zoomOut()" />
+      <q-btn small flat slot="right" style="color: orange" icon="zoom_out_map" @click="zoomOut()" />
     </q-card-title>
     <q-card-separator />
     <q-card-main class="map-container">
