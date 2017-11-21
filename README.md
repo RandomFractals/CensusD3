@@ -1,6 +1,6 @@
 # census d3
 
-Interactive d3.js v.4 maps & graphs data viz of US census data from census.gov
+Interactive d3.js v.4 maps & graphs data viz prototype of US census data from census.gov
 
 # USA States/Counties Choropleth Teaser
 
@@ -17,19 +17,25 @@ Census Data Mapper 2.0 UX d3.js v.4 proj.? :)
 
 # Current alpha v. Status
 
-Preview current v. 0.0.12 alpha on heroku:
+Preview d3 prototype v. 0.0.12 alpha on heroku:
 
 http://censusd3.herokuapp.com/
 
-See the latest project updates and screen grabs on Twitter:
+See prototype dev progress project updates and screen grabs on Twitter:
 
 https://twitter.com/hashtag/censusd3
 
-All kinds of census data and graphs can/will be added eventually :)
+# New Vue.js working dir:
 
-This project is currently on hold.
+https://github.com/RandomFractals/CensusD3/tree/master/vue
 
-# Current working dir:) 
+All kinds of census data maps and graphs will be added there eventually :)
+
+See updates on that dash build on Twitter:
+
+https://twitter.com/hashtag/CensusDash
+
+# Old d3 Prototype working dir:
 
 https://github.com/RandomFractals/CensusD3/tree/master/prototype
 
@@ -54,12 +60,6 @@ and then copy it to your own .env if you decide to fork this repo
 # In Sum
 
 Be nice and drop me a note if you decide to use this proto for your next.
-
-I have not decided on the license type of this public data viz just yet 
-because it's still supper rough after only 2 weeks of dev,
-but it's public as of now and I plan to keep it that way.
-
-Most likely I will adapt whatever d3.js and M. Bostock license is using.
 
 Feel free to log issues and ping me with pull requests 
 for the alpha v. fixes/feature requests if you find this of some use 
