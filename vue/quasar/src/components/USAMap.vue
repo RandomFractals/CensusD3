@@ -10,6 +10,7 @@
         <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
         <span class="text-faded">p/mi²</span>
       </span>
+      <q-btn small flat slot="right" icon="zoom_out_map" @click="zoomOut()" />
     </q-card-title>
     <q-card-separator />
     <q-card-main class="map-container">
@@ -32,7 +33,7 @@
 <script>
 import axios from 'axios'
 import Vue2Leaflet from 'vue2-leaflet'
-import {Events} from 'quasar'
+import {QBtn, Events} from 'quasar'
 
 /**
  * Map layer mouse out event handler.
@@ -76,7 +77,8 @@ export default {
   components: {
     'v-map': Vue2Leaflet.Map,
     'v-geojson-layer': Vue2Leaflet.GeoJSON,
-    'v-tilelayer': Vue2Leaflet.TileLayer
+    'v-tilelayer': Vue2Leaflet.TileLayer,
+    QBtn
   },
 
   data () {
@@ -206,10 +208,17 @@ export default {
         this.$refs.map.mapObject.fitBounds(this.selectedLayer.getBounds())
       }
       else {
-        // reset selected layer and zoom to the whole USA map view
+        // reset selected layer and zoom out to the whole USA map view
         this.selectedLayer = null
-        this.$refs.map.mapObject.flyTo(this.mapCenter, this.zoom)
+        this.zoomOut()
       }
+    },
+
+    /**
+     * Zooms out to show the whole USA map view.
+     */
+    zoomOut () {
+      this.$refs.map.mapObject.flyTo(this.mapCenter, this.zoom)
     },
 
     /**
