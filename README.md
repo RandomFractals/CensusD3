@@ -15,19 +15,26 @@ Think http://datamapper.geo.census.gov/map.html but less rigid, more interactive
 
 Census Data Mapper 2.0 UX d3.js v.4 proj.? :)
 
-# Current alpha v. Status
+# d3 Prototype alpha v. Preview
 
 Preview d3 prototype v. 0.0.12 alpha on heroku:
 
 http://censusd3.herokuapp.com/
 
-See prototype dev progress project updates and screen grabs on Twitter:
+See prototype dev progress project updates and screen grabs from last year on Twitter:
 
 https://twitter.com/hashtag/censusd3
 
-# New Vue.js working dir:
+# New Vue.js CensusDash working dir
+
+This is the current working dir for this project:
 
 https://github.com/RandomFractals/CensusD3/tree/master/vue
+
+Latest Vue.js v. screenshot:
+
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueWithStatesChoropleth.png?raw=true 
+ "latest") 
 
 All kinds of census data maps and graphs will be added there eventually :)
 
