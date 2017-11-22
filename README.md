@@ -33,7 +33,7 @@ https://github.com/RandomFractals/CensusD3/tree/master/vue
 
 # Census-Vue Demo Link
 
-See v0.0.1 demo live on heroku: 
+See census-vue v0.0.1 demo live on heroku: 
 
 https://census-vue.herokuapp.com
 

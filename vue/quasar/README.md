@@ -2,9 +2,9 @@
 
 > A Quasar/Vue project
 
-# Demo Link
+# Census-Vue Demo Link
 
-See v0.0.1 demo release build live on heroku: 
+See census-vue v0.0.1 demo live on heroku: 
 
 https://census-vue.herokuapp.com
 
@@ -20,11 +20,11 @@ $ npm install
 # serve with hot reload at localhost:8080
 $ quasar dev
 
-# build for production with minification
-$ quasar build
-
 # lint code
 $ quasar lint
+
+# build for production with minification
+$ quasar build
 
 # run production build locally 
 $ quasar serve ./dist

@@ -2,9 +2,9 @@
 
 Interactive Vue 2 maps & graphs data viz mix of US census data from census.gov
 
-# Demo Link
+# Census-Vue Demo Link
 
-See v0.0.1 demo live on heroku: 
+See census-vue v0.0.1 demo live on heroku: 
 
 https://census-vue.herokuapp.com
 
