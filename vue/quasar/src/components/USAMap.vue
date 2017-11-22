@@ -160,11 +160,10 @@ export default {
 
       // TODO: change this when state counties topojson data load is wired
       // and selected state counties display is added to the map
-      if (this.selectedRegion.regionType !== 'county') {
-        
+      if (this.mapData.length === 0) {
         // update map data
         this.mapData = eventData.populationData
-        
+
         // update map layers fill color for proper states choropleth display
         this.mapData.map(region => {
           let regionLayer = this.mapLayers[region.regionId]
