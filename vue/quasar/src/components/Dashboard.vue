@@ -250,6 +250,8 @@ export default {
      */
     appTitleClick () {
       Events.$emit(this.$census.events.REGION, this.usaData)
+      // get USA states population data
+      this.$census.getPopulation()      
     },
 
     // TODO: retrofit these for proper device rotation event handling
