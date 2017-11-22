@@ -246,12 +246,12 @@ export default {
     },
 
     /**
-     * Reloads USA population census data display.
+     * Reloads USA states population census data display.
      */
     appTitleClick () {
       Events.$emit(this.$census.events.REGION, this.usaData)
       // get USA states population data
-      this.$census.getPopulation()      
+      this.$census.getPopulation()
     },
 
     // TODO: retrofit these for proper device rotation event handling

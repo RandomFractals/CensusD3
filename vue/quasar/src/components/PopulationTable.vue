@@ -4,6 +4,9 @@
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
       <span class="card-title">{{selectedRegion.regionName}}</span>
+      <q-btn small flat slot="right" class="map-button" 
+        icon="vertical_align_top" 
+        @click="backToTopLevel()" />
     </q-card-title>
     <q-card-separator />
     <!-- table card subheader -->
@@ -78,13 +81,19 @@ th, td {
 
 <script>
 
-import {Events} from 'quasar'
+import {QBtn, Events} from 'quasar'
 
 export default {
   name: 'population-table',
+
+  components: {
+    QBtn
+  },
+
   data () {
     return {
       selectedRegion: {},
+      topLevelRegion: null,
       tableData: [],
       sortColumn: 'regionName',
       sortAscending: true,
@@ -102,6 +111,17 @@ export default {
    * Adds table data and view event handlers.
    */
   created () {
+    // add region selection change event handler
+    this.onRegionSelectionChange = regionData => {
+      this.selectedRegion = regionData
+      if (this.topLevelRegion === null) {
+        // set top level for back to top click
+        this.topLevelRegion = regionData
+      }
+      console.log('table:selectedRegion:', regionData.regionName)
+    }
+    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
+
     // add population data update event handler
     this.onPopulationUpdate = eventData => {
       // update selected region total population sum
@@ -117,13 +137,6 @@ export default {
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
 
-    // add region selection change event handler
-    this.onRegionSelectionChange = regionData => {
-      this.selectedRegion = regionData
-      console.log('table:selectedRegion:', regionData.regionName)
-    }
-    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
-
     console.log('table created')
   },
 
@@ -135,11 +148,20 @@ export default {
    * Removes table data and view update handlers.
    */
   beforeDestroy () {
-    this.$q.events.$off(this.$census.events.POPULATION, this.onPopulationUpdate)
     this.$q.events.$off(this.$census.events.REGION, this.onRegionSelectionChange)
+    this.$q.events.$off(this.$census.events.POPULATION, this.onPopulationUpdate)
   },
 
   methods: {
+
+    /**
+     * Reloads USA states population census data display.
+     */
+    backToTopLevel () {
+      Events.$emit(this.$census.events.REGION, this.topLevelRegion)
+      // get USA states population data
+      this.$census.getPopulation()
+    },
 
     /**
      * Table row click event handler.
