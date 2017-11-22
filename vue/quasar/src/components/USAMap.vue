@@ -161,14 +161,18 @@ export default {
       // TODO: change this when state counties topojson data load is wired
       // and selected state counties display is added to the map
       if (this.selectedRegion.regionType !== 'county') {
+        
         // update map data
         this.mapData = eventData.populationData
+        
         // update map layers fill color for proper states choropleth display
         this.mapData.map(region => {
           let regionLayer = this.mapLayers[region.regionId]
-          regionLayer.setStyle({
-            fillColor: this.getLayerFillColor(region.density) // color by density for now
-          })
+          if (regionLayer !== undefined) {
+            regionLayer.setStyle({
+              fillColor: this.getLayerFillColor(region.density) // color by density for now
+            })
+          }
         })
       }
 
