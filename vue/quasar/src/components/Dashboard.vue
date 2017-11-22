@@ -1,7 +1,6 @@
 <template>
   <q-layout ref="layout"
-    view="lHh Lpr fff"
-    :left-class="{'bg-grey-2': true}">
+    view="lHh Lpr fFf">
 
     <!-- app toolbar -->
     <q-toolbar slot="header" class="app-toolbar">
@@ -83,6 +82,7 @@
         <span class="text-faded">&copy;Random Fractals Inc. 2017</span>
       </small>
     </q-toolbar>
+    </footer>
   </q-layout>
 </template>
 
@@ -96,7 +96,7 @@
   padding: 2px;
 }
 .app-content {
-  margin: 5px;
+  margin: 5px 20px 5px 0px;
 }
 .app-footer {
   min-height: 30px;
@@ -115,7 +115,7 @@
 }
 
 .chart-card {
-  height: 320px;
+  height: 280px;
 }
 
 /* override q-card styles to slim them down */
