@@ -63,9 +63,13 @@ function onLayerMouseOut ({ target }) {
  */
 function onLayerClick ({target}) {
   console.log('map click:', target.feature.properties.name) // region name from geo json
+
   // notify app components about region selection change
   Events.$emit(this.$census.events.REGION, this.mapData.find(
     x => x.regionId === target.feature.id)) // region id from geo json
+
+  // get population data for state counties
+  this.$census.getPopulation('county', `*&in=state:${target.feature.id}`) // state code from the map
 
   if (target !== this.selectedLayer) {
     // zoom to region
@@ -151,16 +155,23 @@ export default {
   created () {
     // add population data update event handler
     this.onPopulationUpdate = eventData => {
-      this.selectedRegion = eventData.selectedRegion
-      this.mapData = eventData.populationData
+      // update selected region total population sum
+      this.selectedRegion.population = eventData.totalPopulation
 
-      // update map layers fill color for proper choropleth display
-      this.mapData.map(region => {
-        let regionLayer = this.mapLayers[region.regionId]
-        regionLayer.setStyle({
-          fillColor: this.getLayerFillColor(region.density)
+      // TODO: change this when state counties topojson data load is wired
+      // and selected state counties display is added to the map
+      if (this.selectedRegion.regionType !== 'county') {
+        // update map data
+        this.mapData = eventData.populationData
+        // update map layers fill color for proper states choropleth display
+        this.mapData.map(region => {
+          let regionLayer = this.mapLayers[region.regionId]
+          regionLayer.setStyle({
+            fillColor: this.getLayerFillColor(region.density) // color by density for now
+          })
         })
-      })
+      }
+
       console.log('map data updated') // , eventData)
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)

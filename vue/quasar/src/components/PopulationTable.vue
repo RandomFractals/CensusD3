@@ -26,7 +26,7 @@
         class="q-table standard bordered compact highlight vertical-separator">
         <thead>
           <tr>
-            <th @click="sortTableData('regionName')">{{regionLabel}}</th>
+            <th @click="sortTableData('regionName')">{{regionColumnLabel}}</th>
             <th @click="sortTableData('population')">population</th>
             <th @click="sortTableData('density')">density</th>
           </tr>
@@ -88,7 +88,7 @@ export default {
       tableData: [],
       sortColumn: 'regionName',
       sortAscending: true,
-      regionLabel: 'state'
+      regionColumnLabel: 'state'
     }
   },
 
@@ -104,8 +104,15 @@ export default {
   created () {
     // add population data update event handler
     this.onPopulationUpdate = eventData => {
-      this.selectedRegion = eventData.selectedRegion
+      // update selected region total population sum
+      this.selectedRegion.population = eventData.totalPopulation
+
+      // update table data
       this.tableData = eventData.populationData
+
+      // update region column label
+      this.regionColumnLabel = this.tableData[0].regionType
+
       console.log('table data updated') // , eventData)
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
@@ -139,8 +146,11 @@ export default {
      */
     rowClick (rowIndex) {
       console.log(`table:rowClick: rowIndex=${rowIndex}`)
-      // notify app components about region selection change
-      Events.$emit(this.$census.events.REGION, this.tableData[rowIndex])
+      const region = this.tableData[rowIndex]
+      if (region.regionType === 'state') {
+        // notify app components about state region selection change
+        Events.$emit(this.$census.events.REGION, region)
+      }
     },
 
     /**

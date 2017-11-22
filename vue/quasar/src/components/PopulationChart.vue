@@ -33,6 +33,7 @@ export default {
 
   data () {
     return {
+      viewType: 'country',
       selectedRegion: {},
       populationData: [],
       chartData: [],
@@ -55,22 +56,29 @@ export default {
    */
   created () {
     this.onPopulationUpdate = eventData => {
-      this.selectedRegion = eventData.selectedRegion
-      this.populationData = eventData.populationData
-      this.chartData = this.populationData.map(regionData => regionData.population)
-      this.chartLabels = this.populationData.map(regionData => regionData.regionName)
-      // this.redraw()
-      console.log('chart data updated')
+      if (this.populationData.length === 0) {
+        // update selected region total population sum
+        this.selectedRegion.population = eventData.totalPopulation
+
+        // update population chart data collections
+        this.populationData = eventData.populationData
+        this.chartData = this.populationData.map(regionData => regionData.population)
+        this.chartLabels = this.populationData.map(regionData => regionData.regionName)
+
+        // this.redraw()
+        console.log('chart data updated')
+      }
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
 
     // add region selection change event handler
     this.onRegionSelectionChange = regionData => {
-      this.selectedRegion = regionData
-      console.log('chart:selectedRegion:', regionData.regionName)
+      if (this.viewType === regionData.regionType) {
+        this.selectedRegion = regionData
+        console.log('chart:selectedRegion:', regionData.regionName)
+      }
     }
-    // enable this when chart drill-down is fixed
-    // this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
+    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
 
     console.log('chart created')
   },
@@ -99,7 +107,7 @@ export default {
     // TODO: remove this after global get pop data hookup is fully wired
     getPopulationData () {
       this.resetState()
-      axios.get(`http://censusd3.herokuapp.com/census/population/state:*`)
+      axios.get(`https://censusd3.herokuapp.com/census/population/state:*`)
         .then(response => {
           // console.log('getPopulationData:', response.data)
           // strip out header row

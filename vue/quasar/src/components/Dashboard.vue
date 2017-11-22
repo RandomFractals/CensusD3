@@ -58,7 +58,7 @@
     <div class="app-content sm-gutter">
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
-          <usa-map ref="map" :map-data="populationData" :selectedRegion="selectedRegion" />
+          <usa-map ref="map" :map-data="populationData" />
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 table-card">
           <population-table ref="dataTable" :table-data="populationData" />
@@ -340,8 +340,11 @@ export default {
     })
     console.log('dashboard mounted')
 
+    // triggeer USA region selection on dashboard app init
+    Events.$emit(this.$census.events.REGION, this.usaData)
+
     // get initial USA states population data for now
-    this.$census.getPopulation('USA')
+    this.$census.getPopulation()
   },
 
   /**

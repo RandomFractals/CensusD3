@@ -18,52 +18,58 @@ export default {
 
       /**
        * Gets country/state flag image src url.
+       *
        * @param {*} regionId Numeric region id.
+       * See data/us-state.js config
        */
       getRegionImageUrl (regionId = '00') { // for usa
         return `${this.serviceHost}/images/flags/${this.states[regionId].code}.png`
       },
 
       /**
-       * Gets USA or state population data.
+       * Gets USA states or state counties population data.
+       *
+       * @param regionType 'state' for all states data (deafult),
+       *  or 'county' for all state counties population data
+       *
+       * @param query population data query params, such as *[&in=state:22]
        */
-      getPopulation (region = 'USA') {
-        // get USA population data for all states
-        axios.get(`${this.serviceHost}/census/population/state:*`)
+      getPopulation (regionType = 'state', query = '*') {
+        // get population data from our custom node.js express data service
+        // Note: see /routes/index.js in CensusD3 repository on github
+        axios.get(`${this.serviceHost}/census/population/${regionType}:${query}`)
           .then(response => {
             console.log('census::getPopulation:regions:', response.data.length)
 
-            // strip out header row and Puerto Rico data (last row)
-            let popData = response.data.slice(1, 52)
-
-            // create selected region population data object
-            // for the total USA population count display
-            let selectedRegion = {
-              regionName: region,
-              population: popData.map(regionData => Number(regionData[0]))
-                .reduce((a, b) => a + b, 0) // total count
-            }
-            if (region === 'USA') {
-              // hardcode these for now
-              selectedRegion['regionType'] = 'country'
-              selectedRegion['density'] = 87.4 // per squar mile according to 2015 census data
+            // strip out header row
+            let popData = response.data.slice(1)
+            if (regionType === 'state') {
+              // strip out Puerto Rico data (last row)
+              popData = popData.slice(0, 51)
             }
 
-            // create population data for sub-regions (states or counties)
-            let populationData = popData.map(function (regionData) {
+            // get total sum
+            const totalPopulation = popData.map(regionData => Number(regionData[0]))
+              .reduce((a, b) => a + b, 0) // total count accumulator
+
+            // create regions population data collection for states or counties
+            const populationData = popData.map(function (regionData) {
               return { // create simple region population data object
-                regionName: regionData[1].substr(0, regionData[1].indexOf(',')), // region name without state
-                regionId: regionData[4], // numeric region code
-                regionType: 'state', // top-level region type for now
                 population: Number(regionData[0]), // population count column data
-                density: Number(regionData[3]) // density column data
+                regionName: regionData[1].substr(0, regionData[1].indexOf(',')), // region name without state
+                regionType: regionType,
+                density: Number(regionData[3]), // density column data
+                regionId: regionData.length < 6 ? regionData[4] : regionData[5] // state/county code
               }
             })
-            console.log('census:population:data:', populationData.length)
 
-            // push new census population data to the global quasar app event bus
+            console.log(`census:population:data: regionsCount=${populationData.length} total=${totalPopulation}`)
+
+            // push new census population data
+            // to the global quasar app event bus
+            // for the dashboard app components to digest
             Events.$emit(this.events.POPULATION, {
-              selectedRegion: selectedRegion,
+              totalPopulation: totalPopulation,
               populationData: populationData
             })
           })
