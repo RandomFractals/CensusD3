@@ -4,7 +4,7 @@
 
 # Latest v. screenshot:
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueWithStatesChoropleth.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueStateCountiesDataV2.png?raw=true 
  "latest") 
 
 ## Build Setup

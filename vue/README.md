@@ -4,7 +4,7 @@ Interactive Vue 2 maps & graphs data viz mix of US census data from census.gov
 
 # Latest v. screenshot:
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueWithStatesChoropleth.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueStateCountiesDataV2.png?raw=true 
  "latest") 
  
 # How to build it

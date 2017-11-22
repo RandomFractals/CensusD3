@@ -33,7 +33,7 @@ https://github.com/RandomFractals/CensusD3/tree/master/vue
 
 Latest Vue.js v. screenshot:
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueWithStatesChoropleth.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueStateCountiesDataV2.png?raw=true 
  "latest") 
 
 All kinds of census data maps and graphs will be added there eventually :)
