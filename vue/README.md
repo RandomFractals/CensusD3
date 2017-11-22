@@ -2,7 +2,12 @@
 
 Interactive Vue 2 maps & graphs data viz mix of US census data from census.gov
 
-# Latest v. screenshot:
+# Demo Link
+
+See v0.0.1 demo live on heroku: 
+
+https://census-vue.herokuapp.com
+
 
 ![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueStateCountiesDataV2.png?raw=true 
  "latest") 
@@ -10,7 +15,3 @@ Interactive Vue 2 maps & graphs data viz mix of US census data from census.gov
 # How to build it
 
 see https://github.com/RandomFractals/CensusD3/tree/master/vue/quasar on how to build it
-
-# When can I see it?
-
-I'll push this Vue/Quasar demo dash to heroku once I wire state counties population data drill-downs.
