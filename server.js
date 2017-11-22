@@ -31,7 +31,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'prototype/src')));
+app.use(express.static(path.join(__dirname, 'vue/quasar/dist'))); // 'prototype/src')));
 app.use('/', require('./routes/index'));
 
 // catch 404 and forward to error handler
