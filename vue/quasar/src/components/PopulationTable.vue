@@ -63,7 +63,7 @@
 }
 .card-subtitle {
   padding-left: 5px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .flag {
   vertical-align: middle;
