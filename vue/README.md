@@ -1,6 +1,6 @@
-# CensusD3/Vue 2
+# Census-Vue
 
-Interactive Vue 2 maps & graphs data viz mix of US census data from census.gov
+Interactive Vue.js v2.5 maps & graphs data viz mix of US census data from census.gov
 
 # Census-Vue Demo Link
 
