@@ -4,12 +4,14 @@
 
 # Census-Vue Demo Link
 
-See census-vue v0.0.1 demo live on heroku: 
+See census-vue v0.0.2 demo live on heroku: 
 
 https://census-vue.herokuapp.com
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueStateCountiesDataV2.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVue-0.0.2.png?raw=true 
  "latest") 
+
+Note: this is only v0.0.2. Not a fully optimized package version just yet, but it's semi-mobile UI friendly. I'll trim it down in upcoming releases.
 
 ## Build Setup
 
@@ -29,5 +31,3 @@ $ quasar build
 # run production build locally 
 $ quasar serve ./dist
 ```
-
-Note: this is only v0.0.1. Not an optimized package just yet. I'll trim it down with webpack in v0.0.2.

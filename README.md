@@ -33,11 +33,11 @@ https://github.com/RandomFractals/CensusD3/tree/master/vue
 
 # Census-Vue Demo Link
 
-See census-vue v0.0.1 demo live on heroku: 
+See census-vue v0.0.2 demo live on heroku: 
 
 https://census-vue.herokuapp.com
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVueStateCountiesDataV2.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVue-0.0.2.png?raw=true 
  "latest") 
 
 All kinds of census data maps and graphs will be added there eventually :)
