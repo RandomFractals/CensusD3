@@ -52,11 +52,11 @@
 
 <style>
 .q-item {
-  min-height: 24px;
+  min-height: 32px;
   padding: 0px 5px 0px 5px;
 }
 .q-item-side {
-  min-width: 24px;
+  min-width: 32px;
 }
 .q-collapsible-sub-item {
   padding: 0px;
@@ -69,8 +69,8 @@
   vertical-align: middle;
 }
 .data-table {
-  height: 280px;
-  margin: 5px 0px 0px 5px;
+  height: 272px;
+  margin: 5px 0px 0px 2px;
   overflow-y: scroll;
 }
 th {
