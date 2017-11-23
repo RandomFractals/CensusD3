@@ -24,6 +24,7 @@
           <img src="statics/quasar-logo.png" height="24" />
           powered by Quasar Framework
         </q-list-header>
+        <q-item-separator />
         <q-item @click="launch('http://quasar-framework.org')">
           <q-item-side icon="school" />
           <q-item-main label="Docs" sublabel="quasar-framework.org" />
@@ -40,6 +41,11 @@
           <q-item-side icon="rss feed" />
           <q-item-main label="Twitter" sublabel="@quasarframework" />
         </q-item>
+        <q-item-separator />
+        <q-item @click="launch('https://api.census.gov/data.html')">
+          <q-item-side icon="file download" />
+          <q-item-main label="USA Census Data" sublabel="https://api.census.gov/data.html" />
+        </q-item>        
       </q-list>
     </div>
 
@@ -68,10 +74,7 @@
     <!-- footer -->
     <q-toolbar slot="footer" color="light" class="app-footer">
       <small>
-	      <span class="text-faded">data:</span>
-        <a href="http://api.census.gov/data.html" target="_blank"
-          title="http://api.census.gov/data.html">api.census.gov</a>      
-	      <span class="text-faded">| code:</span>
+	      <span class="text-faded">src:</span>
         <a href="https://github.com/RandomFractals/CensusD3/tree/master/vue/quasar" target="_blank"
           title="census vue project on github">census-vue</a>
         <span class="text-faded">&copy;Random Fractals Inc. 2017</span>
@@ -140,9 +143,10 @@ import {
   QIcon,
   QList,
   QListHeader,
-  QItem,
+  QItem,  
   QItemSide,
   QItemMain,
+  QItemSeparator,
   Events
 } from 'quasar'
 
@@ -181,6 +185,7 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
+    QItemSeparator,
     usaMap: USAMap,
     PopulationTable,
     PopulationChart
