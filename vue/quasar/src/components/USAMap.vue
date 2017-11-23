@@ -249,7 +249,7 @@ export default {
           console.log('map:getStatesGeoData:regions:', this.topology.features.length)
 
           // trigger load of USA counties topology for state counties map zoom
-          this.getUSACountiesGeoData()
+          // this.getUSACountiesGeoData()
         })
         .catch(err => {
           this.showTopology = false
