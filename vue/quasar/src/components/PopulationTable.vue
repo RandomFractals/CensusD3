@@ -2,7 +2,7 @@
   <q-card class="table-card">
     <!-- table card header -->
     <q-card-title>
-      <img :src="regionIconSrc" height="18" />
+      <img :src="regionIconSrc" class="flag" height="24" />
       <span class="card-title">{{selectedRegion.regionName}}</span>
       <q-btn small flat slot="right" class="map-button" 
         icon="vertical_align_top" 
@@ -64,6 +64,9 @@
 .card-subtitle {
   padding-left: 5px;
   font-size: 12px;
+}
+.flag {
+  vertical-align: middle;
 }
 .data-table {
   height: 280px;

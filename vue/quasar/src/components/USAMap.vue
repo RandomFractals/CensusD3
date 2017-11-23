@@ -1,7 +1,7 @@
 <template>
   <q-card class="map-card">
     <q-card-title>
-      <img :src="regionIconSrc" height="18" />
+      <img :src="regionIconSrc" class="flag" height="24" />
       <span class="card-title">{{selectedRegion.regionName}}</span>
       <span class="card-subtitle">
         <span class="text-faded">population:</span>
@@ -23,7 +23,7 @@
 <style>
 .map-container {
   height: 327px;
-  padding: 1px;
+  padding: 0px;
 }
 .map-button {
   color: #666;
