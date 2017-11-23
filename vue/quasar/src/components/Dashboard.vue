@@ -45,6 +45,11 @@
         <q-item @click="launch('https://api.census.gov/data.html')">
           <q-item-side icon="file download" />
           <q-item-main label="USA Census Data" sublabel="https://api.census.gov/data.html" />
+        </q-item>
+        <q-item-separator />
+        <q-item @click="launch('https://github.com/RandomFractals/CensusD3/tree/master/vue/quasar')">
+          <q-item-side icon="merge type" />
+          <q-item-main label="Census Vue on Github" sublabel="RandomFractals/CensusD3/vue" />
         </q-item>        
       </q-list>
     </div>
