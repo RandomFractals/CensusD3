@@ -8,7 +8,7 @@
         <q-icon name="menu" />
       </q-btn>
       <q-toolbar-title>
-        <q-btn small flat class="app-title" @click="appTitleClick()">USA Census Vue</q-btn>
+        <q-btn flat class="app-title" @click="appTitleClick()">USA Census Vue</q-btn>
       </q-toolbar-title>
     </q-toolbar>
 
@@ -21,7 +21,7 @@
       -->
       <q-list no-border link inset-delimiter>
         <q-list-header>
-          <img src="statics/quasar-logo.png" height="24" />
+          <img src="statics/images/quasar-logo.png" height="24" />
           powered by Quasar Framework
         </q-list-header>
         <q-item-separator />
@@ -74,9 +74,9 @@
     <!-- footer -->
     <q-toolbar slot="footer" color="light" class="app-footer">
       <small>
-	      <span class="text-faded">src:</span>
+        <img src="statics/images/rfi-github.png" height="20" style="vertical-align: top;" />
         <a href="https://github.com/RandomFractals/CensusD3/tree/master/vue/quasar" target="_blank"
-          title="census vue project on github">census-vue</a>
+          title="census-vue project on github">census-vue</a>
         <span class="text-faded">&copy;Random Fractals Inc. 2017</span>
       </small>
     </q-toolbar>
@@ -92,6 +92,7 @@
 }
 .app-title {
   padding: 5px;
+  text-transform: none;
 }
 .app-content {
   margin: 5px 20px 5px 0px;
@@ -143,7 +144,7 @@ import {
   QIcon,
   QList,
   QListHeader,
-  QItem,  
+  QItem,
   QItemSide,
   QItemMain,
   QItemSeparator,
