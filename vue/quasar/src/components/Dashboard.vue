@@ -9,11 +9,6 @@
       </q-btn>
       <q-toolbar-title>
         <q-btn small flat class="app-title" @click="appTitleClick()">USA Census Vue</q-btn>
-        <div slot="subtitle">powered by
-          <a class="text-cyan-11" 
-            href="http://quasar-framework.org/" target="_blank"
-            title="quasar-framework">Quasar v{{$q.version}}</a>
-        </div>
       </q-toolbar-title>
     </q-toolbar>
 
@@ -27,7 +22,7 @@
       <q-list no-border link inset-delimiter>
         <q-list-header>
           <img src="statics/quasar-logo.png" height="24" />
-          Quasar Framework Links
+          powered by Quasar Framework
         </q-list-header>
         <q-item @click="launch('http://quasar-framework.org')">
           <q-item-side icon="school" />
@@ -93,7 +88,7 @@
   min-height: 40px;
 }
 .app-title {
-  padding: 2px;
+  padding: 5px;
 }
 .app-content {
   margin: 5px 20px 5px 0px;
