@@ -3,8 +3,8 @@
     <q-card-title>
       <img :src="regionIconSrc" height="18" />
       <span class="card-title">{{selectedRegion.regionName}}</span>
+      <q-icon name="people" />              
       <span class="card-subtitle">
-        <span class="text-faded">population:</span>
         <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
       </span>      
     </q-card-title>

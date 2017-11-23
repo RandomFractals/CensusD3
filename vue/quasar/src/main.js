@@ -17,7 +17,7 @@ import Quasar, {
   QCardSeparator,
   QCardMain,
   QCollapsible,
-  QSelect
+  QIcon
 } from 'quasar'
 
 import router from './router'
@@ -35,7 +35,7 @@ Vue.use(Quasar, {
     QCardSeparator,
     QCardMain,
     QCollapsible,
-    QSelect
+    QIcon
   }
 })
 

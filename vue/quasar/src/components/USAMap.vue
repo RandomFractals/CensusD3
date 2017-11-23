@@ -3,8 +3,8 @@
     <q-card-title>
       <img :src="regionIconSrc" class="flag" height="24" />
       <span class="card-title">{{selectedRegion.regionName}}</span>
+      <q-icon name="people" />
       <span class="card-subtitle">
-        <span class="text-faded">population:</span>
         <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
       </span>
       <q-btn small flat slot="right" class="map-button" icon="zoom_out_map" @click="zoomOut()" />
