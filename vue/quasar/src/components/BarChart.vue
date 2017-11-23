@@ -31,7 +31,7 @@ export default {
             gridLines: {
               display: false
             },
-            barThickness: 5
+            barThickness: 16
           }]
         },
         legend: {
@@ -54,10 +54,10 @@ export default {
         datasets: [{
           label: 'population',
           borderColor: '#249EBF',
-          pointBackgroundColor: 'white',
+          pointBackgroundColor: 'orange',
           borderWidth: 1,
           pointBorderColor: '#249EBF',
-          backgroundColor: 'transparent',
+          backgroundColor: '#96e5ff',
           data: this.chartData
         }]
       }, this.options)
