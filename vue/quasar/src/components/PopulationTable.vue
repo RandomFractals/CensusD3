@@ -5,7 +5,7 @@
       <img :src="regionIconSrc" class="flag" height="24" />
       <span class="card-title">{{selectedRegion.regionName}}</span>
       <q-btn small flat slot="right" class="map-button" 
-        icon="vertical_align_top" 
+        icon="arrow back" 
         @click="backToTopLevel()" />
     </q-card-title>
     <q-card-separator />
