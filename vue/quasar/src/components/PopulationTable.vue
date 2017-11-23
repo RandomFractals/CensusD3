@@ -26,7 +26,7 @@
     <!-- table data content -->
     <q-card-main class="data-table">
       <table id="data-table" style="width: 100%"
-        class="q-table standard bordered compact highlight vertical-separator">
+        class="q-table standard bordered highlight horizontal-separator vertical-separator">
         <thead>
           <tr>
             <th @click="sortTableData('regionName')">{{regionColumnLabel}}</th>
@@ -75,7 +75,8 @@ th {
 }
 th, td {
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
+  padding: 5px;
 }
 </style>
 
