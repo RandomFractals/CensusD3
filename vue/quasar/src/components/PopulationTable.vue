@@ -5,8 +5,9 @@
       <img :src="regionIconSrc" class="flag" height="24" />
       <span class="card-title">{{selectedRegion.regionName}}</span>
       <q-btn small flat slot="right" class="map-button" 
-        icon="arrow back" 
-        @click="backToTopLevel()" />
+        @click="backToTopLevel()">
+        <q-icon name="arrow back" />
+      </q-btn>
     </q-card-title>
     <q-card-separator />
     <!-- table card subheader -->
@@ -89,11 +90,9 @@ import {QBtn, Events} from 'quasar'
 
 export default {
   name: 'population-table',
-
   components: {
     QBtn
   },
-
   data () {
     return {
       selectedRegion: {},

@@ -10,6 +10,15 @@
       <q-toolbar-title>
         <q-btn flat class="app-title" @click="appTitleClick()">USA Census Vue</q-btn>
       </q-toolbar-title>
+      <q-btn flat @click="scrollToCard('mapCard')">
+        <q-icon name="map" />
+      </q-btn>
+      <q-btn flat @click="scrollToCard('listCard')">
+        <q-icon name="list" />
+      </q-btn>
+      <q-btn flat @click="scrollToCard('chartCard')">
+        <q-icon name="poll" />
+      </q-btn>      
     </q-toolbar>
 
     <!-- left side panel -->
@@ -62,15 +71,15 @@
     <!-- app content -->
     <div class="app-content sm-gutter">
       <div class="row">
-        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
+        <div ref="mapCard" class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
           <usa-map ref="map" :map-data="populationData" />
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+        <div ref="listCard" class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
           <population-table ref="dataTable" :table-data="populationData" />
         </div>
       </div>
       <div class="row">
-        <div class="col-12 chart-card">
+        <div ref="chartCard" class="col-12 chart-card">
           <population-chart ref="populationChart" :chart-data="populationData" />
         </div>
       </div>
@@ -195,8 +204,7 @@ export default {
 
   data () {
     return {
-      // hardcoded USA population data for initial app load
-      usaData: {
+      usaData: { // hardcoded USA population data for initial app load
         regionId: '00',
         regionName: 'USA',
         regionType: 'country',
@@ -237,13 +245,24 @@ export default {
       this.$census.getPopulation()
     },
 
+    /**
+     * Scrolls to the specified content card on small screens.
+     */
+    scrollToCard (cardName) {
+      console.log('dashboard:scrollTo:', cardName)
+      let card = this.$refs[cardName]
+      const cardBounds = card.getBoundingClientRect()
+      window.scrollTo(0, cardBounds.y)
+    },
+
     resize (size) {
       console.log('dashboard:resize', size)
     }
   }, // end of methods
 
   /**
-   * Adds app view visibility handler.
+   * Adds app view visibility handler
+   * and handles dashboard view init.
    */
   created () {
     // add quasar app visibility handler

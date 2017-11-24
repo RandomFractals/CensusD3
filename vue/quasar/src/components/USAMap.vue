@@ -7,7 +7,9 @@
       <span class="card-subtitle">
         <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
       </span>
-      <q-btn small flat slot="right" class="map-button" icon="zoom_out_map" @click="zoomOut()" />
+      <q-btn small flat slot="right" class="map-button" @click="zoomOut()">
+        <q-icon name="zoom out map" />
+      </q-btn>
     </q-card-title>
     <q-card-separator />
     <q-card-main class="map-container">
@@ -27,7 +29,7 @@
 }
 .map-button {
   color: #666;
-  padding: 0px;
+  padding: 3px;
 }
 </style>
 
