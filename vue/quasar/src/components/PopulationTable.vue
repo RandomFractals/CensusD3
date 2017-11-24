@@ -1,5 +1,5 @@
 <template>
-  <q-card class="table-card">
+  <q-card>
     <!-- table card header -->
     <q-card-title>
       <img :src="regionIconSrc" class="flag" height="24" />
@@ -24,7 +24,7 @@
         <span class="text-small">p/mi²</span>
       </div>    
     <!-- table data content -->
-    <q-card-main class="data-table">
+    <q-card-main class="table card data-table">
       <table id="data-table" style="width: 100%"
         class="q-table standard bordered highlight horizontal-separator vertical-separator">
         <thead>

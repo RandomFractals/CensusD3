@@ -65,7 +65,7 @@
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
           <usa-map ref="map" :map-data="populationData" />
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 table-card">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
           <population-table ref="dataTable" :table-data="populationData" />
         </div>
       </div>
@@ -89,7 +89,7 @@
         <q-btn v-back-to-top
           small color="primary"
           icon="keyboard_arrow_up" />
-      </q-fixed-position>      
+      </q-fixed-position>
     </q-toolbar>
 
               
