@@ -13,8 +13,10 @@
     <q-card-main class="map-container">
       <v-map ref="map" style="height: 100%" :zoom="zoom" :center="mapCenter">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
-        <v-geojson-layer v-if="showTopology" 
-          :geojson="topology" :options="topologyOptions"></v-geojson-layer>
+        <v-geojson-layer v-if="showTopology"
+          :geojson="statesTopology" :options="topologyOptions"></v-geojson-layer>
+        <v-geojson-layer v-if="showTopology"
+          :geojson="countiesTopology" :options="topologyOptions"></v-geojson-layer>
       </v-map>
     </q-card-main>
   </q-card>  
@@ -32,21 +34,66 @@
 </style>
 
 <script>
-import axios from 'axios'
-import Vue2Leaflet from 'vue2-leaflet'
+/*
+// include leaflet.js and topojson
+let L = require('leaflet')
+let topojson = require('topojson-client')
+
+// set leaflet icons path
+L.Icon.Default.imagePath = '/statics/images/leaflet'
+
+// make leaflet topo JSON aware
+L.TopoJSON = L.GeoJSON.extend({
+  addData: function (jsonData) {
+    if (jsonData.type === 'Topology') {
+      for (let key in jsonData.objects) {
+        let geojson = topojson.feature(jsonData, jsonData.objects[key])
+        L.GeoJSON.prototype.addData.call(this, geojson)
+      }
+    }
+    else {
+      L.GeoJSON.prototype.addData.call(this, jsonData)
+    }
+  }
+}) */
+
 import {QBtn, Events} from 'quasar'
+import Vue2Leaflet from 'vue2-leaflet' // leaflet vue wrapper
+import axios from 'axios' // for geo and topo json data load
+import * as L from 'leaflet' // direct leaflet.js import for topo json load extension
+import * as topojson from 'topojson-client' // for topo json leaflet extension
+
+/**
+ * ---------------------- Leaflet Methods -------------------------------------
+ **/
+
+/**
+ * Makes Leaflet Geo JSON API Topo JSON aware.
+ */
+function addLeafletTopoJSONSupport () {
+  L.TopoJSON = L.GeoJSON.extend({
+    addData: function (jsonData) {
+      if (jsonData.type === 'Topology') {
+        for (let key in jsonData.objects) {
+          let geojson = topojson.feature(jsonData, jsonData.objects[key])
+          L.GeoJSON.prototype.addData.call(this, geojson)
+        }
+      }
+      else {
+        L.GeoJSON.prototype.addData.call(this, jsonData)
+      }
+    }
+  })
+}
 
 /**
  * Map layer mouse out event handler.
  */
 function onLayerMouseOver ({ target }) {
   target.setStyle(this.hoverLayerStyle)
-  /*
   if (!L.Browser.ie && !L.Browser.opera) {
     target.bringToFront()
   }
-  */
-  // let region = target.feature.properties
 }
 
 /**
@@ -96,7 +143,8 @@ export default {
       mapData: [],
       mapLayers: {},
       selectedLayer: null,
-      topology: null,
+      statesTopology: null,
+      countiesTopology: null,
       showTopology: true,
       colorBy: 'density',
       layerStyle: {
@@ -153,6 +201,9 @@ export default {
    * Adds map data and view update handlers.
    */
   created () {
+    // enable topo JSON map load for state counties display
+    addLeafletTopoJSONSupport()
+
     // add population data update event handler
     this.onPopulationUpdate = eventData => {
       // update selected region total population sum
@@ -190,7 +241,7 @@ export default {
     console.log('map created')
 
     // get USA states geo json for the states choropleth map topology display
-    this.getStatesGeoData()
+    this.getStatesGeoJsonData()
   },
 
   mounted () {
@@ -240,37 +291,37 @@ export default {
     /**
      * Gets initial USA states topology for the states choropleth display.
      */
-    getStatesGeoData () {
-      console.log('map:getStatesGeoData...')
+    getStatesGeoJsonData () {
+      console.log('map:getStatesGeoJsonData...')
       axios.get(`${this.$census.serviceHost}/data/us-states-geo.json`)
         .then(response => {
           // console.log('map geo json', response.data)
-          this.topology = response.data
-          console.log('map:getStatesGeoData:regions:', this.topology.features.length)
+          this.statesTopology = response.data
+          console.log('map:getStatesGeoJsonData:regions:', this.statesTopology.features.length)
 
           // trigger load of USA counties topology for state counties map zoom
-          // this.getUSACountiesGeoData()
+          // this.getUSACountiesTopoJsonData()
         })
         .catch(err => {
           this.showTopology = false
-          console.log('map:getStatesGeoData:error', err.response.data.error)
+          console.log('map:getStatesGeoJsonData:error', err.response.data.error)
         })
     },
 
     /**
      * Gets all USA counties topology for the state counties choropleth display.
      */
-    getUSACountiesGeoData () {
-      console.log('map:getUSACountiesGeoData...')
+    getUSACountiesTopoJsonData () {
+      console.log('map:getUSACountiesTopoJsonData...')
       axios.get(`${this.$census.serviceHost}/data/us.json`)
         .then(response => {
-          // console.log('map geo json', response.data)
-          // this.topology = response.data
-          console.log('map:getUSACountiesGeoData:regions:', this.topology.features.length)
+          // console.log('map topo json', response.data)
+          this.countiesTopology = response.data
+          console.log('map:getUSACountiesTopoJsonData:regions:', this.countiesTopology.features.length)
         })
         .catch(err => {
           // this.showTopology = false
-          console.log('map:getUSACountiesGeoData:error', err.response.data.error)
+          console.log('map:getUSACountiesTopoJsonData:error', err.response.data.error)
         })
     },
 

@@ -25,7 +25,7 @@ import numeral from 'numeral'
 
 import Census from './plugins/Census'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 
 // register global quasar components
 Vue.use(Quasar, {
