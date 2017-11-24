@@ -275,8 +275,8 @@ export default {
           this.statesTopology = response.data
           console.log('map:getStatesGeoJsonData:regions:', this.statesTopology.features.length)
 
-          // trigger load of USA states with counties topology for state counties map zoom
-          this.getUSACountiesTopoJsonData()
+          // trigger load of USA states with counties topology for the state counties map zoom
+          // this.getUSACountiesTopoJsonData()
         })
         .catch(err => {
           this.showTopology = false
