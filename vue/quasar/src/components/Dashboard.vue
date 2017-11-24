@@ -259,9 +259,9 @@ export default {
      * Window resize handler
      */
     resize (size) {
-      // TODO: adjust chart card height 
+      // TODO: adjust chart card height
       // to fit bottom of the screen on larger screens
-      //console.log('dashboard:resize', size)
+      // console.log('dashboard:resize', size)
     }
   }, // end of methods
 
