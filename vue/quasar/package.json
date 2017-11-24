@@ -2,9 +2,13 @@
   "name": "census-vue",
   "productName": "Census Vue",
   "version": "0.0.2",
-  "private": true,
+  "private": false,
   "description": "USA Population Census Vue Dashboard",
   "author": "Random Fractals Inc.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/RandomFractals/CensusD3.git"
+  },
   "scripts": {
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
@@ -15,9 +19,11 @@
     "axios": "^0.17.1",
     "babel-runtime": "^6.25.0",
     "chart.js": "^2.7.1",
+    "leaflet": "^1.2.0",
     "numeral": "^2.0.6",
     "quasar-extras": "0.0.8",
     "quasar-framework": "^0.14.7",
+    "topojson-client": "^3.0.0",
     "vue": "^2.5.2",
     "vue-chartjs": "^3.0.2",
     "vue-router": "^3.0.1",
@@ -69,5 +75,9 @@
     "webpack-dev-middleware": "^1.12.0",
     "webpack-hot-middleware": "^2.20.0",
     "webpack-merge": "^4.1.0"
+  },
+  "engines": {
+    "node": ">= 6.9.5",
+    "npm": ">= 4.2.0"
   }
 }
