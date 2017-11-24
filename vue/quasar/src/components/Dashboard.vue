@@ -84,8 +84,15 @@
           title="census-vue project on github">census-vue</a>
         <span class="text-faded">&copy;Random Fractals Inc. 2017</span>
       </small>
+      <!-- back to top button for small screens -->
+      <q-fixed-position corner="bottom-right" :offset="[-20, -30]">
+        <q-btn v-back-to-top
+          small color="primary"
+          icon="keyboard_arrow_up" />
+      </q-fixed-position>      
     </q-toolbar>
-    </footer>
+
+              
   </q-layout>
 </template>
 
@@ -139,8 +146,10 @@
 
 <script>
 import {
-  openURL,
+  BackToTop,
+  Events,
   QLayout,
+  QFixedPosition,
   QToolbar,
   QToolbarTitle,
   QBtn,
@@ -152,7 +161,7 @@ import {
   QItemMain,
   QItemSeparator,
   QWindowResizeObservable,
-  Events
+  openURL
 } from 'quasar'
 
 import USAMap from './USAMap.vue'
@@ -163,6 +172,7 @@ export default {
   name: 'index',
   components: {
     QLayout,
+    QFixedPosition,
     QToolbar,
     QToolbarTitle,
     QBtn,
@@ -177,6 +187,10 @@ export default {
     usaMap: USAMap,
     PopulationTable,
     PopulationChart
+  },
+
+  directives: {
+    BackToTop
   },
 
   data () {
