@@ -255,8 +255,13 @@ export default {
       window.scrollTo(0, cardBounds.y)
     },
 
+    /**
+     * Window resize handler
+     */
     resize (size) {
-      console.log('dashboard:resize', size)
+      // TODO: adjust chart card height 
+      // to fit bottom of the screen on larger screens
+      //console.log('dashboard:resize', size)
     }
   }, // end of methods
 
