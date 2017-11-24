@@ -94,10 +94,10 @@
         <span class="text-faded">&copy;Random Fractals Inc. 2017</span>
       </small>
       <!-- back to top button for small screens -->
-      <q-fixed-position corner="bottom-right" :offset="[-20, -30]">
-        <q-btn v-back-to-top
-          small color="primary"
-          icon="keyboard_arrow_up" />
+      <q-fixed-position corner="bottom-right" :offset="[0, -30]">
+        <q-btn v-back-to-top small color="primary" class="map-button">
+          <q-icon name="keyboard_arrow_up" />
+        </q-btn>
       </q-fixed-position>
     </q-toolbar>
 
