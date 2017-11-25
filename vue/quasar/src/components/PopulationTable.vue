@@ -104,7 +104,7 @@ export default {
       selectedRegion: {},
       topLevelRegion: null,
       tableData: [],
-      dataProgress: 10,
+      dataProgress: 15,
       sortColumn: 'regionName',
       sortAscending: true,
       regionColumnLabel: 'state'
@@ -128,7 +128,7 @@ export default {
         // set top level for back to top click
         this.topLevelRegion = regionData
       }
-      this.dataProgress = 10
+      this.dataProgress = 15
       console.log('table:selectedRegion:', regionData.regionName)
     }
     this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)

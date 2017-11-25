@@ -62,7 +62,6 @@ export default {
    * Adds chart data and view event handlers.
    */
   created () {
-
     // add region selection change event handler
     this.onRegionSelectionChange = regionData => {
       if (this.viewType === regionData.regionType) {
