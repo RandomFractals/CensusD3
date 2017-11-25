@@ -235,7 +235,7 @@ export default {
      * Gets max value for the specified array and object property key.
      */
     getMaxValue (array, key) {
-      Math.max(...array.filter(x => Number(x[key])).map(x => Number(x[key])))
+      return Math.max(...array.filter(x => Number(x[key])).map(x => Number(x[key])))
     }
 
   } // end of methods
