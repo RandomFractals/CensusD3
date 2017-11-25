@@ -50,7 +50,7 @@
             <td data-th="Density">
               {{region.density | formatDecimal}}
               <q-progress :percentage="(region.density / maxDensity) * 100"
-                color="orange" style="height: 2px" />              
+                color="red" style="height: 2px" />              
             </td>
           </tr>
         </tbody>
