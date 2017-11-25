@@ -10,6 +10,7 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 // require(`quasar/dist/quasar.ie`)
 // require(`quasar/dist/quasar.ie.${__THEME}.css`)
 
+// global Quasar components for all app cards to use
 import Vue from 'vue'
 import Quasar, {
   QCard,
@@ -27,7 +28,7 @@ import Census from './plugins/Census'
 
 Vue.config.productionTip = true
 
-// register global quasar components
+// register global Quasar components
 Vue.use(Quasar, {
   components: {
     QCard,
