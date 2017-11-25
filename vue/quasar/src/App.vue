@@ -6,10 +6,11 @@
 </template>
 
 <script>
-/*
- * Root component
+/**
+ * App root component
  */
-export default {}
+export default {
+}
 </script>
 
 <style>

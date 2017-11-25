@@ -33,6 +33,10 @@
     -->    
     <div class="app-content sm-gutter">
       <div class="row">
+        <!-- add data load ajax bar -->
+        <q-ajax-bar ref="ajaxBar" :position="top" :size="8" :reverse="false" />      
+      </div>
+      <div class="row">
         <div ref="mapCard" class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
           <usa-map ref="map" :map-data="populationData" />
         </div>
@@ -47,7 +51,7 @@
       </div>
     </div>
 
-    <!-- footer -->
+    <!-- app footer -->
     <q-toolbar slot="footer" color="light" class="app-footer">
       <small>
         <img src="statics/images/rfi-github.png" height="20" style="vertical-align: top;" />
@@ -118,13 +122,16 @@
 import {
   BackToTop,
   Events,
+  QAjaxBar,
   QLayout,
   QFixedPosition,
   QToolbar,
   QToolbarTitle,
   QBtn,
   QIcon,
-  QWindowResizeObservable
+  QSpinnerGears,
+  QWindowResizeObservable,
+  Loading
 } from 'quasar'
 
 import AppMenu from './AppMenu.vue'
@@ -135,6 +142,7 @@ import PopulationChart from './PopulationChart.vue'
 export default {
   name: 'index',
   components: {
+    QAjaxBar,
     QLayout,
     QFixedPosition,
     QToolbar,
@@ -201,10 +209,10 @@ export default {
     /**
      * Window resize handler
      */
-    resize (size) {
+    resize (winddowSize) {
       // TODO: adjust chart card height
       // to fit bottom of the screen on larger screens
-      // console.log('dashboard:resize', size)
+      // console.log('dashboard:resize', windowSize)
     }
   }, // end of methods
 
@@ -220,11 +228,28 @@ export default {
     this.$q.events.$on('app:visibility', this.onAppViewUpdate)
 
     // add region selection change event handler
+    // to show app data load progress bar
     this.onRegionSelectionChange = regionData => {
       this.selectedRegion = regionData
       console.log('dashboard:selectedRegion:', regionData)
     }
     this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
+
+    // add population data update event handler
+    // to hide app data load progress bar
+    // TODO: make this more generic
+    // when more census data load points are added
+    this.onPopulationUpdate = eventData => {
+      // update selected region total population sum
+      this.selectedRegion.population = eventData.totalPopulation
+
+      // stop ajax bar
+      this.$refs.ajaxBar.stop()
+      Loading.hide()
+
+      console.log('dashboard view data updated') // , eventData)
+    }
+    this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
 
     console.log('dashboard created')
   },
@@ -235,18 +260,14 @@ export default {
    * to display on app load for now.
    */
   mounted () {
-    this.$nextTick(() => {
-      if (this.orienting) {
-        window.addEventListener('deviceorientation', this.orient, false)
-      }
-      else if (this.rotating) {
-        window.addEventListener('devicemove', this.rotate, false)
-      }
-      else {
-        document.addEventListener('mousemove', this.move)
-      }
-    })
     console.log('dashboard mounted')
+
+    // show ajax bar
+    this.$refs.ajaxBar.start()
+    Loading.show({
+      spinner: QSpinnerGears,
+      spinnerSize: 140
+    })
 
     // triggeer USA region selection on dashboard app init
     Events.$emit(this.$census.events.REGION, this.usaData)
@@ -256,22 +277,12 @@ export default {
   },
 
   /**
-   * Removes app view event handlers.
+   * Removes app view and census data update event handlers.
    */
   beforeDestroy () {
-    if (this.orienting) {
-      window.removeEventListener('deviceorientation', this.orient, false)
-    }
-    else if (this.rotating) {
-      window.removeEventListener('devicemove', this.rotate, false)
-    }
-    else {
-      document.removeEventListener('mousemove', this.move)
-    }
-
-    // remove app view and census data event handlers
     this.$q.events.$off('app:visibility', this.onAppViewUpdate)
     this.$q.events.$off(this.$census.events.REGION, this.onRegionSelectionChange)
+    this.$q.events.$off(this.$census.events.POPULATION, this.onPopulationUpdate)
   }
 }
 </script>
