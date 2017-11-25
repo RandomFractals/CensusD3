@@ -160,6 +160,8 @@ export default {
         this.maxPopulation = this.getMaxValue(this.tableData, 'population')
         this.maxDensity = this.getMaxValue(this.tableData, 'density')
       }
+      // sort by population for new list data display
+      this.sortTableData('population')
 
       console.log('table data updated') // , eventData)
     }
@@ -216,8 +218,8 @@ export default {
         switch (sortBy) {
           case 'regionName': // string sort
             this.tableData = this.tableData.sort(function (a, b) {
-              if (a[sortBy] < b[sortBy]) { return -1 }
-              if (a[sortBy] > b[sortBy]) { return 1 }
+              if (a[sortBy] > b[sortBy]) { return -1 }
+              if (a[sortBy] < b[sortBy]) { return 1 }
               return 0
             })
             break
@@ -226,7 +228,9 @@ export default {
             break
         }
         this.sortColumn = sortBy
-        this.sortAscending = true
+        // default to descending and reverse on new column sort
+        this.sortAscending = false
+        this.tableData = this.tableData.reverse()
       }
       console.log(`table:sortData: property=${sortBy} ascending=${this.sortAscending}`)
     },
