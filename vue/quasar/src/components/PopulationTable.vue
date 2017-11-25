@@ -42,8 +42,16 @@
             :data-index="index"
             @click="rowClick(index)">
             <td data-th="State">{{region.regionName}}</td>
-            <td data-th="Population">{{region.population | formatNumber}}</td>
-            <td data-th="Density">{{region.density | formatDecimal}}</td>
+            <td data-th="Population">
+              {{region.population | formatNumber}}
+              <q-progress :percentage="(region.population / selectedRegion.population) * 100"
+                color="cyan" style="height: 2px" />                
+            </td>
+            <td data-th="Density">
+              {{region.density | formatDecimal}}
+              <q-progress :percentage="(region.density / maxDensity) * 100"
+                color="orange" style="height: 2px" />              
+            </td>
           </tr>
         </tbody>
       </table>
@@ -105,6 +113,8 @@ export default {
       topLevelRegion: null,
       tableData: [],
       dataProgress: 15,
+      maxPopulation: 0,
+      maxDensity: 0,
       sortColumn: 'regionName',
       sortAscending: true,
       regionColumnLabel: 'state'
@@ -138,12 +148,18 @@ export default {
       // update selected region total population sum
       this.selectedRegion.population = eventData.totalPopulation
 
-      // update table data
+      // update table data and view
       this.tableData = eventData.populationData
       this.dataProgress = 100
 
-      // update region column label
-      this.regionColumnLabel = this.tableData[0].regionType
+      // update region column label, sort column, order, etc
+      this.sortColumn = 'regionName'
+      this.sortAscending = true
+      if (this.tableData && this.tableData.length > 0) {
+        this.regionColumnLabel = this.tableData[0].regionType
+        this.maxPopulation = this.getMaxValue(this.tableData, 'population')
+        this.maxDensity = this.getMaxValue(this.tableData, 'density')
+      }
 
       console.log('table data updated') // , eventData)
     }
@@ -213,8 +229,16 @@ export default {
         this.sortAscending = true
       }
       console.log(`table:sortData: property=${sortBy} ascending=${this.sortAscending}`)
+    },
+
+    /**
+     * Gets max value for the specified array and object property key.
+     */
+    getMaxValue (array, key) {
+      Math.max(...array.filter(x => Number(x[key])).map(x => Number(x[key])))
     }
-  }
+
+  } // end of methods
 
 }
 </script>
