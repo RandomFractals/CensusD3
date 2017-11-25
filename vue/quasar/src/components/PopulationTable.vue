@@ -9,7 +9,8 @@
         <q-icon name="arrow back" />
       </q-btn>
     </q-card-title>
-    <q-card-separator />
+    <q-progress ref="progressBar" :percentage="dataProgress" 
+      color="primary" style="height: 2px" />
     <!-- table card subheader -->
     <q-collapsible icon="people" opened
       :label="selectedRegion.population | formatNumber">
@@ -86,18 +87,24 @@ table.q-table th, table.q-table td, th, td {
 
 <script>
 
-import {QBtn, Events} from 'quasar'
+import {
+  QBtn,
+  QProgress,
+  Events
+} from 'quasar'
 
 export default {
   name: 'population-table',
   components: {
-    QBtn
+    QBtn,
+    QProgress
   },
   data () {
     return {
       selectedRegion: {},
       topLevelRegion: null,
       tableData: [],
+      dataProgress: 10,
       sortColumn: 'regionName',
       sortAscending: true,
       regionColumnLabel: 'state'
@@ -121,6 +128,7 @@ export default {
         // set top level for back to top click
         this.topLevelRegion = regionData
       }
+      this.dataProgress = 10
       console.log('table:selectedRegion:', regionData.regionName)
     }
     this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
@@ -132,6 +140,7 @@ export default {
 
       // update table data
       this.tableData = eventData.populationData
+      this.dataProgress = 100
 
       // update region column label
       this.regionColumnLabel = this.tableData[0].regionType

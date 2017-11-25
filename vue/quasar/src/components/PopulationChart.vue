@@ -8,6 +8,8 @@
         <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
       </span>      
     </q-card-title>
+    <q-progress ref="progressBar" :percentage="dataProgress" 
+      color="cyan" style="height: 2px" />    
     <q-card-separator />
     <q-card-main>
       <div class="error-message" v-if="showError">
@@ -22,19 +24,24 @@
 </template>
 
 <script>
+import {
+  QProgress
+} from 'quasar'
 import axios from 'axios'
 import BarChart from './BarChart.vue'
 
 export default {
   name: 'population-chart',
   components: {
-    BarChart
+    BarChart,
+    QProgress
   },
 
   data () {
     return {
       viewType: 'country',
       selectedRegion: {},
+      dataProgress: 10,
       populationData: [],
       chartData: [],
       chartLabels: [],
@@ -55,6 +62,18 @@ export default {
    * Adds chart data and view event handlers.
    */
   created () {
+
+    // add region selection change event handler
+    this.onRegionSelectionChange = regionData => {
+      if (this.viewType === regionData.regionType) {
+        this.selectedRegion = regionData
+        this.dataProgress = 10
+        console.log('chart:selectedRegion:', regionData.regionName)
+      }
+    }
+    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
+
+    // add population data update handler
     this.onPopulationUpdate = eventData => {
       if (this.populationData.length === 0) {
         // update selected region total population sum
@@ -66,19 +85,11 @@ export default {
         this.chartLabels = this.populationData.map(regionData => regionData.regionName)
 
         // this.redraw()
+        this.dataProgress = 100
         console.log('chart data updated')
       }
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
-
-    // add region selection change event handler
-    this.onRegionSelectionChange = regionData => {
-      if (this.viewType === regionData.regionType) {
-        this.selectedRegion = regionData
-        console.log('chart:selectedRegion:', regionData.regionName)
-      }
-    }
-    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
 
     console.log('chart created')
   },
@@ -116,6 +127,7 @@ export default {
           this.chartLabels = popData.map(
             regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
           this.loaded = true
+          this.dataProgress = 100
         })
         .catch(err => {
           this.errorMessage = err.response.data.error

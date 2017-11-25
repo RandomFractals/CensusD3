@@ -11,7 +11,8 @@
         <q-icon name="zoom out map" />
       </q-btn>
     </q-card-title>
-    <q-card-separator />
+    <q-progress ref="progressBar" :percentage="mapProgress" 
+      color="red" style="height: 2px" />
     <q-card-main class="map-container">
       <v-map ref="map" style="height: 100%" :zoom="zoom" :center="mapCenter">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
@@ -34,7 +35,7 @@
 </style>
 
 <script>
-import {QBtn, Events} from 'quasar'
+import {QBtn, QProgress, Events} from 'quasar'
 import Vue2Leaflet from 'vue2-leaflet' // leaflet vue wrapper
 import axios from 'axios' // for geo and topo json data load
 import * as L from 'leaflet' // direct leaflet.js import for topo json load extension
@@ -104,10 +105,11 @@ function onLayerClick ({target}) {
 export default {
   name: 'usa-map',
   components: {
+    QBtn,
+    QProgress,
     'v-map': Vue2Leaflet.Map,
     'v-geojson-layer': Vue2Leaflet.GeoJSON,
-    'v-tilelayer': Vue2Leaflet.TileLayer,
-    QBtn
+    'v-tilelayer': Vue2Leaflet.TileLayer
   },
 
   data () {
@@ -117,6 +119,7 @@ export default {
       tilesUrl: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       selectedRegion: {},
+      mapProgress: 10,
       mapData: [],
       mapLayers: {},
       selectedLayer: null,
@@ -182,6 +185,14 @@ export default {
     // enable topo JSON map load for state counties display
     addLeafletTopoJSONSupport()
 
+    // add region selection change event handler
+    this.onRegionSelectionChange = regionData => {
+      this.selectedRegion = regionData
+      this.zoomToSelectedRegion()
+      console.log('map:selectedRegion:', regionData.regionName)
+    }
+    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
+
     // add population data update event handler
     this.onPopulationUpdate = eventData => {
       // update selected region total population sum
@@ -207,14 +218,6 @@ export default {
       console.log('map data updated') // , eventData)
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
-
-    // add region selection change event handler
-    this.onRegionSelectionChange = regionData => {
-      this.selectedRegion = regionData
-      this.zoomToSelectedRegion()
-      console.log('map:selectedRegion:', regionData.regionName)
-    }
-    this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
 
     console.log('map created')
 
@@ -277,6 +280,9 @@ export default {
           this.statesTopology = response.data
           console.log('map:getStatesGeoJsonData:regions:', this.statesTopology.features.length)
 
+          // update map load progress
+          this.mapProgress = 100
+
           // trigger load of USA states with counties topology for the state counties map zoom
           // this.getUSACountiesTopoJsonData()
         })
@@ -304,6 +310,9 @@ export default {
           this.usaTopologyLayer = new L.TopoJSON()
           this.usaTopologyLayer.addData(usaTopology)
           this.usaTopologyLayer.addTo(this.$refs.map.mapObject)
+
+          // update map load progress
+          this.mapProgress = 100
         })
         .catch(err => {
           // this.showTopology = false

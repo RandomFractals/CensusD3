@@ -1,8 +1,13 @@
 <template>
   <q-layout ref="layout"
     view="lHh Lpr fFf">
+
+    <!-- add data load ajax bar -->
+    <q-ajax-bar ref="ajaxBar" :position="top" :size="8" :reverse="false" />      
+    
     <!-- dashboard view resize observable -->
     <q-window-resize-observable @resize="resize" />
+    
     <!-- app toolbar -->
     <q-toolbar slot="header" class="app-toolbar">
       <q-btn flat @click="$refs.layout.toggleLeft()">
@@ -32,10 +37,6 @@
       Note: replace following <div> with <router-view /> component if using subRoutes
     -->    
     <div class="app-content sm-gutter">
-      <div class="row">
-        <!-- add data load ajax bar -->
-        <q-ajax-bar ref="ajaxBar" :position="top" :size="8" :reverse="false" />      
-      </div>
       <div class="row">
         <div ref="mapCard" class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
           <usa-map ref="map" :map-data="populationData" />
