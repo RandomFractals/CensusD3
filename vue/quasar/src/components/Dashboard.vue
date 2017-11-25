@@ -7,7 +7,7 @@
     
     <!-- dashboard view resize observable -->
     <q-window-resize-observable @resize="resize" />
-    
+
     <!-- app toolbar -->
     <q-toolbar slot="header" class="app-toolbar">
       <q-btn flat @click="$refs.layout.toggleLeft()">
@@ -55,7 +55,6 @@
     <!-- app footer -->
     <q-toolbar slot="footer" color="light" class="app-footer">
       <small>
-        <img src="statics/images/rfi-github.png" height="20" style="vertical-align: top;" />
         <a href="https://github.com/RandomFractals/CensusD3/tree/master/vue/quasar" target="_blank"
           title="census-vue project on github">census-vue</a>
         <span class="text-faded">&copy;Random Fractals Inc. 2017</span>
