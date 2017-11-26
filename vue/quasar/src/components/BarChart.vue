@@ -4,19 +4,9 @@ import {Bar, mixins} from 'vue-chartjs'
 export default {
   extends: Bar,
   mixins: [mixins.reactiveProp],
-  props: {
-    chartData: {
-      type: Array | Object,
-      required: true
-    },
-    chartLabels: {
-      type: Array,
-      required: false
-    }
-  },
-
   data () {
     return {
+      // bar chart config
       options: {
         scales: {
           yAxes: [{
@@ -44,24 +34,7 @@ export default {
   },
 
   mounted () {
-    this.redraw()
-  },
-
-  methods: {
-    redraw () {
-      this.renderChart({
-        labels: this.chartLabels,
-        datasets: [{
-          label: 'population',
-          borderColor: '#249EBF',
-          pointBackgroundColor: 'orange',
-          borderWidth: 1,
-          pointBorderColor: '#249EBF',
-          backgroundColor: '#96e5ff',
-          data: this.chartData
-        }]
-      }, this.options)
-    }
+    this.renderChart(this.chartData, this.options)
   }
 }
 </script>

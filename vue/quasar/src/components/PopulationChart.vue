@@ -15,9 +15,8 @@
       <div class="error-message" v-if="showError">
        {{ errorMessage }}
       </div>
-      <bar-chart ref="chart" chart-id="population-chart" v-if="loaded"
-        :chart-data="chartData"
-        :chart-labels="chartLabels"
+      <bar-chart ref="barChart" chart-id="population-chart" v-if="loaded"
+        :chart-data="barChartConfig"
         :height="chartHeight" />
     </q-card-main>
   </q-card>
@@ -43,8 +42,18 @@ export default {
       selectedRegion: {},
       dataProgress: 10,
       populationData: [],
-      chartData: [],
-      chartLabels: [],
+      barChartConfig: {
+        labels: [],
+        datasets: [{
+          label: 'population',
+          borderColor: '#249EBF',
+          pointBackgroundColor: 'orange',
+          borderWidth: 1,
+          pointBorderColor: '#249EBF',
+          backgroundColor: '#96e5ff',
+          data: []
+        }]
+      },
       loaded: false,
       chartHeight: 240,
       showError: false,
@@ -80,9 +89,9 @@ export default {
 
         // update population chart data collections
         this.populationData = eventData.populationData
-        this.chartData = this.populationData.map(regionData => regionData.population)
-        this.chartLabels = this.populationData.map(regionData => regionData.regionName)
-
+        this.barChartConfig.datasets[0].data = this.populationData.map(regionData => regionData.population)
+        this.barChartConfig.labels = this.populationData.map(regionData => regionData.regionName)
+        console.log(this.barChartConfig)
         // this.redraw()
         this.dataProgress = 100
         console.log('chart data updated')
@@ -122,8 +131,8 @@ export default {
           // console.log('getPopulationData:', response.data)
           // strip out header row
           let popData = response.data.slice(1, 51)
-          this.chartData = popData.map(regionData => regionData[0]) // pop count
-          this.chartLabels = popData.map(
+          this.barChartConfig.datasets[0].data = popData.map(regionData => regionData[0]) // pop count
+          this.barChartConfig.labels = popData.map(
             regionData => regionData[1].substr(0, regionData[1].indexOf(','))) // region name without state
           this.loaded = true
           this.dataProgress = 100

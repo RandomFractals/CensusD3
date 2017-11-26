@@ -46,7 +46,7 @@
       </div>
       <div class="row">
         <div ref="chartCard" class="col-12 chart-card">
-          <population-chart ref="populationChart" :chart-data="populationData" />
+          <population-chart ref="populationChart" />
         </div>
       </div>
     </div>
