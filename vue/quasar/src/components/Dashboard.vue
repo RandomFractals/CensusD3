@@ -1,9 +1,6 @@
 <template>
   <q-layout ref="layout"
     view="lHh Lpr fFf">
-
-    <!-- add data load ajax bar -->
-    <q-ajax-bar ref="ajaxBar" :position="top" :size="8" :reverse="false" />      
     
     <!-- dashboard view resize observable -->
     <q-window-resize-observable @resize="resize" />
@@ -26,6 +23,8 @@
         <q-icon name="poll" />
       </q-btn>      
     </q-toolbar>
+    <q-progress ref="appProgressBar" :percentage="appProgress" 
+      color="red" style="height: 2px" />
 
     <!-- left side panel/app menu -->
     <div slot="left">
@@ -122,16 +121,14 @@
 import {
   BackToTop,
   Events,
-  QAjaxBar,
+  QProgress,
   QLayout,
   QFixedPosition,
   QToolbar,
   QToolbarTitle,
   QBtn,
   QIcon,
-  QSpinnerGears,
-  QWindowResizeObservable,
-  Loading
+  QWindowResizeObservable
 } from 'quasar'
 
 import AppMenu from './AppMenu.vue'
@@ -142,7 +139,7 @@ import PopulationChart from './PopulationChart.vue'
 export default {
   name: 'index',
   components: {
-    QAjaxBar,
+    QProgress,
     QLayout,
     QFixedPosition,
     QToolbar,
@@ -171,6 +168,7 @@ export default {
       },
       selectedRegion: this.usaData,
       populationData: [],
+      appProgress: 0,
       loaded: false,
       showError: false,
       errorMessage: 'Error loading population data'
@@ -231,6 +229,7 @@ export default {
     // to show app data load progress bar
     this.onRegionSelectionChange = regionData => {
       this.selectedRegion = regionData
+      this.appProgress = 40
       console.log('dashboard:selectedRegion:', regionData)
     }
     this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
@@ -243,9 +242,8 @@ export default {
       // update selected region total population sum
       this.selectedRegion.population = eventData.totalPopulation
 
-      // stop ajax bar
-      this.$refs.ajaxBar.stop()
-      Loading.hide()
+      // update app data load progress
+      this.appProgress = 100
 
       console.log('dashboard view data updated') // , eventData)
     }
@@ -262,12 +260,8 @@ export default {
   mounted () {
     console.log('dashboard mounted')
 
-    // show ajax bar
-    this.$refs.ajaxBar.start()
-    Loading.show({
-      spinner: QSpinnerGears,
-      spinnerSize: 140
-    })
+    // show app data load progress
+    this.appProgress = 20
 
     // triggeer USA region selection on dashboard app init
     Events.$emit(this.$census.events.REGION, this.usaData)
