@@ -114,7 +114,7 @@ export default {
   },
 
   mounted () {
-    // TODO: remove this after global get pop data hookup is fully wired
+    // HACK: need this for bar initial chart auto-sizing
     this.getPopulationData()
     console.log('chart mounted')
   },
