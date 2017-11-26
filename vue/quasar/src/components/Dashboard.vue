@@ -229,7 +229,7 @@ export default {
     // to show app data load progress bar
     this.onRegionSelectionChange = regionData => {
       this.selectedRegion = regionData
-      this.appProgress = 40
+      this.appProgress = 20
       console.log('dashboard:selectedRegion:', regionData)
     }
     this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
