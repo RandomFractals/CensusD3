@@ -87,6 +87,7 @@ th {
   background-color: #efefef;
 }
 table.q-table th, table.q-table td, th, td {
+  border: 1px solid #eee;
   cursor: pointer;
   font-size: 14px;
   padding: 5px;
