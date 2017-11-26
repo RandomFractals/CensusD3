@@ -4,11 +4,11 @@
 
 # Census-Vue Demo Link
 
-See census-vue v1.0.3 demo live on heroku: 
+See census-vue demo live on heroku: 
 
 https://census-vue.herokuapp.com
 
-![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVue-1.0.3.png?raw=true 
+![Alt text](https://github.com/RandomFractals/CensusD3/blob/master/screens/CensusVue-1.4.png?raw=true 
  "latest") 
 
 Note: this is only an MVP. Not a fully optimized package version just yet, but it's responsive and mobile-friendly. I'll trim it down in upcoming releases.
