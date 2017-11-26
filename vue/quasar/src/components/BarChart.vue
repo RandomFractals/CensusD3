@@ -51,7 +51,11 @@ export default {
 
   methods: {
     update () {
-      this.$data._chart.update()
+      if (this.$data !== undefined && this.$data._chart !== undefined) {
+        // call chartjs directly to render new data update
+        // see doc: http://vue-chartjs.org/#/home?id=chart-js-object
+        this.$data._chart.update()
+      }
     }
   }
 }
