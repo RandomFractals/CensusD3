@@ -93,8 +93,10 @@ export default {
       this.barChartConfig.datasets[0].data = this.populationData.map(regionData => regionData.population)
       this.barChartConfig.labels = this.populationData.map(regionData => regionData.regionName)
 
-      // update bar chart display
-      this.$refs.barChart.update()
+      if (this.$refs.barChart !== undefined) {
+        // update bar chart display
+        this.$refs.barChart.update()
+      }
       this.dataProgress = 100
       console.log('chart data updated')
     }
