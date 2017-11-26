@@ -1,3 +1,12 @@
+<style>
+.chart {
+  background: #fefefe;
+  border-radius: 2px;
+  box-shadow: 0px 2px 15px rgba(25, 25, 25, 0.27);
+  margin:  0px;
+}
+</style>
+
 <script>
 import {Bar, mixins} from 'vue-chartjs'
 const {reactiveProp} = mixins
@@ -5,6 +14,8 @@ const {reactiveProp} = mixins
 export default {
   extends: Bar,
   mixins: [reactiveProp],
+  name: 'bar-chart',
+
   data () {
     return {
       // bar chart config
@@ -36,15 +47,12 @@ export default {
 
   mounted () {
     this.renderChart(this.chartData, this.options)
+  },
+
+  methods: {
+    update () {
+      this.$data._chart.update()
+    }
   }
 }
 </script>
-
-<style>
-.chart {
-  background: #fefefe;
-  border-radius: 2px;
-  box-shadow: 0px 2px 15px rgba(25, 25, 25, 0.27);
-  margin:  0px;
-}
-</style>

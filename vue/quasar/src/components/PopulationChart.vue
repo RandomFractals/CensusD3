@@ -15,7 +15,7 @@
       <div class="error-message" v-if="showError">
        {{ errorMessage }}
       </div>
-      <bar-chart ref="barChart" chart-id="population-chart" v-if="loaded"
+      <bar-chart ref="barChart" chart-id="barChart" v-if="loaded"
         :chart-data="barChartConfig"
         :height="chartHeight" />
     </q-card-main>
@@ -54,6 +54,10 @@ export default {
           data: []
         }]
       },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false
+      },
       loaded: false,
       chartHeight: 240,
       showError: false,
@@ -88,7 +92,9 @@ export default {
       this.populationData = eventData.populationData
       this.barChartConfig.datasets[0].data = this.populationData.map(regionData => regionData.population)
       this.barChartConfig.labels = this.populationData.map(regionData => regionData.regionName)
-      console.log(this.barChartConfig)
+
+      // update bar chart display
+      this.$refs.barChart.update()
       this.dataProgress = 100
       console.log('chart data updated')
     }
