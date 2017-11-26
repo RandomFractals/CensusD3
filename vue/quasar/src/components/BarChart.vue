@@ -1,9 +1,10 @@
 <script>
 import {Bar, mixins} from 'vue-chartjs'
+const {reactiveProp} = mixins
 
 export default {
   extends: Bar,
-  mixins: [mixins.reactiveProp],
+  mixins: [reactiveProp],
   data () {
     return {
       // bar chart config

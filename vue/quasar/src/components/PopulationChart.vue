@@ -73,29 +73,24 @@ export default {
   created () {
     // add region selection change event handler
     this.onRegionSelectionChange = regionData => {
-      if (this.viewType === regionData.regionType) {
-        this.selectedRegion = regionData
-        this.dataProgress = 10
-        console.log('chart:selectedRegion:', regionData.regionName)
-      }
+      this.selectedRegion = regionData
+      this.dataProgress = 10
+      console.log('chart:selectedRegion:', regionData.regionName)
     }
     this.$q.events.$on(this.$census.events.REGION, this.onRegionSelectionChange)
 
     // add population data update handler
     this.onPopulationUpdate = eventData => {
-      if (this.populationData.length === 0) {
-        // update selected region total population sum
-        this.selectedRegion.population = eventData.totalPopulation
+      // update selected region total population sum
+      this.selectedRegion.population = eventData.totalPopulation
 
-        // update population chart data collections
-        this.populationData = eventData.populationData
-        this.barChartConfig.datasets[0].data = this.populationData.map(regionData => regionData.population)
-        this.barChartConfig.labels = this.populationData.map(regionData => regionData.regionName)
-        console.log(this.barChartConfig)
-        // this.redraw()
-        this.dataProgress = 100
-        console.log('chart data updated')
-      }
+      // update population chart data collections
+      this.populationData = eventData.populationData
+      this.barChartConfig.datasets[0].data = this.populationData.map(regionData => regionData.population)
+      this.barChartConfig.labels = this.populationData.map(regionData => regionData.regionName)
+      console.log(this.barChartConfig)
+      this.dataProgress = 100
+      console.log('chart data updated')
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
 
