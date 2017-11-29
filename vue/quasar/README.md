@@ -31,3 +31,5 @@ $ quasar build
 # run production build locally 
 $ quasar serve ./dist
 ```
+
+See Quasar CLI doc for more info: http://quasar-framework.org/guide/quasar-cli.html
