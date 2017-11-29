@@ -25,8 +25,9 @@
         <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
         <span class="text-small">p/mi²</span>
       </div>    
-    <!-- table data content -->
+    <!-- data table content -->
     <q-card-main class="table card data-table">
+      <region-tooltip id="regionTooltip" ref="regionTooltip" />
       <table id="data-table" style="width: 100%"
         class="q-table standard bordered highlight horizontal-separator vertical-separator">
         <thead>
@@ -40,7 +41,9 @@
           <tr v-for="(region, index) in tableData" 
             :key="region.regionId"
             :data-index="index"
-            @click="rowClick(index)">
+            @click="rowClick(index)"
+            @mouseover="rowMouseOver"
+            @mouseout="rowMouseOut">
             <td data-th="State">{{region.regionName}}</td>
             <td data-th="Population">
               {{region.population | formatNumber}}
@@ -102,11 +105,14 @@ import {
   Events
 } from 'quasar'
 
+import RegionTooltip from './RegionTooltip.vue'
+
 export default {
   name: 'population-table',
   components: {
     QBtn,
-    QProgress
+    QProgress,
+    RegionTooltip
   },
   data () {
     return {
@@ -204,6 +210,35 @@ export default {
         // notify app components about state region selection change
         Events.$emit(this.$census.events.REGION, region)
       }
+    },
+
+    /**
+     * Displays region data tooltip on data table row mouse over.
+     */
+    rowMouseOver (mouseEvent) {
+      // get current mouse position
+      const tooltipPosition = [
+        mouseEvent.clientX,
+        mouseEvent.clientY
+      ]
+
+      // get mouse over row index
+      // Note: mouse overs are triggered on td cells,
+      // so we get our pointer to data table row index from parent node for now
+      // this can be made smarter with mouse event and data row index param,
+      // but I could not make it work in the 15 mins time alloted for this :(
+      const rowIndex = mouseEvent.target.parentNode.getAttribute('data-index')
+      console.log(`table:row:mouseOver: rowIndex=${rowIndex}`)
+      if (this.$refs.regionTooltip !== undefined) { // do we need this ???
+        this.$refs.regionTooltip.show(this.tableData[rowIndex], tooltipPosition)
+      }
+    },
+
+    /**
+     * Hides region data tooltip on data table row mouse out.
+     */
+    rowMouseOut (mouseEvent) {
+      this.$refs.regionTooltip.hide()
     },
 
     /**
