@@ -1,6 +1,8 @@
 <template>
   <div class="region-tooltip">
     <div class="card-subtitle">
+      <img :src="regionIconSrc" class="flag" height="24" />
+      <span class="card-title">{{region.regionName}}</span>      
       <span class="text-faded">population:</span>
       <span class="text-bold">{{region.population | formatNumber}}</span>
     </div>    
@@ -36,6 +38,12 @@ export default {
       positionX: 0,
       positionY: 0,
       display: 'none'
+    }
+  },
+
+  computed: {
+    regionIconSrc: function () {
+      return this.$census.getRegionImageUrl(this.region.regionId)
     }
   },
 
