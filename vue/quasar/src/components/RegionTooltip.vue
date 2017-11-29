@@ -2,8 +2,10 @@
   <div class="region-tooltip">
     <div class="card-subtitle">
       <img :src="regionIconSrc" class="flag" height="24" />
-      <span class="card-title">{{region.regionName}}</span>      
-      <span class="text-faded">population:</span>
+      <span class="card-title">{{region.regionName}}</span>
+    </div>
+    <div>
+      <q-icon name="people" />
       <span class="text-bold">{{region.population | formatNumber}}</span>
     </div>    
     <div class="card-subtitle">
