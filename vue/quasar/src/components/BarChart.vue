@@ -43,6 +43,13 @@ export default {
         legend: {
           display: false
         },
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              return numeral(tooltipItem.yLabel).format('0,0')
+            }
+          }
+        },
         responsive: true,
         maintainAspectRatio: false
       }
