@@ -223,13 +223,15 @@ export default {
       ]
 
       // get mouse over row index
-      // Note: mouse overs are triggered on td cells,
-      // so we get our pointer to data table row index from parent node for now
-      // this can be made smarter with mouse event and data row index param,
-      // but I could not make it work in the 15 mins time alloted for this :(
+      // Note: mouse overs are fired on td cells
       const rowIndex = mouseEvent.target.parentNode.getAttribute('data-index')
       console.log(`table:row:mouseOver: rowIndex=${rowIndex}`)
-      if (this.$refs.regionTooltip !== undefined) { // do we need this ???
+
+      if (rowIndex && this.$refs.regionTooltip !== undefined) {
+        // set parent Id for county state info display
+        this.tableData[rowIndex].parentId = this.selectedRegion.regionId
+
+        // show mouse over region tooltip
         this.$refs.regionTooltip.show(this.tableData[rowIndex], tooltipPosition)
       }
     },

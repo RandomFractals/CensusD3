@@ -45,7 +45,9 @@ export default {
 
   computed: {
     regionIconSrc: function () {
-      return this.$census.getRegionImageUrl(this.region.regionId)
+      const regionFlagId = (this.region.regionType === 'state')
+        ? this.region.regionId : this.region.parentId
+      return this.$census.getRegionImageUrl(regionFlagId)
     }
   },
 
