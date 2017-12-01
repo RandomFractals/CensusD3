@@ -8,6 +8,7 @@
 </style>
 
 <script>
+import numeral from 'numeral'
 import {Bar, mixins} from 'vue-chartjs'
 const {reactiveProp} = mixins
 
@@ -23,7 +24,10 @@ export default {
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true
+              beginAtZero: true,
+              callback: function (label, index, labels) {
+                return numeral(label).format('0,0')
+              }
             },
             gridLines: {
               display: true
