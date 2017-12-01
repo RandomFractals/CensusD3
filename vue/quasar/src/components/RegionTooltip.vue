@@ -1,10 +1,12 @@
 <template>
-  <div class="region-tooltip">
+  <div class="region-tooltip" 
+    :style="{display: display, left: positionX + 'px', top: positionY + 'px'}">
     <div class="card-subtitle">
       <img :src="regionIconSrc" class="flag" height="24" />
       <span class="card-title">{{region.regionName}}</span>
     </div>
-    <div>
+    <hr />
+    <div class="card-subtitle">
       <q-icon name="people" />
       <span class="text-bold">{{region.population | formatNumber}}</span>
     </div>    
@@ -18,8 +20,12 @@
 
 <style>
 .region-tooltip {
-  display: hidden;
+  display: none;
   position: absolute;
+  background-color: #fffafa;
+  border: 1px solid #666;
+  border-radius: 3px;
+  padding: 5px;
 }
 </style>
 
@@ -66,6 +72,7 @@ export default {
         this.positionX = 0
         this.positionY = 0
       }
+      console.log(`regionTooltip:show: X=${this.positionX} Y=${this.positionY}`)
       // show tooltip
       this.display = 'block'
     },

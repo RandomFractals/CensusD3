@@ -28,7 +28,7 @@
     <!-- data table content -->
     <q-card-main class="table card data-table">
       <region-tooltip id="regionTooltip" ref="regionTooltip" />
-      <table id="data-table" style="width: 100%"
+      <table id="data-table" ref="dataTable" style="width: 100%"
         class="q-table standard bordered highlight horizontal-separator vertical-separator">
         <thead>
           <tr>
@@ -216,22 +216,16 @@ export default {
      * Displays region data tooltip on data table row mouse over.
      */
     rowMouseOver (mouseEvent) {
-      // get current mouse position
-      const tooltipPosition = [
-        mouseEvent.clientX,
-        mouseEvent.clientY
-      ]
-
       // get mouse over row index
       // Note: mouse overs are fired on td cells
       const rowIndex = mouseEvent.target.parentNode.getAttribute('data-index')
-      console.log(`table:row:mouseOver: rowIndex=${rowIndex}`)
+      // console.log(`table:row:mouseOver: rowIndex=${rowIndex}`)
 
       if (rowIndex && this.$refs.regionTooltip !== undefined) {
         // set parent Id for county state info display
         this.tableData[rowIndex].parentId = this.selectedRegion.regionId
-
         // show mouse over region tooltip
+        const tooltipPosition = [2, -32]
         this.$refs.regionTooltip.show(this.tableData[rowIndex], tooltipPosition)
       }
     },
