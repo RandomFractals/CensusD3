@@ -14,6 +14,7 @@
     <q-progress ref="progressBar" :percentage="mapProgress" 
       color="red" style="height: 2px" />
     <q-card-main class="map-container">
+      <region-tooltip id="regionTooltip" ref="regionTooltip" />
       <v-map ref="map" style="height: 100%" :zoom="zoom" :center="mapCenter">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
         <v-geojson-layer v-if="showTopology"
@@ -40,6 +41,7 @@ import Vue2Leaflet from 'vue2-leaflet' // leaflet vue wrapper
 import axios from 'axios' // for geo and topo json data load
 import * as L from 'leaflet' // direct leaflet.js import for topo json load extension
 import * as topojson from 'topojson-client' // for topo json leaflet extension
+import RegionTooltip from './RegionTooltip.vue'
 
 /**
  * ---------------------- Leaflet Methods -------------------------------------
@@ -69,9 +71,18 @@ function addLeafletTopoJSONSupport () {
  */
 function onLayerMouseOver ({ target }) {
   target.setStyle(this.hoverLayerStyle)
+  /*
   if (!L.Browser.ie && !L.Browser.opera) {
     target.bringToFront()
   }
+  */
+  // get hover region info
+  const hoverRegion = this.mapData.find(
+    x => x.regionId === target.feature.id) // region id from geo json
+
+  // show region tooltip
+  const tooltipPosition = [70, 70]
+  this.$refs.regionTooltip.show(hoverRegion, tooltipPosition)
 }
 
 /**
@@ -81,6 +92,7 @@ function onLayerMouseOut ({ target }) {
   if (target !== this.selectedLayer) {
     target.setStyle(this.layerStyle)
   }
+  this.$refs.regionTooltip.hide()
 }
 
 /**
@@ -107,6 +119,7 @@ export default {
   components: {
     QBtn,
     QProgress,
+    RegionTooltip,
     'v-map': Vue2Leaflet.Map,
     'v-geojson-layer': Vue2Leaflet.GeoJSON,
     'v-tilelayer': Vue2Leaflet.TileLayer
