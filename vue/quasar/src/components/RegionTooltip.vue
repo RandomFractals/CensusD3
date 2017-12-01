@@ -72,7 +72,7 @@ export default {
         this.positionX = 0
         this.positionY = 0
       }
-      console.log(`regionTooltip:show: X=${this.positionX} Y=${this.positionY}`)
+      // console.log(`regionTooltip:show: X=${this.positionX} Y=${this.positionY}`)
       // show tooltip
       this.display = 'block'
     },
