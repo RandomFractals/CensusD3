@@ -149,19 +149,19 @@ export default {
         color: '#ECEFF1',
         opacity: 0.5,
         dashArray: 0,
-        fillOpacity: 0.9
+        fillOpacity: 0.6
       },
       hoverLayerStyle: {
         weight: 3,
-        color: 'black',
+        color: 'red',
         dashArray: '0'
       },
       selectedLayerStyle: {
         weight: 3,
-        color: 'black',
+        color: 'red',
         opacity: 0.6,
         dashArray: 0,
-        fillOpacity: 1.0
+        fillOpacity: 0.6
       },
       topologyOptions: {
         style: function () {
@@ -171,7 +171,7 @@ export default {
             opacity: 0.5,
             dashArray: 0,
             fillColor: '#eee',
-            fillOpacity: 0.9
+            fillOpacity: 0.6
           }
         },
         onEachFeature: (feature, layer) => {

@@ -40,6 +40,7 @@
 }
 .legend-table th {
   background-color: #fff;
+  opacity: 0.6;
   font-size: 10px;
   font-weight: normal;
   text-align: left;
