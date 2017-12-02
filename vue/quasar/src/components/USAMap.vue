@@ -15,6 +15,7 @@
       color="red" style="height: 2px" />
     <q-card-main class="map-container">
       <region-tooltip id="regionTooltip" ref="regionTooltip" />
+      <legend-box id="mapLegend" ref="mapLegend" />      
       <v-map ref="map" style="height: 100%" :zoom="zoom" :center="mapCenter">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
         <v-geojson-layer v-if="showTopology"
@@ -42,6 +43,7 @@ import axios from 'axios' // for geo and topo json data load
 import * as L from 'leaflet' // direct leaflet.js import for topo json load extension
 import * as topojson from 'topojson-client' // for topo json leaflet extension
 import RegionTooltip from './RegionTooltip.vue'
+import LegendBox from './LegendBox.vue'
 
 /**
  * ---------------------- Leaflet Methods -------------------------------------
@@ -120,6 +122,7 @@ export default {
     QBtn,
     QProgress,
     RegionTooltip,
+    LegendBox,
     'v-map': Vue2Leaflet.Map,
     'v-geojson-layer': Vue2Leaflet.GeoJSON,
     'v-tilelayer': Vue2Leaflet.TileLayer
@@ -222,7 +225,8 @@ export default {
           let regionLayer = this.mapLayers[region.regionId]
           if (regionLayer !== undefined) {
             regionLayer.setStyle({
-              fillColor: this.getLayerFillColor(region.density) // color by density for now
+              fillColor: // by density for now
+                this.$refs.mapLegend.getColor(region.density)
             })
           }
         })
@@ -331,19 +335,6 @@ export default {
           // this.showTopology = false
           console.log('map:getUSACountiesTopoJsonData:error', err.response.data.error)
         })
-    },
-
-    /**
-     * Gets map layer fill color for the specified region population density.
-     */
-    getLayerFillColor (d) {
-      return d > 1000 ? '#800026'
-        : d > 500 ? '#BD0026'
-          : d > 200 ? '#E31A1C'
-            : d > 100 ? '#FC4E2A'
-              : d > 50 ? '#FD8D3C'
-                : d > 20 ? '#FEB24C'
-                  : d > 10 ? '#FED976' : '#FFEDA0'
     }
 
   }
