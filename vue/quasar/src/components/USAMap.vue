@@ -153,12 +153,12 @@ export default {
       },
       hoverLayerStyle: {
         weight: 3,
-        color: 'red',
+        color: 'black',
         dashArray: '0'
       },
       selectedLayerStyle: {
         weight: 3,
-        color: '#ff002b',
+        color: 'black',
         opacity: 0.6,
         dashArray: 0,
         fillOpacity: 1.0
