@@ -37,6 +37,7 @@
 </style>
 
 <script>
+require('../../node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js')
 import {QBtn, QProgress, Events} from 'quasar'
 import Vue2Leaflet from 'vue2-leaflet' // leaflet vue wrapper
 import axios from 'axios' // for geo and topo json data load
@@ -245,6 +246,8 @@ export default {
   },
 
   mounted () {
+    // enable leaflet map fullscreen
+    this.addFullScreenSupport()
     console.log('map mounted')
   },
 
@@ -257,6 +260,22 @@ export default {
   },
 
   methods: {
+
+    /**
+     * Adds full screen control and support to the leaflet map.
+     */
+    addFullScreenSupport () {
+      const map = this.$refs.map.mapObject
+      map.addControl(new L.Control.Fullscreen())
+      map.on('fullscreenchage', function () {
+        if (map.isFullscreen()) {
+          console.log('map entered fullscreen')
+        }
+        else {
+          console.log('map exited fullscreen')
+        }
+      })
+    },
 
     /**
      * Zooms the map to the selected region layer
@@ -345,4 +364,5 @@ export default {
 
 <style>
 @import "../../node_modules/leaflet/dist/leaflet.css";
+@import "../../node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css";
 </style>
