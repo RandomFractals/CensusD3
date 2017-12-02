@@ -73,11 +73,10 @@ function addLeafletTopoJSONSupport () {
  */
 function onLayerMouseOver ({ target }) {
   target.setStyle(this.hoverLayerStyle)
-  /*
   if (!L.Browser.ie && !L.Browser.opera) {
     target.bringToFront()
   }
-  */
+
   // get hover region info
   const hoverRegion = this.mapData.find(
     x => x.regionId === target.feature.id) // region id from geo json
@@ -93,6 +92,9 @@ function onLayerMouseOver ({ target }) {
 function onLayerMouseOut ({ target }) {
   if (target !== this.selectedLayer) {
     target.setStyle(this.layerStyle)
+  }
+  if (this.selectedLayer !== null && !L.Browser.ie && !L.Browser.opera) {
+    this.selectedLayer.bringToFront()
   }
   this.$refs.regionTooltip.hide()
 }
