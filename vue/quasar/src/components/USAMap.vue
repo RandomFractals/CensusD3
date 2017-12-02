@@ -247,7 +247,7 @@ export default {
 
   mounted () {
     // enable leaflet map fullscreen
-    this.addFullScreenSupport()
+    // this.addFullScreenSupport()
     console.log('map mounted')
   },
 
