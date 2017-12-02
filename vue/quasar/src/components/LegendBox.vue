@@ -10,8 +10,10 @@
             :data-index="index" 
             :title="colorStop.value"
             :style="{backgroundColor: colorStop.color}">
-            <span v-if="index === colorStops.length -1">></span>
-            {{colorStop.value}}
+            <span class="legend-label">
+              <span v-if="index === colorStops.length -1">></span>
+              {{colorStop.value}}
+            </span>
           </th>
         </tr>        
       </thead>
