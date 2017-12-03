@@ -391,6 +391,9 @@ export default {
       this.countyData = countiesData
       console.log('map:showCounties:count:', this.countyData.length)
 
+      // remove previously shown county layers
+      this.countyLayerGroup.clearLayers()
+
       // show selected state counties
       let countyLayerCount = 0
       this.countyData.map(region => {
