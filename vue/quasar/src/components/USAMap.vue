@@ -235,29 +235,9 @@ export default {
         })
       }
       else {
-        console.log('map:population:sate:id', this.selectedRegion.regionId)
-
-        // save selected state counties data
-        this.countyData = eventData.populationData
-        console.log('map:population:data:counties:', this.countyData.length)
-
-        // show selected state counties
-        let countyLayerCount = 0
-        this.countyData.map(region => {
-          // 5 digit county code: 2 digit state code + 3 digit county code from pop. data results
-          let countyCode = this.selectedRegion.regionId + region.regionId
-          console.log('map:population:county', countyCode, region.regionName) // county name
-
-          // get and add county layer to the leaflet map
-          let countyLayer = this.countyLayers[countyCode]
-          if (countyLayer !== undefined) {
-            countyLayer.addTo(this.$refs.map.mapObject)
-            countyLayerCount++
-          }
-        })
-        console.log(`map:population: added ${countyLayerCount} county map layers`)
+        // show selected state counties data
+        this.showCounties(this.selectedRegion.regionId, eventData.populationData)
       }
-
       console.log('map data updated') // , eventData)
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
@@ -406,8 +386,34 @@ export default {
           // this.showTopology = false
           console.log('map:getUSATopoJsonData:error', err.response.data.error)
         })
-    }
+    }, // end of getUSATopoJsonData()
 
+    /**
+     * Displays state counties population data
+     */
+    showCounties (stateCode, countiesData) {
+      console.log('map:showCounties:sate:id', stateCode)
+
+      // save new state counties data
+      this.countyData = countiesData
+      console.log('map:showCounties:count:', this.countyData.length)
+
+      // show selected state counties
+      let countyLayerCount = 0
+      this.countyData.map(region => {
+        // 5 digit county code: 2 digit state code + 3 digit county code from pop. data results
+        let countyCode = stateCode + region.regionId
+        console.log('map:showCounties:county', countyCode, region.regionName) // county name
+
+        // get and add county layer to the leaflet map
+        let countyLayer = this.countyLayers[countyCode]
+        if (countyLayer !== undefined) {
+          countyLayer.addTo(this.$refs.map.mapObject)
+          countyLayerCount++
+        }
+      })
+      console.log(`map:showCounties: added ${countyLayerCount} county map layers`)
+    }
   }
 }
 </script>
