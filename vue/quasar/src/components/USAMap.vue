@@ -364,17 +364,17 @@ export default {
               // add it to the county layers for lookup on state click
               this.countyLayers[featureId.toString()] = layer
               countyLayerCount++
-
               // NOTE: uncomment this to see all county layers added to the map for debug
               // layer.addTo(this.$refs.map.mapObject)
-
               // also some county layers feature id tracing for debug that can be stripped out
+              /*
               if (countyLayerCount < 10) {
                 console.log('map:getUSATopoJsonData:countyLayerId:', featureId.toString())
               }
               else if (countyLayerCount === 10) {
                 console.log('map.getUSATopoJsonData:countyLayerId: ...')
               }
+              */
             }
           })
           console.log('map:getUSATopoJsonData:countyLayers:', countyLayerCount)
@@ -404,7 +404,7 @@ export default {
         // county code: state code + 3 digit county code from pop. data results
         let countyCode = Number(stateCode).toString() + region.regionId
         region.parentId = stateCode
-        console.log('map:showCounties:county', countyCode, region.regionName) // county name
+        // console.log('map:showCounties:county', countyCode, region.regionName) // county name
 
         // get county map layer
         let countyLayer = this.countyLayers[countyCode]
