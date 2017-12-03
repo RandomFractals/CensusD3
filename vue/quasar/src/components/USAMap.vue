@@ -235,6 +235,8 @@ export default {
         })
       }
       else {
+        console.log('map:population:sate:id', this.selectedRegion.regionId)
+
         // save selected state counties data
         this.countyData = eventData.populationData
         console.log('map:population:data:counties:', this.countyData.length)
@@ -242,8 +244,12 @@ export default {
         // show selected state counties
         let countyLayerCount = 0
         this.countyData.map(region => {
-          console.log('map:population:county', region.regionId)
-          let countyLayer = this.countyLayers[region.regionId]
+          // 5 digit county code: 2 digit state code + 3 digit county code from pop. data results
+          let countyCode = this.selectedRegion.regionId + region.regionId
+          console.log('map:population:county', countyCode, region.regionName) // county name
+
+          // get and add county layer to the leaflet map
+          let countyLayer = this.countyLayers[countyCode]
           if (countyLayer !== undefined) {
             countyLayer.addTo(this.$refs.map.mapObject)
             countyLayerCount++
@@ -378,7 +384,7 @@ export default {
               // add it to the county layers for lookup on state click
               this.countyLayers[featureId.toString()] = layer
               countyLayerCount++
-              
+
               // NOTE: uncomment this to see all county layers added to the map for debug
               // layer.addTo(this.$refs.map.mapObject)
 
