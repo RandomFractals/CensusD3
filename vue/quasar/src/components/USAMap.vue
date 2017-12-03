@@ -356,17 +356,17 @@ export default {
           // create county layers for lookups
           let countyLayerCount = 0
           Object.keys(layers).forEach((layerKey) => {
-            let featureId = layers[layerKey].feature.id
-            if (featureId !== undefined && Number(featureId) > 100) { // not a state
-              // add it to the county layers
-              this.countyLayers[featureId] = layers[layerKey]
+            let layer = layers[layerKey]
+            let featureId = layer.feature.id
+            if (featureId !== undefined && Number(featureId) > 100) { // not a state or land
+              // add it to the county layers for lookup on state click
+              this.countyLayers[featureId] = layer
               countyLayerCount++
+              // NOTE: uncomment this to see all county layers added to the map for debug
+              // layer.addTo(this.$refs.map.mapObject)
             }
           })
           console.log('map:getUSATopoJsonData:countyLayers:', countyLayerCount)
-
-          // create county layers lookup up
-          // this.usaTopologyLayer.addTo(this.$refs.map.mapObject)
 
           // update map load progress
           this.mapProgress = 100
