@@ -166,7 +166,7 @@ export default {
         color: 'red',
         opacity: 0.6,
         dashArray: 0,
-        fillOpacity: 0.6
+        fillOpacity: 0.0
       },
       topologyOptions: {
         style: function () {
@@ -234,10 +234,11 @@ export default {
           }
         })
       }
-      else {
+      else if (this.selectedRegion !== null) {
         // show selected state counties data
         this.showCounties(this.selectedRegion.regionId, eventData.populationData)
       }
+
       console.log('map data updated') // , eventData)
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
@@ -405,10 +406,17 @@ export default {
         let countyCode = stateCode + region.regionId
         console.log('map:showCounties:county', countyCode, region.regionName) // county name
 
-        // get and add county layer to the leaflet map
+        // get county map layer
         let countyLayer = this.countyLayers[countyCode]
         if (countyLayer !== undefined) {
+          // add county layer to the map
           countyLayer.addTo(this.$refs.map.mapObject)
+          countyLayer.setStyle({
+            weight: 1,
+            color: '#333',
+            fillColor: // by density for now
+              this.$refs.mapLegend.getColor(region.density)
+          })
           countyLayerCount++
         }
       })
