@@ -83,8 +83,7 @@ function onLayerMouseOver ({ target }) {
     x => x.regionId === target.feature.id) // region id from geo json
 
   // show region tooltip
-  const tooltipPosition = [70, 70]
-  this.$refs.regionTooltip.show(hoverRegion, tooltipPosition)
+  this.showRegionTooltip(hoverRegion)
 }
 
 /**
@@ -404,6 +403,7 @@ export default {
       this.countyData.map(region => {
         // 5 digit county code: 2 digit state code + 3 digit county code from pop. data results
         let countyCode = stateCode + region.regionId
+        region.parentId = stateCode
         console.log('map:showCounties:county', countyCode, region.regionName) // county name
 
         // get county map layer
@@ -418,15 +418,11 @@ export default {
               this.$refs.mapLegend.getColor(region.density)
           })
           countyLayer.on({
-            mouseover: () => {
-              // show region tooltip
-              const tooltipPosition = [70, 70]
-              region.parentId = stateCode
-              this.$refs.regionTooltip.show(region, tooltipPosition)
-            },
+            mouseover: () => { this.showRegionTooltip(region) },
             mouseout: () => {
               this.$refs.regionTooltip.hide()
-            }
+            },
+            click: () => { this.showRegionTooltip(region) }
           })
           countyLayer.addTo(this.$refs.map.mapObject)
           countyLayer.bringToFront()
@@ -434,7 +430,15 @@ export default {
         }
       })
       console.log(`map:showCounties: added ${countyLayerCount} county map layers`)
-    } // end of showCounties()
+    }, // end of showCounties()
+
+    /**
+     * Displays region tooltip on map layer mouse over and click.
+     */
+    showRegionTooltip (region) {
+      const tooltipPosition = [70, 70]
+      this.$refs.regionTooltip.show(region, tooltipPosition)
+    }
   }
 }
 </script>
