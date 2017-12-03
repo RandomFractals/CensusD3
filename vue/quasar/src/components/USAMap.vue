@@ -141,6 +141,7 @@ export default {
       mapProgress: 10,
       mapData: [],
       mapLayers: {},
+      countyData: [],
       countyLayers: {},
       selectedLayer: null,
       statesTopology: null,
@@ -218,10 +219,8 @@ export default {
       // update selected region total population sum
       this.selectedRegion.population = eventData.totalPopulation
 
-      // TODO: change this when state counties topojson data load is wired
-      // and selected state counties display is added to the map
-      if (this.mapData.length === 0) {
-        // update map data
+      if (this.mapData.length === 0) { // for initial states population data load
+        // update states map data
         this.mapData = eventData.populationData
 
         // update map layers fill color for proper states choropleth display
@@ -234,6 +233,23 @@ export default {
             })
           }
         })
+      }
+      else {
+        // save selected state counties data
+        this.countyData = eventData.populationData
+        console.log('map:population:data:counties:', this.countyData.length)
+
+        // show selected state counties
+        let countyLayerCount = 0
+        this.countyData.map(region => {
+          console.log('map:population:county', region.regionId)
+          let countyLayer = this.countyLayers[region.regionId]
+          if (countyLayer !== undefined) {
+            countyLayer.addTo(this.$refs.map.mapObject)
+            countyLayerCount++
+          }
+        })
+        console.log(`map:population: added ${countyLayerCount} county map layers`)
       }
 
       console.log('map data updated') // , eventData)
@@ -360,10 +376,19 @@ export default {
             let featureId = layer.feature.id
             if (featureId !== undefined && Number(featureId) > 100) { // not a state or land
               // add it to the county layers for lookup on state click
-              this.countyLayers[featureId] = layer
+              this.countyLayers[featureId.toString()] = layer
               countyLayerCount++
+              
               // NOTE: uncomment this to see all county layers added to the map for debug
               // layer.addTo(this.$refs.map.mapObject)
+
+              // also some county layers feature id tracing for debug that can be stripped out
+              if (countyLayerCount < 10) {
+                console.log('map:getUSATopoJsonData:countyLayerId:', featureId.toString())
+              }
+              else if (countyLayerCount === 10) {
+                console.log('map.getUSATopoJsonData:countyLayerId: ...')
+              }
             }
           })
           console.log('map:getUSATopoJsonData:countyLayers:', countyLayerCount)
