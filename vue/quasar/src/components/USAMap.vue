@@ -354,13 +354,17 @@ export default {
           console.log('map:getUSATopoJsonData:layers:', Object.keys(layers).length)
 
           // create county layers for lookups
+          let countyLayerCount = 0
           Object.keys(layers).forEach((layerKey) => {
             let featureId = layers[layerKey].feature.id
-            if (featureId !== undefined) {
+            if (featureId !== undefined && Number(featureId) > 100) { // not a state
               // add it to the county layers
               this.countyLayers[featureId] = layers[layerKey]
+              countyLayerCount++
             }
           })
+          console.log('map:getUSATopoJsonData:countyLayers:', countyLayerCount)
+
           // create county layers lookup up
           // this.usaTopologyLayer.addTo(this.$refs.map.mapObject)
 
