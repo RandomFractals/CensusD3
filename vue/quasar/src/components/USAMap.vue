@@ -410,18 +410,31 @@ export default {
         let countyLayer = this.countyLayers[countyCode]
         if (countyLayer !== undefined) {
           // add county layer to the map
-          countyLayer.addTo(this.$refs.map.mapObject)
           countyLayer.setStyle({
             weight: 1,
             color: '#333',
+            fillOpacity: 0.6,
             fillColor: // by density for now
               this.$refs.mapLegend.getColor(region.density)
           })
+          countyLayer.on({
+            mouseover: () => {
+              // show region tooltip
+              const tooltipPosition = [70, 70]
+              region.parentId = stateCode
+              this.$refs.regionTooltip.show(region, tooltipPosition)
+            },
+            mouseout: () => {
+              this.$refs.regionTooltip.hide()
+            }
+          })
+          countyLayer.addTo(this.$refs.map.mapObject)
+          countyLayer.bringToFront()
           countyLayerCount++
         }
       })
       console.log(`map:showCounties: added ${countyLayerCount} county map layers`)
-    }
+    } // end of showCounties()
   }
 }
 </script>
