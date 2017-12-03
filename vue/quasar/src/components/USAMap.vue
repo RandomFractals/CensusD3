@@ -141,6 +141,7 @@ export default {
       mapProgress: 10,
       mapData: [],
       mapLayers: {},
+      countyLayers: {},
       selectedLayer: null,
       statesTopology: null,
       usaTopology: null,
@@ -322,7 +323,7 @@ export default {
           this.mapProgress = 100
 
           // trigger load of USA states with counties topology for the state counties map zoom
-          // this.getUSACountiesTopoJsonData()
+          this.getUSATopoJsonData()
         })
         .catch(err => {
           this.showTopology = false
@@ -333,28 +334,42 @@ export default {
     /**
      * Gets all USA states and counties topology for the state counties choropleth display.
      */
-    getUSACountiesTopoJsonData () {
-      console.log('map:getUSACountiesTopoJsonData...')
+    getUSATopoJsonData () {
+      console.log('map:getUSATopoJsonData...')
       axios.get(`${this.$census.serviceHost}/data/us.json`)
         .then(response => {
           // console.log('map topo json', response.data)
           const usaTopology = response.data
           // console.log('map:getUSACountiesTopoJsonData:', usaTopology)
-          console.log('map:getUSACountiesTopoJsonData:regions: states:',
+          console.log('map:getUSATopoJsonData:regions: states:',
             usaTopology.objects.states.geometries.length, 'counties:',
             usaTopology.objects.counties.geometries.length)
 
           // create USA topology layer
           this.usaTopologyLayer = new L.TopoJSON()
           this.usaTopologyLayer.addData(usaTopology)
-          this.usaTopologyLayer.addTo(this.$refs.map.mapObject)
+
+          // get all states and counties layers
+          const layers = this.usaTopologyLayer._layers
+          console.log('map:getUSATopoJsonData:layers:', Object.keys(layers).length)
+
+          // create county layers for lookups
+          Object.keys(layers).forEach((layerKey) => {
+            let featureId = layers[layerKey].feature.id
+            if (featureId !== undefined) {
+              // add it to the county layers
+              this.countyLayers[featureId] = layers[layerKey]
+            }
+          })
+          // create county layers lookup up
+          // this.usaTopologyLayer.addTo(this.$refs.map.mapObject)
 
           // update map load progress
           this.mapProgress = 100
         })
         .catch(err => {
           // this.showTopology = false
-          console.log('map:getUSACountiesTopoJsonData:error', err.response.data.error)
+          console.log('map:getUSATopoJsonData:error', err.response.data.error)
         })
     }
 
