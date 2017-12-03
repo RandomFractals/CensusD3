@@ -74,7 +74,7 @@ function addLeafletTopoJSONSupport () {
  */
 function onLayerMouseOver ({ target }) {
   target.setStyle(this.hoverLayerStyle)
-  if (!L.Browser.ie && !L.Browser.opera) {
+  if (target !== this.selectedLayer && !L.Browser.ie && !L.Browser.opera) {
     target.bringToFront()
   }
 
@@ -142,6 +142,7 @@ export default {
       mapLayers: {},
       countyData: [],
       countyLayers: {},
+      countyLayerGroup: null,
       selectedLayer: null,
       statesTopology: null,
       usaTopology: null,
@@ -364,20 +365,12 @@ export default {
               // add it to the county layers for lookup on state click
               this.countyLayers[featureId.toString()] = layer
               countyLayerCount++
-              // NOTE: uncomment this to see all county layers added to the map for debug
-              // layer.addTo(this.$refs.map.mapObject)
-              // also some county layers feature id tracing for debug that can be stripped out
-              /*
-              if (countyLayerCount < 10) {
-                console.log('map:getUSATopoJsonData:countyLayerId:', featureId.toString())
-              }
-              else if (countyLayerCount === 10) {
-                console.log('map.getUSATopoJsonData:countyLayerId: ...')
-              }
-              */
             }
           })
           console.log('map:getUSATopoJsonData:countyLayers:', countyLayerCount)
+
+          // craete and add empty county layers group to the map
+          this.countyLayerGroup = L.layerGroup().addTo(this.$refs.map.mapObject)
 
           // update map load progress
           this.mapProgress = 100
@@ -424,8 +417,7 @@ export default {
             },
             click: () => { this.showRegionTooltip(region) }
           })
-          countyLayer.addTo(this.$refs.map.mapObject)
-          countyLayer.bringToFront()
+          this.countyLayerGroup.addLayer(countyLayer)
           countyLayerCount++
         }
       })
