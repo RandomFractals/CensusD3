@@ -401,8 +401,8 @@ export default {
       // show selected state counties
       let countyLayerCount = 0
       this.countyData.map(region => {
-        // 5 digit county code: 2 digit state code + 3 digit county code from pop. data results
-        let countyCode = stateCode + region.regionId
+        // county code: state code + 3 digit county code from pop. data results
+        let countyCode = Number(stateCode).toString() + region.regionId
         region.parentId = stateCode
         console.log('map:showCounties:county', countyCode, region.regionName) // county name
 
