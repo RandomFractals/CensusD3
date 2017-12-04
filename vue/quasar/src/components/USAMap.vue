@@ -120,6 +120,7 @@ function onLayerClick ({target}) {
 
 export default {
   name: 'usa-map',
+
   components: {
     QBtn,
     QProgress,
@@ -129,6 +130,8 @@ export default {
     'v-geojson-layer': Vue2Leaflet.GeoJSON,
     'v-tilelayer': Vue2Leaflet.TileLayer
   },
+
+  props: ['fullScreen'],
 
   data () {
     return {
@@ -250,8 +253,10 @@ export default {
   },
 
   mounted () {
-    // enable leaflet map fullscreen
-    // this.addFullScreenSupport()
+    if (this.fullScreen) {
+      // enable leaflet map fullscreen
+      this.addFullScreenSupport()
+    }
     console.log('map mounted')
   },
 

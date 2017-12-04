@@ -38,7 +38,7 @@
     <div class="app-content sm-gutter">
       <div class="row">
         <div ref="mapCard" class="col-xs-12 col-sm-8 col-md-8 col-lg-8 colcl-8 map-card">
-          <usa-map ref="map" :map-data="populationData" />
+          <usa-map ref="map" :map-data="populationData" :full-screen="true" />
         </div>
         <div ref="listCard" class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
           <population-table ref="dataTable" :table-data="populationData" />
