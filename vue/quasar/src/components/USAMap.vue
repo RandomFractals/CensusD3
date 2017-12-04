@@ -26,6 +26,9 @@
 </template>
 
 <style>
+@import "../../node_modules/leaflet/dist/leaflet.css";
+@import "../../node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css";
+
 .map-container {
   height: 327px;
   padding: 0px;
@@ -467,8 +470,3 @@ export default {
   }
 }
 </script>
-
-<style>
-@import "../../node_modules/leaflet/dist/leaflet.css";
-@import "../../node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css";
-</style>
