@@ -30,6 +30,7 @@
   z-index: 500;
 }
 .legend-table {
+  background-color: #eee;  
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
