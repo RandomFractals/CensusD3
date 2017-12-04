@@ -2,7 +2,9 @@
   <div class="region-tooltip" 
     :style="{display: display, left: positionX + 'px', top: positionY + 'px'}">
     <div class="card-subtitle">
+      <!--
       <img :src="regionIconSrc" class="flag" height="24" />
+      -->
       <span class="card-title">{{region.regionName}}</span>
     </div>
     <hr />
