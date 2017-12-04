@@ -96,7 +96,7 @@ function onLayerMouseOut ({ target }) {
   if (this.selectedLayer !== null && !L.Browser.ie && !L.Browser.opera) {
     this.selectedLayer.bringToFront()
   }
-  this.$refs.regionTooltip.hide()
+  this.hideRegionTooltip()
 }
 
 /**
@@ -309,6 +309,7 @@ export default {
      */
     zoomOut () {
       this.$refs.map.mapObject.flyTo(this.mapCenter, this.zoom)
+      this.hideRegionTooltip()
     },
 
     /**
@@ -433,6 +434,13 @@ export default {
     showRegionTooltip (region) {
       const tooltipPosition = [70, 70]
       this.$refs.regionTooltip.show(region, tooltipPosition)
+    },
+
+    /**
+     * Hides map region tooltip.
+     */
+    hideRegionTooltip () {
+      this.$refs.regionTooltip.hide()
     }
   }
 }
