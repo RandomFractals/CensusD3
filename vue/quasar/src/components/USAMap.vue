@@ -397,9 +397,11 @@ export default {
 
       // set parent state region map layer fill opacity to 0.0
       // for proper counties density color coding display
-      this.selectedLayer.setStyle({
-        fillOpacity: 0.0
-      })
+      if (this.selectedLayer !== null) {
+        this.selectedLayer.setStyle({
+          fillOpacity: 0.0
+        })
+      }
 
       // show selected state counties
       let countyLayerCount = 0
