@@ -200,8 +200,9 @@ export default {
     scrollToCard (cardName) {
       console.log('dashboard:scrollTo:', cardName)
       let card = this.$refs[cardName]
-      const cardBounds = card.getBoundingClientRect()
-      window.scrollTo(0, cardBounds.y)
+      // const cardBounds = card.getBoundingClientRect()
+      // window.scrollTo(0, cardBounds.y)
+      card.scrollIntoView(true)
     },
 
     /**
