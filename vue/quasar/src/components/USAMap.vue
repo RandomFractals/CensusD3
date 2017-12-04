@@ -80,7 +80,7 @@ function onLayerMouseOver ({ target }) {
 
   // get hover region info
   const hoverRegion = this.mapData.find(
-    x => x.regionId === target.feature.id) // region id from geo json
+    region => region.regionId === target.feature.id) // region id from geo json
 
   // show region tooltip
   this.showRegionTooltip(hoverRegion)
@@ -107,7 +107,7 @@ function onLayerClick ({target}) {
 
   // notify app components about region selection change
   Events.$emit(this.$census.events.REGION, this.mapData.find(
-    x => x.regionId === target.feature.id)) // region id from geo json
+    region => region.regionId === target.feature.id)) // region id from geo json
 
   // get population data for state counties
   this.$census.getPopulation('county', `*&in=state:${target.feature.id}`) // state code from the map
