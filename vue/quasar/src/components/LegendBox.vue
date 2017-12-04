@@ -49,6 +49,7 @@
   min-width: 40px;
 }
 .legend-label {
+  color: #5dbbfb;
   font-size: 10px;
 }
 </style>
