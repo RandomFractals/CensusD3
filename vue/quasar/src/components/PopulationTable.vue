@@ -11,7 +11,7 @@
     </q-card-title>
     <q-progress ref="progressBar" :percentage="dataProgress" 
       color="primary" style="height: 2px" />
-    <!-- table card subheader -->
+    <!-- collapsible population table card subheader -->
     <q-collapsible icon="people" opened
       :label="selectedRegion.population | formatNumber">
       <!--
@@ -20,6 +20,7 @@
         <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
       </div>
       -->
+      <!-- region density subtitle -->
       <div class="card-subtitle">
         <span class="text-faded">density:</span>
         <span class="text-bold">{{selectedRegion.density | formatDecimal}}</span>
@@ -28,10 +29,11 @@
     <!-- data table content -->
     <q-card-main class="table card data-table">
       <region-tooltip id="regionTooltip" ref="regionTooltip" />
-      <table id="data-table" ref="dataTable" style="width: 100%"
+      <div ref="tableContainer" class="table-container">
+      <table ref="dataTable" style="width: 100%"
         class="q-table standard bordered highlight horizontal-separator vertical-separator">
         <thead>
-          <tr>
+          <tr ref="headerRow">
             <th @click="sortTableData('regionName')">{{regionColumnLabel}}</th>
             <th @click="sortTableData('population')">population</th>
             <th @click="sortTableData('density')">density</th>
@@ -58,6 +60,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </q-card-main>
     </q-collapsible>
   </q-card>
@@ -81,10 +84,14 @@
 .flag {
   vertical-align: middle;
 }
-.data-table {
-  height: 272px;
-  margin: 5px 0px 0px 2px;
+.table-container {
+  height: 274px;  
   overflow-y: scroll;
+  overflow-x: auto;
+}
+.data-table {
+  height: 274px;
+  margin: 5px 0px 0px 2px;
 }
 th {
   background-color: #efefef;
@@ -158,6 +165,9 @@ export default {
       // update table data and view
       this.tableData = eventData.populationData
       this.dataProgress = 100
+
+      // reset table container scroll to header row top on new data load
+      this.$refs.tableContainer.scrollTop = this.$refs.headerRow.top
 
       // update region column label, sort column, order, etc
       this.sortColumn = 'regionName'
