@@ -412,7 +412,7 @@ export default {
         // get county map layer
         let countyLayer = this.countyLayers[countyCode]
         if (countyLayer !== undefined) {
-          // add county layer to the map
+          // set county layer styles for choropleth display
           countyLayer.setStyle({
             weight: 1,
             color: '#333',
@@ -420,13 +420,22 @@ export default {
             fillColor: // by density for now
               this.$refs.mapLegend.getColor(region.density)
           })
+          // add county layer mouse and click events
           countyLayer.on({
             mouseover: () => { this.showRegionTooltip(region) },
             mouseout: () => {
-              this.$refs.regionTooltip.hide()
+              this.hideRegionTooltip()
             },
-            click: () => { this.showRegionTooltip(region) }
+            click: () => {
+              this.showRegionTooltip(region)
+              // highlight clicked county map layer
+              countyLayer.setStyle({
+                weight: 3,
+                color: '#0066ff'
+              })
+            }
           })
+          // add selected state county layer to the counties group for display
           this.countyLayerGroup.addLayer(countyLayer)
           countyLayerCount++
         }
