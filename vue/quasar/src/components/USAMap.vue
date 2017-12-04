@@ -166,7 +166,7 @@ export default {
         color: 'red',
         opacity: 0.6,
         dashArray: 0,
-        fillOpacity: 0.0
+        fillOpacity: 0.6
       },
       topologyOptions: {
         style: function () {
@@ -394,6 +394,12 @@ export default {
 
       // remove previously shown county layers
       this.countyLayerGroup.clearLayers()
+
+      // set parent state region map layer fill opacity to 0.0
+      // for proper counties density color coding display
+      this.selectedLayer.setStyle({
+        fillOpacity: 0.0
+      })
 
       // show selected state counties
       let countyLayerCount = 0
