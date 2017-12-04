@@ -432,7 +432,7 @@ export default {
      * Displays region tooltip on map layer mouse over and click.
      */
     showRegionTooltip (region) {
-      const tooltipPosition = [70, 70]
+      const tooltipPosition = [70, 68]
       this.$refs.regionTooltip.show(region, tooltipPosition)
     },
 

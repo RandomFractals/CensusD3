@@ -228,7 +228,7 @@ export default {
         // set parent Id for county state info display
         this.tableData[rowIndex].parentId = this.selectedRegion.regionId
         // show mouse over region tooltip
-        const tooltipPosition = [2, -32]
+        const tooltipPosition = [2, -30]
         this.$refs.regionTooltip.show(this.tableData[rowIndex], tooltipPosition)
       }
     },
