@@ -198,6 +198,9 @@ export default {
       Events.$emit(this.$census.events.REGION, this.topLevelRegion)
       // get USA states population data
       this.$census.getPopulation()
+
+      // hide tooltip if shown
+      this.$refs.regionTooltip.hide()
     },
 
     /**
