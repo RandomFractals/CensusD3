@@ -34,9 +34,12 @@
         class="q-table standard bordered highlight horizontal-separator vertical-separator">
         <thead>
           <tr ref="headerRow">
-            <th @click="sortTableData('regionName')">{{regionColumnLabel}}</th>
-            <th @click="sortTableData('population')">population</th>
-            <th @click="sortTableData('density')">density</th>
+            <th title="sort by name" 
+              @click="sortTableData('regionName')">{{regionColumnLabel}}</th>
+            <th title="sort by population" 
+              @click="sortTableData('population')">population</th>
+            <th title="sort by density" 
+              @click="sortTableData('density')">density</th>
           </tr>
         </thead>
         <tbody>
