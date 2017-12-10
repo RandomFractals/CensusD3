@@ -128,6 +128,7 @@ function addCenterMapControl (map, centerPoint, zoomLevel) {
 }
 
 /**
+ * Adds custom legends control box to the leaflet map.
  */
 function addLegendsControl (map, title, colorStops) {
   const legendsControl = L.control({position: 'bottomleft'})
