@@ -16,7 +16,8 @@
     <q-card-main class="map-container">
       <region-tooltip id="regionTooltip" ref="regionTooltip" />
       <legend-box id="mapLegend" ref="mapLegend"
-        title="density (p/mi²)" />
+        title="density (p/mi²)"
+        :color-stops="densityColors" />
       <v-map ref="map" style="height: 100%" :zoom="zoom" :center="mapCenter">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
         <v-geojson-layer v-if="showTopology"
@@ -156,6 +157,16 @@ export default {
       usaTopologyLayer: null,
       showTopology: true,
       colorBy: 'density',
+      densityColors: [ // custom density color swatch for now
+        {value: 0, color: '#FFEDA0'},
+        {value: 10, color: '#FED976'},
+        {value: 20, color: '#FEB24C'},
+        {value: 50, color: '#FD8D3C'},
+        {value: 100, color: '#FC4E2A'},
+        {value: 200, color: '#E31A1C'},
+        {value: 500, color: '#BD0026'},
+        {value: 1000, color: '#800026'}
+      ],
       layerStyle: {
         weight: 2,
         color: '#ECEFF1',
