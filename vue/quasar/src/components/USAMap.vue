@@ -15,7 +15,8 @@
       color="red" style="height: 2px" />
     <q-card-main class="map-container">
       <region-tooltip id="regionTooltip" ref="regionTooltip" />
-      <legend-box id="mapLegend" ref="mapLegend" />      
+      <legend-box id="mapLegend" ref="mapLegend"
+        title="density (p/mi²)" />
       <v-map ref="map" style="height: 100%" :zoom="zoom" :center="mapCenter">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
         <v-geojson-layer v-if="showTopology"

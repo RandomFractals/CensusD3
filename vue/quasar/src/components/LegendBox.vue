@@ -57,11 +57,15 @@
 <script>
 export default {
   name: 'legend-box',
+  props: {
+    title: String,
+    required: true
+  },
+
   data () {
     return {
       left: 20,
       top: 330,
-      title: 'density (p/mi²)',
       colorStops: [ // custom density color swatch for now
         {value: 0, color: '#FFEDA0'},
         {value: 10, color: '#FED976'},
