@@ -40,6 +40,7 @@
 /* center map button control styles */
 .leaflet-control-center-map a {
   background:#fff url(../statics/images/leaflet/zoom-out.png) no-repeat 0 0;
+  background-size: 26px 26px;
 }
 .leaflet-touch .leaflet-control-center-map a {
   background-position: 2px 2px;
