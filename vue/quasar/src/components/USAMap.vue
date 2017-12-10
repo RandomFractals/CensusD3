@@ -12,9 +12,11 @@
       color="red" style="height: 2px" />
     <q-card-main class="map-container">
       <region-tooltip id="regionTooltip" ref="regionTooltip" />
+      <!--
       <legend-box id="mapLegend" ref="mapLegend"
         title="density (p/mi²)"
         :color-stops="densityColors" />
+      -->
       <v-map ref="map" style="height: 100%" :zoom="zoom" :center="mapCenter">
         <v-tilelayer :url="tilesUrl" :attribution="attribution"></v-tilelayer>
         <v-geojson-layer v-if="showTopology"
@@ -46,13 +48,36 @@
   background-position: 2px 2px;
 }
 
-@media
-  (-webkit-min-device-pixel-ratio:2),
-  (min-resolution:192dpi) {
-    .leaflet-control-center-map a {
-      background-image:url(../statics/images/leaflet/zoom-out-2x.png);
-    }
-  }
+/* legend box styles */
+.legend-box {
+  display: block;
+  border: 0px;
+  padding: 5px;
+  z-index: 500;
+}
+.legend-table {
+  background-color: #eee;  
+  display: table;
+  border-spacing: 0;
+  border-collapse: collapse;
+  empty-cells: show;
+}
+.legend-table tr {
+  display: table-row;
+}
+.legend-table th {
+  background-color: #fff;
+  opacity: 0.6;
+  font-size: 10px;
+  font-weight: normal;
+  text-align: left;
+  padding: 2px;
+  min-width: 40px;
+}
+.legend-label {
+  color: #5dbbfb;
+  font-size: 10px;
+}
 </style>
 
 <script>
@@ -100,6 +125,39 @@ function addCenterMapControl (map, centerPoint, zoomLevel) {
   }
 
   L.control.centerMap({position: 'topright'}).addTo(map)
+}
+
+/**
+ */
+function addLegendsControl (map, title, colorStops) {
+  const legendsControl = L.control({position: 'bottomleft'})
+  legendsControl.onAdd = function (map) {
+    const div = L.DomUtil.create('div', 'legend-box')
+    div.innerHTML += `<span class="legend-label">${title}</span>`
+    const table = L.DomUtil.create('table', 'legend-table', div)
+    const row = L.DomUtil.create('tr', 'legend-row', table)
+    colorStops.map(colorStop => {
+      row.innerHTML += `<th title="${colorStop.value}" style="background: ${colorStop.color}">` +
+        `<span class="legend-label">${colorStop.value}</span></th>`
+    })
+    return div
+  }
+  legendsControl.addTo(map)
+}
+
+/**
+ * Gets hex color for the specified number value and configured color palette
+ */
+function getColor (colorStops, value) {
+  let colorIndex = colorStops.length - 1
+  while (colorIndex >= 0) { // check in reverse
+    let colorStop = colorStops[colorIndex]
+    if (value >= colorStop.value) {
+      return colorStop.color
+    }
+    colorIndex--
+  }
+  return '#fff' // should never really get here
 }
 
 /**
@@ -294,7 +352,7 @@ export default {
           if (regionLayer !== undefined) {
             regionLayer.setStyle({
               fillColor: // by density for now
-                this.$refs.mapLegend.getColor(region.density)
+                getColor(this.densityColors, region.density)
             })
           }
         })
@@ -319,9 +377,8 @@ export default {
       // enable leaflet map fullscreen
       this.addFullScreenSupport()
     }
-
     addCenterMapControl(this.$refs.map.mapObject, this.mapCenter, this.zoom)
-
+    addLegendsControl(this.$refs.map.mapObject, 'density (p/mi²)', this.densityColors)
     console.log('map mounted')
   },
 
@@ -490,7 +547,7 @@ export default {
             color: '#333',
             fillOpacity: 0.6,
             fillColor: // by density for now
-              this.$refs.mapLegend.getColor(region.density)
+              getColor(this.densityColors, region.density)
           })
           // add county layer mouse and click events
           countyLayer.on({
