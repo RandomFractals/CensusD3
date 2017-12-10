@@ -7,9 +7,6 @@
       <span class="card-subtitle">
         <span class="text-bold">{{selectedRegion.population | formatNumber}}</span>
       </span>
-      <q-btn small flat slot="right" class="map-button" @click="zoomOut()">
-        <q-icon name="zoom out map" />
-      </q-btn>
     </q-card-title>
     <q-progress ref="progressBar" :percentage="mapProgress" 
       color="red" style="height: 2px" />
@@ -39,6 +36,22 @@
   color: #666;
   padding: 3px;
 }
+
+/* center map button control styles */
+.leaflet-control-center-map a {
+  background:#fff url(../statics/images/leaflet/zoom-out.png) no-repeat 0 0;
+}
+.leaflet-touch .leaflet-control-center-map a {
+  background-position: 2px 2px;
+}
+
+@media
+  (-webkit-min-device-pixel-ratio:2),
+  (min-resolution:192dpi) {
+    .leaflet-control-center-map a {
+      background-image:url(../statics/images/leaflet/zoom-out-2x.png);
+    }
+  }
 </style>
 
 <script>
@@ -54,6 +67,39 @@ import LegendBox from './LegendBox.vue'
 /**
  * ---------------------- Leaflet Methods -------------------------------------
  **/
+
+/**
+ * Adds custom center map control to zoom out
+ * and center the map for all USA states display.
+ */
+function addCenterMapControl (map, centerPoint, zoomLevel) {
+  L.Control.CenterMap = L.Control.extend({
+    onAdd: function (map) {
+      const container = L.DomUtil.create('div', 'leaflet-control-center-map leaflet-bar leaflet-control')
+      this.link = L.DomUtil.create('a', 'leaflet-control-center-map-button leaflet-bar-part', container)
+      this.link.href = '#'
+      this._map = map
+      this._mapCenter = centerPoint
+      this._zoomLevel = zoomLevel
+      L.DomEvent.on(this.link, 'click', this._click, this)
+      return container
+    },
+    _click: function (e) {
+      L.DomEvent.stopPropagation(e)
+      L.DomEvent.preventDefault(e)
+      this._map.flyTo(this._mapCenter, this._zoomLevel)
+    },
+    onRemove: function (map) {
+      // nothing to do here
+    }
+  })
+
+  L.control.centerMap = function (opts) {
+    return new L.Control.CenterMap(opts, centerPoint, zoomLevel)
+  }
+
+  L.control.centerMap({position: 'topright'}).addTo(map)
+}
 
 /**
  * Makes Leaflet Geo JSON API Topo JSON aware.
@@ -272,6 +318,9 @@ export default {
       // enable leaflet map fullscreen
       this.addFullScreenSupport()
     }
+
+    addCenterMapControl(this.$refs.map.mapObject, this.mapCenter, this.zoom)
+
     console.log('map mounted')
   },
 
