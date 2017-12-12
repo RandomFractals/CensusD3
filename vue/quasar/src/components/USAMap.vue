@@ -27,9 +27,11 @@
 </template>
 
 <style>
+/* leafletJS css imports */
 @import "../../node_modules/leaflet/dist/leaflet.css";
 @import "../../node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css";
 
+/* map content container */
 .map-container {
   height: 327px;
   padding: 0px;
@@ -38,6 +40,8 @@
   color: #666;
   padding: 3px;
 }
+
+/* TODO: move these to separate reusable leafletJS control plugin modules */
 
 /* center map button control styles */
 .leaflet-control-center-map a {
@@ -81,22 +85,25 @@
 </style>
 
 <script>
+// TODO: find a better way to import this JS, which is not a proper JS module
 require('../../node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js')
-import {QBtn, QProgress, Events} from 'quasar'
-import Vue2Leaflet from 'vue2-leaflet' // leaflet vue wrapper
-import axios from 'axios' // for geo and topo json data load
+
+// LeafletJS and TopoJson imports
 import * as L from 'leaflet' // direct leaflet.js import for topo json load extension
 import * as topojson from 'topojson-client' // for topo json leaflet extension
+import axios from 'axios' // for geo and topo json data load
+
+// Quasar and custom vue components imports
+import {QBtn, QProgress, Events} from 'quasar'
+import Vue2Leaflet from 'vue2-leaflet' // leaflet vue wrapper
 import RegionTooltip from './RegionTooltip.vue'
 import LegendBox from './LegendBox.vue'
 
-/**
- * ---------------------- Leaflet Methods -------------------------------------
- **/
+/* --------------- Custom LeafletJS Controls and TopoJSON Extensions ------------------------------ */
 
 /**
- * Adds custom center map control to zoom out
- * and center the map for all USA states display.
+ * Adds custom center map control to leafletJS
+ * for zooming out and centering the map on USA to display all states.
  */
 function addCenterMapControl (map, centerPoint, zoomLevel) {
   L.Control.CenterMap = L.Control.extend({
@@ -113,6 +120,7 @@ function addCenterMapControl (map, centerPoint, zoomLevel) {
     _click: function (e) {
       L.DomEvent.stopPropagation(e)
       L.DomEvent.preventDefault(e)
+      // we'll use leafletJS map flyTo for animated zoom out and center map
       this._map.flyTo(this._mapCenter, this._zoomLevel)
     },
     onRemove: function (map) {
@@ -124,6 +132,7 @@ function addCenterMapControl (map, centerPoint, zoomLevel) {
     return new L.Control.CenterMap(opts, centerPoint, zoomLevel)
   }
 
+  // add center map button control to the top right leaflet map controls box
   L.control.centerMap({position: 'topright'}).addTo(map)
 }
 
@@ -133,8 +142,13 @@ function addCenterMapControl (map, centerPoint, zoomLevel) {
 function addLegendsControl (map, title, colorStops) {
   const legendsControl = L.control({position: 'bottomleft'})
   legendsControl.onAdd = function (map) {
+    // create legends box container
     const div = L.DomUtil.create('div', 'legend-box')
+
+    // add legends box title
     div.innerHTML += `<span class="legend-label">${title}</span>`
+
+    // add legends table for horizontal legends UI display
     const table = L.DomUtil.create('table', 'legend-table', div)
     const row = L.DomUtil.create('tr', 'legend-row', table)
     colorStops.map(colorStop => {
@@ -147,7 +161,8 @@ function addLegendsControl (map, title, colorStops) {
 }
 
 /**
- * Gets hex color for the specified number value and configured color palette
+ * Gets hex color for the specified number value and configured color palette.
+ * Note: colorStops is an array of objects with color and value properties.
  */
 function getColor (colorStops, value) {
   let colorIndex = colorStops.length - 1
@@ -179,6 +194,8 @@ function addLeafletTopoJSONSupport () {
     }
   })
 }
+
+/* -------------------- LeafletJS Layer Mouse Event Handlers ----------------------- */
 
 /**
  * Map layer mouse out event handler.
@@ -229,6 +246,8 @@ function onLayerClick ({target}) {
   }
 }
 
+/* -------------------------- USA Map Vue Component JS ----------------------------------- */
+
 export default {
   name: 'usa-map',
 
@@ -242,12 +261,12 @@ export default {
     'v-tilelayer': Vue2Leaflet.TileLayer
   },
 
-  props: ['fullScreen'],
+  props: ['fullScreen'], // true || false to enable fullscreen map view
 
   data () {
     return {
-      mapCenter: [37.8, -96],
-      zoom: 4,
+      mapCenter: [37.8, -96], // USA center lat lng coordinates
+      zoom: 4, // zoom level for displaying all states
       tilesUrl: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       selectedRegion: {},
@@ -318,6 +337,10 @@ export default {
   },
 
   computed: {
+
+    /**
+     * Creates country/state region image flag url for the selected map region.
+     */
     regionIconSrc: function () {
       return this.$census.getRegionImageUrl(this.selectedRegion.regionId)
     }
@@ -342,7 +365,6 @@ export default {
     this.onPopulationUpdate = eventData => {
       // update selected region total population sum
       this.selectedRegion.population = eventData.totalPopulation
-
       if (this.mapData.length === 0) { // for initial states population data load
         // update states map data
         this.mapData = eventData.populationData
@@ -352,7 +374,7 @@ export default {
           let regionLayer = this.mapLayers[region.regionId]
           if (regionLayer !== undefined) {
             regionLayer.setStyle({
-              fillColor: // by density for now
+              fillColor: // color by density for now
                 getColor(this.densityColors, region.density)
             })
           }
@@ -362,7 +384,6 @@ export default {
         // show selected state counties data
         this.showCounties(this.selectedRegion.regionId, eventData.populationData)
       }
-
       console.log('map data updated') // , eventData)
     }
     this.$q.events.$on(this.$census.events.POPULATION, this.onPopulationUpdate)
