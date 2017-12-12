@@ -446,7 +446,7 @@ export default {
       if (this.selectedLayer !== undefined) {
         // update map layer styles to zoom in
         this.selectedLayer.setStyle(this.selectedLayerStyle)
-        this.$refs.map.mapObject.fitBounds(this.selectedLayer.getBounds())
+        this._map.fitBounds(this.selectedLayer.getBounds())
       }
       else {
         // reset selected layer and zoom out to the whole USA map view
