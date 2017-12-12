@@ -132,8 +132,8 @@ function addCenterMapControl (map, centerPoint, zoomLevel) {
     return new L.Control.CenterMap(opts, centerPoint, zoomLevel)
   }
 
-  // add center map button control to the top right leaflet map controls box
-  L.control.centerMap({position: 'topright'}).addTo(map)
+  // add center map button control to the top left leaflet map zoom controls box
+  L.control.centerMap({position: 'topleft'}).addTo(map)
 }
 
 /**
@@ -242,7 +242,7 @@ function onLayerClick ({target}) {
 
   if (target !== this.selectedLayer) {
     // zoom to region
-    this.$refs.map.mapObject.fitBounds(target.getBounds())
+    this._map.fitBounds(target.getBounds())
   }
 }
 
@@ -395,12 +395,15 @@ export default {
   },
 
   mounted () {
+    // create shorter leafletjs map reference to work with
+    this._map = this.$refs.map.mapObject
+
     if (this.fullScreen) {
       // enable leaflet map fullscreen
       this.addFullScreenSupport()
     }
-    addCenterMapControl(this.$refs.map.mapObject, this.mapCenter, this.zoom)
-    addLegendsControl(this.$refs.map.mapObject, 'density (p/mi²)', this.densityColors)
+    addCenterMapControl(this._map, this.mapCenter, this.zoom)
+    addLegendsControl(this._map, 'density (p/mi²)', this.densityColors)
     console.log('map mounted')
   },
 
@@ -418,10 +421,9 @@ export default {
      * Adds full screen control and support to the leaflet map.
      */
     addFullScreenSupport () {
-      const map = this.$refs.map.mapObject
-      map.addControl(new L.Control.Fullscreen())
-      map.on('fullscreenchage', function () {
-        if (map.isFullscreen()) {
+      this._map.addControl(new L.Control.Fullscreen({position: 'topright'}))
+      this._map.on('fullscreenchage', function () {
+        if (this._map.isFullscreen()) {
           console.log('map entered fullscreen')
         }
         else {
@@ -457,7 +459,7 @@ export default {
      * Zooms out to show the whole USA map view.
      */
     zoomOut () {
-      this.$refs.map.mapObject.flyTo(this.mapCenter, this.zoom)
+      this._map.flyTo(this.mapCenter, this.zoom)
       this.hideRegionTooltip()
     },
 
@@ -473,7 +475,7 @@ export default {
           console.log('map:getStatesGeoJsonData:regions:', this.statesTopology.features.length)
 
           // update map load progress
-          this.mapProgress = 100
+          this.mapProgress = 80
 
           // trigger load of USA states with counties topology for the state counties map zoom
           this.getUSATopoJsonData()
@@ -520,7 +522,7 @@ export default {
           console.log('map:getUSATopoJsonData:countyLayers:', countyLayerCount)
 
           // craete and add empty county layers group to the map
-          this.countyLayerGroup = L.layerGroup().addTo(this.$refs.map.mapObject)
+          this.countyLayerGroup = L.layerGroup().addTo(this._map)
 
           // update map load progress
           this.mapProgress = 100
